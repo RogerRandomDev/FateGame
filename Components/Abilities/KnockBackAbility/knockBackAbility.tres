@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b5podi2erbsap"]
+
+[ext_resource type="Shader" path="res://Components/Abilities/KnockBackAbility/knockBackAbility.gdshader" id="1_tw3mi"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_tw3mi")
+shader_parameter/rippleStrength = 0.5
+shader_parameter/rippleProgress = 0.0

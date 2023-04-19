@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="AbilityResource" load_steps=3 format=3 uid="uid://bulh2gh00x35p"]
+
+[ext_resource type="Script" path="res://Components/Abilities/AbilityResource.gd" id="1_es2p2"]
+[ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.gd" id="1_hg5a7"]
+
+[resource]
+script = ExtResource("1_es2p2")
+Name = "Attraction"
+Description = "Passive-
+
+Actives-
+	Primary-
+		Repels things around yourself
+	Secondary-
+		Attracts things around yourself"
+AbilityScript = ExtResource("1_hg5a7")
+metadata/_editor_prop_ptr_AbilityNode = NodePath("")

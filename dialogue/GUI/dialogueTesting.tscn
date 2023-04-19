@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://yeiistc7a3wi"]
+
+[ext_resource type="Script" path="res://dialogue/GUI/dialogueTesting.gd" id="1_cbpwy"]
+
+[node name="dialogueTesting" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_cbpwy")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+bbcode_enabled = true
