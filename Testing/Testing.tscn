@@ -260,6 +260,8 @@ range = 7.5
 power = 5.0
 abilityDuration = 0.5
 abilityDelay = 0.25
+motionAbilityDuration = 0.25
+motionAbilityDelay = 0.5
 
 [node name="CoyoteTimerNode" type="Node" parent="CharacterNode"]
 script = ExtResource("7_kfamq")
@@ -277,6 +279,7 @@ maxRotUp = 1.047
 maxRotDown = 0.785
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterNode/CameraArm/PlayerCamera"]
+visible = false
 mesh = SubResource("QuadMesh_70gyy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterNode"]

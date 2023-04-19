@@ -5,14 +5,18 @@ class_name AbilityState
 @export var abilityDelay:float=0.
 @export var secondaryAbilityDuration:float=0.
 @export var secondaryAbilityDelay:float=0.
+@export var motionAbilityDuration:float=0.
+@export var motionAbilityDelay:float=0.
 var abilityArea:PhysicsShapeQueryParameters3D=PhysicsShapeQueryParameters3D.new()
 var space_state:PhysicsDirectSpaceState3D
 var root:Node3D
 
 var timeLeft:float=0.
 var secondaryTimeLeft:float=0.
+var motionTimeLeft:float=0.
 var justTrigered:bool=false
 var justTrigeredSecondary:bool=false
+var justTriggeredMotion:bool=false
 func _ready():
 	root=get_parent().get_parent()
 	space_state=get_viewport().find_world_3d().direct_space_state
@@ -21,6 +25,7 @@ func _ready():
 func _process(delta):
 	timeLeft-=delta
 	secondaryTimeLeft-=delta
+	motionTimeLeft-=delta
 
 func _unhandled_input(event):
 	#prevents double-trigger if moving mouse while pressing
@@ -38,9 +43,15 @@ func _unhandled_input(event):
 		justTrigeredSecondary=true
 		AbilitySecondaryTrigger()
 	if Input.is_action_just_released("TriggerAbilitySecondary")&&justTrigeredSecondary:
-		justTrigered=false
+		justTrigeredSecondary=false
 		AbilitySecondaryRelease()
-
+	if Input.is_action_just_pressed("TriggerAbilityMotion")&&motionTimeLeft<=0.:
+		motionTimeLeft=motionAbilityDuration+motionAbilityDelay
+		justTriggeredMotion=true
+		AbilityMotionTrigger()
+	if Input.is_action_just_released("TriggerAbilityMotion")&&justTriggeredMotion:
+		justTriggeredMotion=false
+		AbilityMotionRelease()
 
 
 
@@ -65,6 +76,8 @@ func AbilityTrigger():pass
 func AbilityRelease():pass
 func AbilitySecondaryTrigger():pass
 func AbilitySecondaryRelease():pass
+func AbilityMotionTrigger():pass
+func AbilityMotionRelease():pass
 
 #ability drawing function
 #put in the code that creates the vfx for the ability itself

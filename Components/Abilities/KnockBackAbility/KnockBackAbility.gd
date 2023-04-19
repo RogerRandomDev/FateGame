@@ -39,6 +39,22 @@ func AbilitySecondaryTrigger():
 			target.apply_central_impulse(dir.normalized()*(range-sqrt(abs((range*range)-dir.length_squared()))*power))
 
 
+func AbilityMotionTrigger():
+	var r:=PhysicsRayQueryParameters3D.new()
+	r.from=root.global_transform.origin
+	r.exclude=[root]
+	r.to=r.from-Vector3(sin(root.rotation.y),0.,cos(root.rotation.y))*8.
+	var col:=space_state.intersect_ray(r)
+	var moveTo=r.to
+	if col:
+		moveTo=col.position+col.normal
+	root.global_transform.origin=moveTo
+
+
+
+
+
+
 var t:Tween
 func drawAbilityEffect(norm:bool=true):
 	var ability=MeshInstance3D.new()
