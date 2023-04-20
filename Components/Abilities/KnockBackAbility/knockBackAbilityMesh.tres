@@ -1,13 +1,23 @@
-[gd_resource type="Resource" script_class="AbilityMeshResource" load_steps=4 format=3 uid="uid://6sy0e2cl7onv"]
+[gd_resource type="Resource" script_class="AbilityMeshResource" load_steps=5 format=3 uid="uid://6sy0e2cl7onv"]
 
+[ext_resource type="Shader" path="res://Components/Abilities/KnockBackAbility/knockBackAbility.gdshader" id="1_5p3t0"]
 [ext_resource type="Script" path="res://Components/Abilities/AbilityMeshResource.gd" id="1_bjo58"]
-[ext_resource type="Material" uid="uid://b5podi2erbsap" path="res://Components/Abilities/KnockBackAbility/knockBackAbility.tres" id="1_jnqxr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xcrcs"]
+render_priority = 0
+shader = ExtResource("1_5p3t0")
+shader_parameter/rippleStrength = 0.5
+shader_parameter/rippleProgress = 2.2
 
 [sub_resource type="SphereMesh" id="SphereMesh_rb4y1"]
-material = ExtResource("1_jnqxr")
+material = SubResource("ShaderMaterial_xcrcs")
+radius = 3.75
+height = 7.5
+radial_segments = 16
+rings = 8
 
 [resource]
 script = ExtResource("1_bjo58")
 AbilityMesh = SubResource("SphereMesh_rb4y1")
-AbilityMeshTransformations = Array[Transform3D]([Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)])
-a = null
+AbilityShaderProgressionValue = "rippleProgress"
+AbilityMeshTransformations = Array[Transform3D]([Transform3D(0, 0, 1, 0, 0, 1, 0, 0, 1, 0.5, 1, -0.5), Transform3D(0, 0, 1, 0, 0, 1, 0, 0, 1, 0.75, 0.25, 2.2)])

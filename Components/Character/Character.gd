@@ -3,6 +3,7 @@ extends CharacterBody3D
 class_name CharacterNode
 
 var GRAVITY:Vector3
+@export var MASS:float=1.
 @export var SPEED:float=1.
 @export var DAMPING:float=1.
 @export var accelSpeed:float=0.5
@@ -28,8 +29,10 @@ func _physics_process(delta):
 	for col_idx in get_slide_collision_count():
 		var col := get_slide_collision(col_idx)
 		if col.get_collider() is RigidBody3D:
-			col.get_collider().apply_central_impulse(-col.get_normal() * 0.3 * col.get_collider().mass)
-			col.get_collider().apply_impulse(-col.get_normal() * 0.01  * col.get_collider().mass, col.get_position())
+			var massMult=MASS/col.get_collider().mass
+			var a=RigidBody3D.new()
+			col.get_collider().apply_central_impulse(col.get_normal() * 0.3 * massMult)
+#			col.get_collider().apply_impulse(-col.get_normal() *0.3 * massMult,col.get_collider().position-col.get_position())
 	#updates global data of the player location
 	RenderingServer.global_shader_parameter_set("character_position",global_position)
 #a list of medeival names

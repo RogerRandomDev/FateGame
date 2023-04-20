@@ -19,23 +19,24 @@ func updateShape():
 
 
 func AbilityTrigger():
-	drawAbilityEffect()
+	var ability=abilityResource.MainEffect.getNode(root)
+	
 	setShapeTransform(root.global_transform)
 	var targets=getEntitiesInRange()
 	for target in targets:
 		if target is RigidBody3D:
 			var dir=(target.global_position-root.global_position)
 			
-			target.apply_central_impulse(-dir.normalized()*(range-sqrt(abs((range*range)-dir.length_squared()))*power))
+			target.apply_central_impulse(-(dir.normalized()*(dir.length()-range)/range)*power)
 func AbilitySecondaryTrigger():
-	drawAbilityEffect(false)
+	var ability=abilityResource.SecondaryEffect.getNode(root)
 	setShapeTransform(root.global_transform)
 	var targets=getEntitiesInRange()
 	for target in targets:
 		if target is RigidBody3D:
 			var dir=(target.global_position-root.global_position)
 			
-			target.apply_central_impulse(dir.normalized()*(range-sqrt(abs((range*range)-dir.length_squared()))*power))
+			target.apply_central_impulse((dir.normalized()*(dir.length()-range)/range)*power)
 
 
 func AbilityMotionTrigger():
@@ -49,26 +50,19 @@ func AbilityMotionTrigger():
 	if col:
 		moveTo=col.position-r.from.direction_to(r.to)*Vector3(1,2,1)
 	root.global_transform.origin=moveTo
+	var data={'travelDistance':moveTo-r.from,'origin':r.from}
+	var ability=abilityResource.MotionEffect.getNode(root.get_parent())
 	
-	drawMotionAbilityEffect(true,{'travelDistance':moveTo-r.from,'origin':r.from})
-
-
-
-
-
-var t:Tween
-func drawAbilityEffect(norm:bool=true):
-	var ability=MeshInstance3D.new()
-	ability.mesh=SphereMesh.new()
-	ability.mesh.height=7.5
-	ability.mesh.radius=3.75
-	ability.mesh.surface_set_material(0,load("res://Components/Abilities/KnockBackAbility/knockBackAbility.tres"))
-	root.add_child(ability)
 	
-	ability.mesh.material.set_shader_parameter("rippleProgress",float(!norm))
-	t=create_tween()
-	t.tween_method(func(e):ability.mesh.material.set_shader_parameter("rippleProgress",e),float(!norm),float(norm),0.5)
-	t.tween_callback(ability.queue_free)
+	ability.look_at_from_position(data.origin,data.travelDistance+data.origin)
+	
+	ability.global_position=data.origin+data.travelDistance/2.+Vector3(0,1,0)
+	ability.process_material.set_shader_parameter("emission_box_extents",Vector3(0.25,1,data.travelDistance.length()/2.))
+
+
+
+
+
 
 func drawMotionAbilityEffect(norm:bool=true,data:Dictionary={}):
 	var ability=GPUParticles3D.new()
@@ -87,11 +81,5 @@ func drawMotionAbilityEffect(norm:bool=true,data:Dictionary={}):
 	ability.draw_pass_1.surface_set_material(0,a)
 	ability.process_material=load("res://Components/Abilities/KnockBackAbility/knockBackAbilityMotion.tres")
 	root.get_parent().add_child(ability)
-	ability.look_at_from_position(data.origin,data.travelDistance+data.origin)
 	
-	ability.global_position=data.origin+data.travelDistance/2.+Vector3(0,1,0)
-	ability.process_material.set_shader_parameter("emission_box_extents",Vector3(0.25,1,data.travelDistance.length()/2.))
-	t=create_tween()
-	t.tween_interval(1.)
-	t.tween_callback(ability.queue_free)
 	

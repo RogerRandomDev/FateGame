@@ -80,7 +80,6 @@ TriggerAbilityMotion={
 
 [physics]
 
-common/physics_ticks_per_second=30
 3d/physics_engine="GodotPhysics3D"
 
 [rendering]

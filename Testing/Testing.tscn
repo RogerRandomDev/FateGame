@@ -9,9 +9,9 @@
 [ext_resource type="Script" path="res://Components/Player/States/JumpingState.gd" id="6_o4wij"]
 [ext_resource type="Script" path="res://Components/Character/CoyoteTime.gd" id="7_kfamq"]
 [ext_resource type="Script" path="res://Components/Player/Camera.gd" id="8_hhj4s"]
-[ext_resource type="Script" path="res://Components/Player/States/dashingState.gd" id="9_36exl"]
 [ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.gd" id="9_fdwbi"]
 [ext_resource type="Script" path="res://Components/Character/AbilityManager.gd" id="9_nur4x"]
+[ext_resource type="Resource" uid="uid://bulh2gh00x35p" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.tres" id="10_q7u0k"]
 [ext_resource type="Script" path="res://Testing/companion.gd" id="12_1ilwa"]
 [ext_resource type="PackedScene" uid="uid://f0w5jath3f2f" path="res://Testing/Companion.gltf" id="12_jbs16"]
 [ext_resource type="Shader" path="res://Testing/HoveringCompanion.gdshader" id="14_hwgyj"]
@@ -229,8 +229,8 @@ material = ExtResource("1_ml5j2")
 [node name="CharacterNode" type="CharacterBody3D" parent="."]
 transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 8, 1.501, 0)
 floor_constant_speed = true
-floor_max_angle = 0.959931
 script = ExtResource("3_t4b3m")
+MASS = null
 SPEED = 8.0
 DAMPING = 4.0
 accelSpeed = 8.0
@@ -246,22 +246,14 @@ script = ExtResource("5_tl3c6")
 [node name="PlayerJumpingState" type="Node" parent="CharacterNode/States"]
 script = ExtResource("6_o4wij")
 
-[node name="PlayerDashingState" type="Node" parent="CharacterNode/States"]
-script = ExtResource("9_36exl")
-dashDuration = 0.75
-dashSpeed = 16.0
-
 [node name="Abilities" type="Node" parent="CharacterNode"]
 script = ExtResource("9_nur4x")
 
 [node name="KnockBackAbility" type="Node" parent="CharacterNode/Abilities"]
 script = ExtResource("9_fdwbi")
 range = 7.5
-power = 5.0
-abilityDuration = 0.5
-abilityDelay = 0.25
-motionAbilityDuration = 0.25
-motionAbilityDelay = 0.5
+power = 16.0
+abilityResource = ExtResource("10_q7u0k")
 
 [node name="CoyoteTimerNode" type="Node" parent="CharacterNode"]
 script = ExtResource("7_kfamq")

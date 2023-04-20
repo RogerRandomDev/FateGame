@@ -1,52 +1,48 @@
 extends Node
 class_name AbilityState
 
-@export var abilityDuration:float=0.
-@export var abilityDelay:float=0.
-@export var secondaryAbilityDuration:float=0.
-@export var secondaryAbilityDelay:float=0.
-@export var motionAbilityDuration:float=0.
-@export var motionAbilityDelay:float=0.
+
+
+@export var abilityResource:AbilityResource
+
+
 var abilityArea:PhysicsShapeQueryParameters3D=PhysicsShapeQueryParameters3D.new()
 var space_state:PhysicsDirectSpaceState3D
 var root:Node3D
 
-var timeLeft:float=0.
-var secondaryTimeLeft:float=0.
-var motionTimeLeft:float=0.
 var justTrigered:bool=false
 var justTrigeredSecondary:bool=false
 var justTriggeredMotion:bool=false
 func _ready():
+	
 	root=get_parent().get_parent()
 	space_state=get_viewport().find_world_3d().direct_space_state
 
-
+#updates ability timers
 func _process(delta):
-	timeLeft-=delta
-	secondaryTimeLeft-=delta
-	motionTimeLeft-=delta
+	abilityResource._process()
+
 
 func _unhandled_input(event):
 	#prevents double-trigger if moving mouse while pressing
 	#not sure why it does that but i'm guessing 2 actions same frame, so it counted it still
 	if not event is InputEventKey:return
-	if Input.is_action_just_pressed("TriggerAbility")&&timeLeft<=0.:
-		timeLeft=abilityDuration+abilityDelay
+	if Input.is_action_just_pressed("TriggerAbility")&&abilityResource.mainTimeLeft<=0.:
+		abilityResource.mainTimeLeft=abilityResource.abilityDelay
 		justTrigered=true
 		AbilityTrigger()
 	if Input.is_action_just_released("TriggerAbility")&&justTrigered:
 		justTrigered=false
 		AbilityRelease()
-	if Input.is_action_just_pressed("TriggerAbilitySecondary")&&secondaryTimeLeft<=0.:
-		secondaryTimeLeft=secondaryAbilityDuration+secondaryAbilityDelay
+	if Input.is_action_just_pressed("TriggerAbilitySecondary")&&abilityResource.secondaryTimeLeft<=0.:
+		abilityResource.secondaryTimeLeft=abilityResource.secondaryAbilityDelay
 		justTrigeredSecondary=true
 		AbilitySecondaryTrigger()
 	if Input.is_action_just_released("TriggerAbilitySecondary")&&justTrigeredSecondary:
 		justTrigeredSecondary=false
 		AbilitySecondaryRelease()
-	if Input.is_action_just_pressed("TriggerAbilityMotion")&&motionTimeLeft<=0.:
-		motionTimeLeft=motionAbilityDuration+motionAbilityDelay
+	if Input.is_action_just_pressed("TriggerAbilityMotion")&&abilityResource.motionTimeLeft<=0.:
+		abilityResource.motionTimeLeft=abilityResource.motionAbilityDelay
 		justTriggeredMotion=true
 		AbilityMotionTrigger()
 	if Input.is_action_just_released("TriggerAbilityMotion")&&justTriggeredMotion:

@@ -20,6 +20,6 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump")&&root.get_node("CoyoteTimerNode").canJump():
 		get_parent().setActiveState("PlayerJumpingState")
 	#trigger dash
-	if Input.is_action_just_pressed("dash")&&get_parent().getState("PlayerDashingState").canDash():
+	if Input.is_action_just_pressed("dash")&&get_parent().getState("PlayerDashingState")&&get_parent().getState("PlayerDashingState").canDash():
 		get_parent().setActiveState("PlayerDashingState")
 	
