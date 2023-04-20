@@ -6,12 +6,13 @@
 [resource]
 script = ExtResource("1_es2p2")
 Name = "Attraction"
-Description = "Passive-
-
-Actives-
-	Primary-
-		Repels things around yourself
-	Secondary-
-		Attracts things around yourself"
+hasMain = false
+MainDescription = ""
+hasSecondary = false
+SecondaryDescription = ""
+hasMotion = false
+MotionDescription = ""
+hasPassive = false
+PassiveDescription = ""
 AbilityScript = ExtResource("1_hg5a7")
 metadata/_editor_prop_ptr_AbilityNode = NodePath("")

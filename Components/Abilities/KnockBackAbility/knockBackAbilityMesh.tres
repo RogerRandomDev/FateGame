@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AbilityMeshResource" load_steps=4 format=3 uid="uid://6sy0e2cl7onv"]
+
+[ext_resource type="Script" path="res://Components/Abilities/AbilityMeshResource.gd" id="1_bjo58"]
+[ext_resource type="Material" uid="uid://b5podi2erbsap" path="res://Components/Abilities/KnockBackAbility/knockBackAbility.tres" id="1_jnqxr"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_rb4y1"]
+material = ExtResource("1_jnqxr")
+
+[resource]
+script = ExtResource("1_bjo58")
+AbilityMesh = SubResource("SphereMesh_rb4y1")
+AbilityMeshTransformations = Array[Transform3D]([Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)])
+a = null

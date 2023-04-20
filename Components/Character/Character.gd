@@ -19,7 +19,6 @@ func _ready()->void:
 	GRAVITY=ProjectSettings.get_setting("global/gravity")
 	initializeStructure()
 	get_node("States").setActiveState("PlayerWalkingState")
-	
 
 
 func _physics_process(delta):
