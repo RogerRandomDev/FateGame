@@ -1,5 +1,5 @@
 @tool
-extends CharacterBody3D
+extends RigidBody3D
 class_name CharacterNode
 
 var GRAVITY:Vector3
@@ -12,37 +12,51 @@ var GRAVITY:Vector3
 
 @export var jumpForce:float=2.5;
 @export_range(0,1) var rotationDamping:float=0.125;
-
+var velocity:Vector3
 
 var stateManager:Node;
+
+var floorChecker:=PhysicsShapeQueryParameters3D.new()
+@export var floorCheckShape:Shape3D
 
 func _ready()->void:
 	GRAVITY=ProjectSettings.get_setting("global/gravity")
 	initializeStructure()
 	get_node("States").setActiveState("PlayerWalkingState")
+	floorChecker.shape=floorCheckShape
+	floorChecker.exclude=[self]
 
+func is_on_floor():
+	floorChecker.transform=global_transform
+	return get_viewport().world_3d.direct_space_state.intersect_shape(floorChecker)
 
 func _physics_process(delta):
 	if Engine.is_editor_hint():return
 	
-	move_and_slide()
-	for col_idx in get_slide_collision_count():
-		var col := get_slide_collision(col_idx)
-		if col.get_collider() is RigidBody3D:
-			var massMult=MASS/col.get_collider().mass
-			var a=RigidBody3D.new()
-			col.get_collider().apply_central_impulse(col.get_normal() * 0.3 * massMult)
-#			col.get_collider().apply_impulse(-col.get_normal() *0.3 * massMult,col.get_collider().position-col.get_position())
 	#updates global data of the player location
 	RenderingServer.global_shader_parameter_set("character_position",global_position)
-#a list of medeival names
+	
+var rotate:float=0.
+var moveTowards:Vector3=Vector3.ZERO
 
+func _integrate_forces(state):
+	velocity.y=max(linear_velocity.y,velocity.y)
+	state.linear_velocity=velocity
+	rotation.y=rotate
+	state.transform.origin+=moveTowards
+	global_transform.origin+=moveTowards
+	moveTowards=Vector3.ZERO
 
 
 #handles updating velocity when rotating
 func rotateBy(rot:Vector2):
-	rotation.y+=rot.x
+	rotate+=rot.x
 	velocity=velocity*rotationDamping+velocity.rotated(Vector3.UP,rot.x)*(1-rotationDamping)
+
+
+func moveTo(moveBy:Vector3):
+	moveTowards=moveBy-global_transform.origin;
+	
 
 #functions below here are used in editor for making character creation easier
 

@@ -49,7 +49,7 @@ func AbilityMotionTrigger():
 	var moveTo=r.to
 	if col:
 		moveTo=col.position-r.from.direction_to(r.to)*Vector3(1,2,1)
-	root.global_transform.origin=moveTo
+	root.moveTo(moveTo)
 	var data={'travelDistance':moveTo-r.from,'origin':r.from}
 	var ability=abilityResource.MotionEffect.getNode(root.get_parent())
 	

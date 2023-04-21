@@ -18,7 +18,7 @@ func _physics_process(delta):
 	moveDirection.z=moveDirection.z-root.velocity.z*root.DAMPING*root.amplifiedDecelInMotion if moveDirection.z!=0 else -root.velocity.z*root.decelSpeed
 	root.velocity+=(moveDirection+root.GRAVITY)*delta
 	#return to walking
-	if root.is_on_floor()&&root.velocity.y<0.:
+	if root.is_on_floor()&&root.velocity.y<=0.:
 		get_parent().setActiveState("PlayerWalkingState")
 	#trigger dash
 	if Input.is_action_just_pressed("dash")&&get_parent().getState("PlayerDashingState").canDash():

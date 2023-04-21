@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://cewkb6l6do831"]
+[gd_scene load_steps=35 format=3 uid="uid://cewkb6l6do831"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
 [ext_resource type="Material" uid="uid://bx6qeabdhq2s" path="res://addons/kenney_prototype_tools/materials/dark/material_01.tres" id="1_ml5j2"]
@@ -11,7 +11,7 @@
 [ext_resource type="Script" path="res://Components/Player/Camera.gd" id="8_hhj4s"]
 [ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.gd" id="9_fdwbi"]
 [ext_resource type="Script" path="res://Components/Character/AbilityManager.gd" id="9_nur4x"]
-[ext_resource type="Resource" uid="uid://bulh2gh00x35p" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.tres" id="10_q7u0k"]
+[ext_resource type="Resource" uid="uid://bulh2gh00x35p" path="res://Components/Abilities/KnockBackAbility/knockBackAbility.tres" id="10_q7u0k"]
 [ext_resource type="Script" path="res://Testing/companion.gd" id="12_1ilwa"]
 [ext_resource type="PackedScene" uid="uid://f0w5jath3f2f" path="res://Testing/Companion.gltf" id="12_jbs16"]
 [ext_resource type="Shader" path="res://Testing/HoveringCompanion.gdshader" id="14_hwgyj"]
@@ -40,6 +40,10 @@ sdfgi_y_scale = 0
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_jn2gy"]
 auto_exposure_scale = 0.15
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tsnsx"]
+radius = 0.45
+height = 2.02
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_aa1pn"]
 radius = 0.1
 
@@ -53,7 +57,7 @@ material = SubResource("ShaderMaterial_tqvm7")
 flip_faces = true
 size = Vector2(2, 2)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mrnmh"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jdsxf"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fc326"]
 
@@ -222,20 +226,29 @@ material = ExtResource("1_ml5j2")
 
 [node name="CSGPolygon3D4" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -9, 0.5, 3.93402e-07)
-polygon = PackedVector2Array(-5.5, 0, 0, 2.5, 1, 2.5, 1, 0)
+polygon = PackedVector2Array(-5.5, 0, 0, 7, 1, 7, 1, 0)
 depth = 3.0
 material = ExtResource("1_ml5j2")
 
-[node name="CharacterNode" type="CharacterBody3D" parent="."]
+[node name="CharacterNode" type="RigidBody3D" parent="."]
 transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 8, 1.501, 0)
-floor_constant_speed = true
+collision_priority = 1e+07
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+gravity_scale = 4.0
+continuous_cd = true
+max_contacts_reported = 3
+contact_monitor = true
+can_sleep = false
+freeze_mode = 1
 script = ExtResource("3_t4b3m")
-MASS = null
 SPEED = 8.0
 DAMPING = 4.0
 accelSpeed = 8.0
 decelSpeed = 16.0
 jumpForce = 16.0
+floorCheckShape = SubResource("CapsuleShape3D_tsnsx")
 
 [node name="States" type="Node" parent="CharacterNode"]
 script = ExtResource("4_hl32y")
@@ -274,7 +287,7 @@ maxRotDown = 0.785
 mesh = SubResource("QuadMesh_70gyy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterNode"]
-shape = SubResource("CapsuleShape3D_mrnmh")
+shape = SubResource("CapsuleShape3D_jdsxf")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterNode"]
 mesh = SubResource("CapsuleMesh_soy35")
@@ -394,7 +407,7 @@ mesh = SubResource("BoxMesh_cnox6")
 shape = SubResource("BoxShape3D_wc5f3")
 
 [node name="RigidBody3D11" type="RigidBody3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 4, 9.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 4, 4.10572)
 metadata/_edit_group_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/RigidBody3D11"]

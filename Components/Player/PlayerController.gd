@@ -1,7 +1,7 @@
 extends StateNode
 class_name PlayerController
 
-var root:CharacterBody3D=null
+var root:RigidBody3D=null
 
 
 
