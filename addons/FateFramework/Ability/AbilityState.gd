@@ -26,7 +26,7 @@ func _process(delta):
 func _unhandled_input(event):
 	#prevents double-trigger if moving mouse while pressing
 	#not sure why it does that but i'm guessing 2 actions same frame, so it counted it still
-	if not event is InputEventKey:return
+	
 	if Input.is_action_just_pressed("TriggerAbility")&&abilityResource.mainTimeLeft<=0.:
 		abilityResource.mainTimeLeft=abilityResource.abilityDelay
 		justTrigered=true

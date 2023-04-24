@@ -1,17 +1,18 @@
-[gd_scene load_steps=35 format=3 uid="uid://cewkb6l6do831"]
+[gd_scene load_steps=37 format=3 uid="uid://cewkb6l6do831"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
 [ext_resource type="Material" uid="uid://bx6qeabdhq2s" path="res://addons/kenney_prototype_tools/materials/dark/material_01.tres" id="1_ml5j2"]
 [ext_resource type="Material" uid="uid://blfyvmtrl8jdy" path="res://addons/kenney_prototype_tools/materials/light/material_01.tres" id="2_wxrih"]
-[ext_resource type="Script" path="res://Components/Character/Character.gd" id="3_t4b3m"]
-[ext_resource type="Script" path="res://Components/Character/StateManager.gd" id="4_hl32y"]
+[ext_resource type="Script" path="res://addons/FateFramework/Entity/Character.gd" id="3_ksv2x"]
+[ext_resource type="Script" path="res://addons/FateFramework/Entity/StateManager.gd" id="4_hcm5x"]
+[ext_resource type="Script" path="res://addons/FateFramework/Ability/AbilityManager.gd" id="5_6op11"]
 [ext_resource type="Script" path="res://Components/Player/States/WalkingState.gd" id="5_tl3c6"]
 [ext_resource type="Script" path="res://Components/Player/States/JumpingState.gd" id="6_o4wij"]
-[ext_resource type="Script" path="res://Components/Character/CoyoteTime.gd" id="7_kfamq"]
+[ext_resource type="Script" path="res://Components/Player/States/slidingState.gd" id="7_bm1ph"]
 [ext_resource type="Script" path="res://Components/Player/Camera.gd" id="8_hhj4s"]
+[ext_resource type="Script" path="res://addons/FateFramework/Entity/Utility/CoyoteTime.gd" id="8_vvuy2"]
 [ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.gd" id="9_fdwbi"]
-[ext_resource type="Script" path="res://Components/Character/AbilityManager.gd" id="9_nur4x"]
-[ext_resource type="Resource" uid="uid://bulh2gh00x35p" path="res://Components/Abilities/KnockBackAbility/knockBackAbility.tres" id="10_q7u0k"]
+[ext_resource type="Resource" uid="uid://cdthhnbu8ssag" path="res://Components/Abilities/KnockBackAbility/SpaceWarp.tres" id="10_3jbsm"]
 [ext_resource type="Script" path="res://Testing/companion.gd" id="12_1ilwa"]
 [ext_resource type="PackedScene" uid="uid://f0w5jath3f2f" path="res://Testing/Companion.gltf" id="12_jbs16"]
 [ext_resource type="Shader" path="res://Testing/HoveringCompanion.gdshader" id="14_hwgyj"]
@@ -40,9 +41,12 @@ sdfgi_y_scale = 0
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_jn2gy"]
 auto_exposure_scale = 0.15
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_tsnsx"]
-radius = 0.45
-height = 2.02
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_lv8pw"]
+friction = 0.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_dkrjm"]
+custom_solver_bias = 0.146
+radius = 0.55
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_aa1pn"]
 radius = 0.1
@@ -50,7 +54,7 @@ radius = 0.1
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tqvm7"]
 render_priority = 1
 shader = ExtResource("1_1a4ut")
-shader_parameter/outline_bias = 0.0
+shader_parameter/outline_bias = 0.0120005
 
 [sub_resource type="QuadMesh" id="QuadMesh_70gyy"]
 material = SubResource("ShaderMaterial_tqvm7")
@@ -101,6 +105,7 @@ camera_attributes = SubResource("CameraAttributesPractical_jn2gy")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 use_collision = true
+collision_priority = 1e+18
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
 size = Vector3(64, 1, 80)
@@ -226,64 +231,98 @@ material = ExtResource("1_ml5j2")
 
 [node name="CSGPolygon3D4" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -9, 0.5, 3.93402e-07)
+polygon = PackedVector2Array(-5.5, 0, 0, 3, 1, 3, 1, 0)
+depth = 3.0
+material = ExtResource("1_ml5j2")
+
+[node name="CSGPolygon3D5" type="CSGPolygon3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12, 0.5, 5.24536e-07)
+polygon = PackedVector2Array(-5.5, 0, 0, 4, 1, 4, 1, 0)
+depth = 3.0
+material = ExtResource("1_ml5j2")
+
+[node name="CSGPolygon3D6" type="CSGPolygon3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -15, 0.5, 6.5567e-07)
+polygon = PackedVector2Array(-5.5, 0, 0, 5, 1, 5, 1, 0)
+depth = 3.0
+material = ExtResource("1_ml5j2")
+
+[node name="CSGPolygon3D7" type="CSGPolygon3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -18, 0.5, 7.86805e-07)
+polygon = PackedVector2Array(-5.5, 0, 0, 6, 1, 6, 1, 0)
+depth = 3.0
+material = ExtResource("1_ml5j2")
+
+[node name="CSGPolygon3D8" type="CSGPolygon3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -21, 0.5, 9.17939e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 7, 1, 7, 1, 0)
 depth = 3.0
 material = ExtResource("1_ml5j2")
 
 [node name="CharacterNode" type="RigidBody3D" parent="."]
 transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 8, 1.501, 0)
-collision_priority = 1e+07
+collision_priority = 1e+16
 axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-gravity_scale = 4.0
+physics_material_override = SubResource("PhysicsMaterial_lv8pw")
+gravity_scale = 0.0
+custom_integrator = true
 continuous_cd = true
 max_contacts_reported = 3
 contact_monitor = true
 can_sleep = false
-freeze_mode = 1
-script = ExtResource("3_t4b3m")
-SPEED = 8.0
+linear_damp = 10.0
+script = ExtResource("3_ksv2x")
+SPEED = 6.0
 DAMPING = 4.0
-accelSpeed = 8.0
-decelSpeed = 16.0
-jumpForce = 16.0
-floorCheckShape = SubResource("CapsuleShape3D_tsnsx")
+accelSpeed = 2.0
+decelSpeed = 8.0
+jumpForce = 12.0
+stairCheckShape = SubResource("SphereShape3D_dkrjm")
 
 [node name="States" type="Node" parent="CharacterNode"]
-script = ExtResource("4_hl32y")
-
-[node name="PlayerWalkingState" type="Node" parent="CharacterNode/States"]
-script = ExtResource("5_tl3c6")
+script = ExtResource("4_hcm5x")
 
 [node name="PlayerJumpingState" type="Node" parent="CharacterNode/States"]
 script = ExtResource("6_o4wij")
 
+[node name="PlayerWalkingState" type="Node" parent="CharacterNode/States"]
+script = ExtResource("5_tl3c6")
+
+[node name="PlayerSlidingState" type="Node" parent="CharacterNode/States"]
+script = ExtResource("7_bm1ph")
+slideSpeedMult = 3.0
+speedDecay = 0.75
+
 [node name="Abilities" type="Node" parent="CharacterNode"]
-script = ExtResource("9_nur4x")
+script = ExtResource("5_6op11")
 
 [node name="KnockBackAbility" type="Node" parent="CharacterNode/Abilities"]
 script = ExtResource("9_fdwbi")
 range = 7.5
-power = 16.0
-abilityResource = ExtResource("10_q7u0k")
+power = 20.0
+abilityResource = ExtResource("10_3jbsm")
 
 [node name="CoyoteTimerNode" type="Node" parent="CharacterNode"]
-script = ExtResource("7_kfamq")
+script = ExtResource("8_vvuy2")
 maxCoyoteTime = 0.125
 
 [node name="CameraArm" type="SpringArm3D" parent="CharacterNode"]
-transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 2.38419e-07, 0.5, 1.19209e-07)
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0.375, 0.5, 0)
 shape = SubResource("SphereShape3D_aa1pn")
 spring_length = 6.0
 
 [node name="PlayerCamera" type="Camera3D" parent="CharacterNode/CameraArm"]
+current = true
 script = ExtResource("8_hhj4s")
 mouseSensitivity = 0.01
+joySensitivity = 0.1
 maxRotUp = 1.047
 maxRotDown = 0.785
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterNode/CameraArm/PlayerCamera"]
+visible = false
 mesh = SubResource("QuadMesh_70gyy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterNode"]
@@ -415,3 +454,5 @@ mesh = SubResource("BoxMesh_cnox6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/RigidBody3D11"]
 shape = SubResource("BoxShape3D_wc5f3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]

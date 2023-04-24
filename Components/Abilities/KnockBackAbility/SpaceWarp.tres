@@ -1,0 +1,144 @@
+[gd_resource type="Resource" script_class="AbilityResource" load_steps=22 format=3 uid="uid://cdthhnbu8ssag"]
+
+[ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.gd" id="1_3futf"]
+[ext_resource type="Shader" path="res://Components/Abilities/KnockBackAbility/knockBackAbility.gdshader" id="2_pfw3w"]
+[ext_resource type="Script" path="res://addons/FateFramework/Ability/Effect/AbilityMeshResource.gd" id="3_a8c8m"]
+[ext_resource type="Material" uid="uid://c3s2y2gnf7lhp" path="res://Components/Abilities/KnockBackAbility/knockBackAbilityMotion.tres" id="4_0qjji"]
+[ext_resource type="Script" path="res://addons/FateFramework/Ability/Effect/AbilityParticleResource.gd" id="5_dsgo8"]
+[ext_resource type="Shader" path="res://Testing/passiveKnockback.gdshader" id="6_12k6g"]
+[ext_resource type="Script" path="res://addons/FateFramework/Ability/Effect/AbilityPassiveEffectResource.gd" id="6_brf6g"]
+[ext_resource type="Script" path="res://addons/FateFramework/Ability/Effect/AbilityPassiveResource.gd" id="6_dvjyf"]
+[ext_resource type="Script" path="res://addons/FateFramework/Ability/AbilityResource.gd" id="6_utigs"]
+[ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/passiveKnockbackScript.gd" id="7_y1ihh"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o0gie"]
+resource_local_to_scene = true
+render_priority = 0
+shader = ExtResource("2_pfw3w")
+shader_parameter/rippleStrength = 16.0
+shader_parameter/rippleProgress = 0.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_1dbpn"]
+material = SubResource("ShaderMaterial_o0gie")
+radius = 3.75
+height = 7.5
+radial_segments = 16
+rings = 8
+
+[sub_resource type="Resource" id="Resource_miuv5"]
+script = ExtResource("3_a8c8m")
+AbilityMesh = SubResource("SphereMesh_1dbpn")
+AbilityShaderProgressionValue = "rippleProgress"
+AbilityMeshAnimations = Array[Dictionary]([{
+"delay": 0.0,
+"offset": Vector3(0, 0, 0),
+"rotation": Vector3(0, 0, 0),
+"scale": Vector3(0, 0, 0),
+"shaderParameter": 0.0
+}, {
+"delay": 0.0,
+"duration": 0.5,
+"offset": Vector3(0, 0, 0),
+"rotation": Vector3(0, 0, 0),
+"scale": Vector3(1, 1, 1),
+"shaderParameter": 1.0
+}])
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qu8g8"]
+cull_mode = 2
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_ny5h3"]
+material = SubResource("StandardMaterial3D_qu8g8")
+size = Vector2(0.1, 0.1)
+
+[sub_resource type="Resource" id="Resource_xap75"]
+script = ExtResource("5_dsgo8")
+AbilityParticles = ExtResource("4_0qjji")
+ParticlesMesh = SubResource("QuadMesh_ny5h3")
+Explosiveness = 1.0
+Lifetime = 1.0
+particleAmount = 16
+one_shot = false
+AbilityShaderProgressionValue = ""
+AbilityMeshAnimations = Array[Dictionary]([{
+"delay": 1.0,
+"offset": Vector3(0, 0, 0),
+"rotation": Vector3(0, 0, 0),
+"scale": Vector3(1, 1, 1),
+"shaderParameter": 0.0
+}])
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xtwgw"]
+render_priority = 0
+shader = ExtResource("6_12k6g")
+shader_parameter/distortionAmount = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_3u4he"]
+material = SubResource("ShaderMaterial_xtwgw")
+radius = 1.5
+height = 3.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="Resource" id="Resource_1o7fk"]
+script = ExtResource("6_brf6g")
+EffectMesh = SubResource("SphereMesh_3u4he")
+effectScript = ExtResource("7_y1ihh")
+animationLength = 2.0
+EffectAnimationKeys = Array[Dictionary]([{
+"Parameter": "position",
+"Time": 0.0,
+"Value": Vector3(0, 0, 0)
+}, {
+"Parameter": "position",
+"Time": 1.0,
+"Value": Vector3(4, 0, 0)
+}])
+Amount = 0
+LifeTime = 0
+Explosiveness = 0
+
+[sub_resource type="Resource" id="Resource_4hain"]
+script = ExtResource("6_dvjyf")
+PassiveVFX = Array[ExtResource("6_brf6g")]([SubResource("Resource_1o7fk")])
+
+[sub_resource type="Resource" id="Resource_5q02e"]
+script = ExtResource("3_a8c8m")
+AbilityMesh = SubResource("SphereMesh_1dbpn")
+AbilityShaderProgressionValue = "rippleProgress"
+AbilityMeshAnimations = Array[Dictionary]([{
+"delay": 0.0,
+"duration": 0.0,
+"offset": Vector3(0, 0, 0),
+"rotation": Vector3(0, 0, 0),
+"scale": Vector3(1, 1, 1),
+"shaderParameter": 1.0
+}, {
+"delay": 0.0,
+"duration": 0.5,
+"offset": Vector3(0, 0, 0),
+"rotation": Vector3(0, 0, 0),
+"scale": Vector3(0, 0, 0),
+"shaderParameter": 0.0
+}])
+
+[resource]
+script = ExtResource("6_utigs")
+Name = "Space Warp"
+hasMain = true
+MainDescription = ""
+MainEffect = SubResource("Resource_miuv5")
+abilityDelay = 0.5
+hasSecondary = true
+SecondaryDescription = ""
+SecondaryEffect = SubResource("Resource_5q02e")
+secondaryAbilityDelay = 0.5
+hasMotion = true
+MotionDescription = ""
+MotionEffect = SubResource("Resource_xap75")
+motionAbilityDelay = 0.5
+hasPassive = true
+PassiveDescription = ""
+PassiveEffect = SubResource("Resource_4hain")
+AbilityScript = ExtResource("1_3futf")
