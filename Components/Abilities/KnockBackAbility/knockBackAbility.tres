@@ -1,66 +1,17 @@
-[gd_resource type="Resource" script_class="AbilityResource" load_steps=14 format=3 uid="uid://bulh2gh00x35p"]
+[gd_resource type="Resource" script_class="AbilityResource" load_steps=3 format=3 uid="uid://bulh2gh00x35p"]
 
 [ext_resource type="Script" path="res://Components/Abilities/AbilityResource.gd" id="1_es2p2"]
 [ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.gd" id="1_hg5a7"]
-[ext_resource type="Resource" uid="uid://6sy0e2cl7onv" path="res://Components/Abilities/KnockBackAbility/knockBackAbilityMesh.tres" id="2_rjr51"]
-[ext_resource type="Material" uid="uid://c3s2y2gnf7lhp" path="res://Components/Abilities/KnockBackAbility/knockBackAbilityMotion.tres" id="3_4apt2"]
-[ext_resource type="Shader" path="res://Components/Abilities/KnockBackAbility/knockBackAbility.gdshader" id="3_bfjmj"]
-[ext_resource type="Script" path="res://Components/Abilities/AbilityParticleResource.gd" id="3_sa7ih"]
-[ext_resource type="Script" path="res://Components/Abilities/AbilityMeshResource.gd" id="4_u0cn1"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_343l6"]
-billboard_mode = 1
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_005hv"]
-material = SubResource("StandardMaterial3D_343l6")
-size = Vector2(0.1, 0.1)
-orientation = 2
-
-[sub_resource type="Resource" id="Resource_8fqgh"]
-script = ExtResource("3_sa7ih")
-AbilityParticles = ExtResource("3_4apt2")
-ParticlesMesh = SubResource("PlaneMesh_005hv")
-Explosiveness = 1.0
-Lifetime = 1.0
-particleAmount = 32
-one_shot = true
-AbilityShaderProgressionValue = ""
-AbilityMeshTransformations = Array[Transform3D]([Transform3D(0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0)])
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xcrcs"]
-render_priority = 0
-shader = ExtResource("3_bfjmj")
-shader_parameter/rippleStrength = 0.5
-shader_parameter/rippleProgress = 2.2
-
-[sub_resource type="SphereMesh" id="SphereMesh_rb4y1"]
-material = SubResource("ShaderMaterial_xcrcs")
-radius = 3.75
-height = 7.5
-radial_segments = 16
-rings = 8
-
-[sub_resource type="Resource" id="Resource_20i1s"]
-script = ExtResource("4_u0cn1")
-AbilityMesh = SubResource("SphereMesh_rb4y1")
-AbilityShaderProgressionValue = "rippleProgress"
-AbilityMeshTransformations = Array[Transform3D]([Transform3D(0, 0, 1, 0, 0, 1, 0, 0, 1, 0.5, 1, 2.2), Transform3D(0, 0, 1, 0, 0, 1, 0, 0, 1, 0.75, 0.25, -0.5)])
 
 [resource]
 script = ExtResource("1_es2p2")
-Name = "Space Distortion"
+Name = "Attraction"
 hasMain = false
 MainDescription = ""
-MainEffect = ExtResource("2_rjr51")
-abilityDelay = 0.5
 hasSecondary = false
 SecondaryDescription = ""
-SecondaryEffect = SubResource("Resource_20i1s")
-secondaryAbilityDelay = 0.5
 hasMotion = false
 MotionDescription = ""
-MotionEffect = SubResource("Resource_8fqgh")
-motionAbilityDelay = 0.5
 hasPassive = false
 PassiveDescription = ""
 AbilityScript = ExtResource("1_hg5a7")
