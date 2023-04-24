@@ -1,4 +1,4 @@
-extends Node
+extends StatisticNode
 class_name HealthNode
 
 signal hurt(damage)

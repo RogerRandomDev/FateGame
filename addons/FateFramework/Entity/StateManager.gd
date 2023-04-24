@@ -13,13 +13,14 @@ func _ready():
 
 
 #sets the active state if available
-func setActiveState(state:String):
+func setActiveState(state:String)->Node:
 	var newState=get_node_or_null(state)
 	if(newState==null):return
 	
 	if(activeState!=null):setStateProcess(activeState,false)
 	setStateProcess(newState,true)
 	activeState=newState
+	return newState
 
 
 #changes process mode for any states

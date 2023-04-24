@@ -28,7 +28,7 @@ var motionTimeLeft:float=0.
 @export_subgroup("Passive")
 @export var hasPassive:bool=false
 @export_multiline var PassiveDescription:String
-@export var PassiveEffect:AbilityEffectResource
+@export var PassiveEffect:AbilityPassiveResource
 
 @export_group("")
 @export var AbilityScript:Script

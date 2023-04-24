@@ -10,11 +10,10 @@ func _physics_process(delta):
 		Input.get_axis("left","right")
 		))*root.SPEED
 
-	moveDirection=clamp(moveDirection,-v3Speed,v3Speed)
-	moveDirection*=compareVelocities(moveDirection,root.velocity)
-	moveDirection.x=moveDirection.x-root.velocity.x*root.DAMPING*root.amplifiedDecelInMotion if moveDirection.x!=0 else -root.velocity.x*root.decelSpeed
-	moveDirection.z=moveDirection.z-root.velocity.z*root.DAMPING*root.amplifiedDecelInMotion if moveDirection.z!=0 else -root.velocity.z*root.decelSpeed
-	root.velocity+=(moveDirection+root.GRAVITY)*delta
+#	moveDirection=clamp(moveDirection,-v3Speed,v3Speed)
+#	moveDirection*=compareVelocities(moveDirection,root.linear_velocity)
+	moveDirection*=16
+	root.velocity+=(moveDirection)
 	
 	#trigger jumping state upon jump
 	if Input.is_action_just_pressed("jump")&&root.get_node("CoyoteTimerNode").canJump():
@@ -22,4 +21,6 @@ func _physics_process(delta):
 	#trigger dash
 	if Input.is_action_just_pressed("dash")&&get_parent().getState("PlayerDashingState")&&get_parent().getState("PlayerDashingState").canDash():
 		get_parent().setActiveState("PlayerDashingState")
-	
+	#trigger slide
+	if Input.is_action_just_pressed("slide"):
+		get_parent().setActiveState("PlayerSlidingState")
