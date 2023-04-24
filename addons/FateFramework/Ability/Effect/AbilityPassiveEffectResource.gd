@@ -6,7 +6,7 @@ class_name AbilityPassiveEffect
 enum test{a,b,c}
 @export var EffectMesh:Mesh
 @export var effectScript:Script
-@export_group("Animation")
+@export_group("AnimationData")
 @export var animationLength:float=1.
 @export var EffectAnimationKeys:Array[Dictionary]:
 	set(value):
@@ -49,7 +49,6 @@ func loadEffect(attachTo:Node,root:Node):
 	
 	if EffectAnimationKeys.size():loadAnimation(effectNode)
 	return effectNode
-
 
 #creates the animation for the passive effect
 #i prefer tweens, but in this situation

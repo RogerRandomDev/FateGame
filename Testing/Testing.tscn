@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://cewkb6l6do831"]
+[gd_scene load_steps=40 format=3 uid="uid://cewkb6l6do831"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
 [ext_resource type="Material" uid="uid://bx6qeabdhq2s" path="res://addons/kenney_prototype_tools/materials/dark/material_01.tres" id="1_ml5j2"]
@@ -13,8 +13,11 @@
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/Utility/CoyoteTime.gd" id="8_vvuy2"]
 [ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.gd" id="9_fdwbi"]
 [ext_resource type="Resource" uid="uid://cdthhnbu8ssag" path="res://Components/Abilities/KnockBackAbility/SpaceWarp.tres" id="10_3jbsm"]
+[ext_resource type="Script" path="res://addons/FateFramework/Entity/StatisticManager.gd" id="11_vketg"]
 [ext_resource type="Script" path="res://Testing/companion.gd" id="12_1ilwa"]
+[ext_resource type="Script" path="res://addons/FateFramework/Entity/Utility/Health.gd" id="12_4e5j0"]
 [ext_resource type="PackedScene" uid="uid://f0w5jath3f2f" path="res://Testing/Companion.gltf" id="12_jbs16"]
+[ext_resource type="Script" path="res://addons/FateFramework/Entity/Utility/Energy.gd" id="13_u5i2p"]
 [ext_resource type="Shader" path="res://Testing/HoveringCompanion.gdshader" id="14_hwgyj"]
 [ext_resource type="Shader" path="res://Testing/hoverParticle.gdshader" id="15_geotk"]
 [ext_resource type="Texture2D" uid="uid://dbhc28easidsg" path="res://Testing/hover.png" id="16_kh7c3"]
@@ -303,6 +306,15 @@ script = ExtResource("9_fdwbi")
 range = 7.5
 power = 20.0
 abilityResource = ExtResource("10_3jbsm")
+
+[node name="Statistics" type="Node" parent="CharacterNode"]
+script = ExtResource("11_vketg")
+
+[node name="Health" type="Node" parent="CharacterNode/Statistics"]
+script = ExtResource("12_4e5j0")
+
+[node name="Energy" type="Node" parent="CharacterNode/Statistics"]
+script = ExtResource("13_u5i2p")
 
 [node name="CoyoteTimerNode" type="Node" parent="CharacterNode"]
 script = ExtResource("8_vvuy2")

@@ -86,15 +86,7 @@ script = ExtResource("6_brf6g")
 EffectMesh = SubResource("SphereMesh_3u4he")
 effectScript = ExtResource("7_y1ihh")
 animationLength = 2.0
-EffectAnimationKeys = Array[Dictionary]([{
-"Parameter": "position",
-"Time": 0.0,
-"Value": Vector3(0, 0, 0)
-}, {
-"Parameter": "position",
-"Time": 1.0,
-"Value": Vector3(4, 0, 0)
-}])
+EffectAnimationKeys = Array[Dictionary]([])
 Amount = 0
 LifeTime = 0
 Explosiveness = 0

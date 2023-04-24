@@ -4,6 +4,9 @@ class_name PassiveScriptResource
 var root:Node
 var shapeQuery=PhysicsShapeQueryParameters3D.new()
 
+
+
+
 func checkWithinRange(pos:Vector3,range:float):
 	shapeQuery.exclude=[root]
 	
