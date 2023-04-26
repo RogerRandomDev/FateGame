@@ -1,6 +1,7 @@
 extends Node
 class_name StateNode
 
+
 signal changeState(changeTo:String)
 
 var root:RigidBody3D=null

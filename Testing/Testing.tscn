@@ -94,25 +94,29 @@ size = Vector3(0.75, 0.7, 0.75)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wc5f3"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1acy2"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_13pbo"]
 shader = ExtResource("23_j40bf")
-shader_parameter/backColor = null
+shader_parameter/backColor = Color(0, 0, 0, 1)
 shader_parameter/valueColor = Color(1, 0.34902, 0.364706, 1)
 shader_parameter/lastValueColor = Color(1, 1, 1, 1)
-shader_parameter/maxValue = 100
-shader_parameter/value = 100
-shader_parameter/lastValue = 0
-shader_parameter/circleThickness = 0.3
+shader_parameter/maxValue = 100.0
+shader_parameter/value = 100.0
+shader_parameter/lastValue = 100.0
+shader_parameter/lengthOfLine = null
+shader_parameter/lineAccountsPercentage = null
+shader_parameter/halfSize = Vector2(48, 48)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vnk2b"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1jho3"]
 shader = ExtResource("23_j40bf")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(0, 0.866667, 0.705882, 1)
 shader_parameter/lastValueColor = Color(1, 1, 1, 1)
-shader_parameter/maxValue = 100
-shader_parameter/value = 50
-shader_parameter/lastValue = 50
-shader_parameter/circleThickness = 0.3
+shader_parameter/maxValue = 100.0
+shader_parameter/value = 66
+shader_parameter/lastValue = 100.0
+shader_parameter/lengthOfLine = 0.75
+shader_parameter/lineAccountsPercentage = 0.5
+shader_parameter/halfSize = Vector2(48, 48)
 
 [node name="Node3D" type="Node3D"]
 
@@ -502,11 +506,11 @@ script = ExtResource("22_s5dkl")
 
 [node name="statBars" type="HBoxContainer" parent="GUI"]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 96.0
+offset_bottom = 96.0
 
 [node name="healthCircle" type="ColorRect" parent="GUI/statBars"]
-material = SubResource("ShaderMaterial_1acy2")
+material = SubResource("ShaderMaterial_13pbo")
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 script = ExtResource("23_5gnsa")
@@ -515,8 +519,8 @@ circleThickness = 0.3
 decreasingTextColor = Color(1, 0, 0, 1)
 
 [node name="energyCircle" type="ColorRect" parent="GUI/statBars"]
-material = SubResource("ShaderMaterial_vnk2b")
-custom_minimum_size = Vector2(96, 96)
+material = SubResource("ShaderMaterial_1jho3")
+custom_minimum_size = Vector2(176, 96)
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
