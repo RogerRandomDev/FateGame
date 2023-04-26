@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://cewkb6l6do831"]
+[gd_scene load_steps=45 format=3 uid="uid://duiuit7nx1n3f"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
 [ext_resource type="Material" uid="uid://bx6qeabdhq2s" path="res://addons/kenney_prototype_tools/materials/dark/material_01.tres" id="1_ml5j2"]
@@ -21,6 +21,9 @@
 [ext_resource type="Shader" path="res://Testing/HoveringCompanion.gdshader" id="14_hwgyj"]
 [ext_resource type="Shader" path="res://Testing/hoverParticle.gdshader" id="15_geotk"]
 [ext_resource type="Texture2D" uid="uid://dbhc28easidsg" path="res://Testing/hover.png" id="16_kh7c3"]
+[ext_resource type="Script" path="res://Testing/GUI.gd" id="22_s5dkl"]
+[ext_resource type="Script" path="res://addons/FateFramework/GUI/statCircle.gd" id="23_5gnsa"]
+[ext_resource type="Shader" path="res://addons/FateFramework/GUI/statCircle.gdshader" id="23_j40bf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_imuy6"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -90,6 +93,26 @@ size = Vector3(0.75, 0.7, 0.75)
 [sub_resource type="BoxMesh" id="BoxMesh_cnox6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wc5f3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1acy2"]
+shader = ExtResource("23_j40bf")
+shader_parameter/backColor = null
+shader_parameter/valueColor = Color(1, 0.34902, 0.364706, 1)
+shader_parameter/lastValueColor = Color(1, 1, 1, 1)
+shader_parameter/maxValue = 100
+shader_parameter/value = 100
+shader_parameter/lastValue = 0
+shader_parameter/circleThickness = 0.3
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vnk2b"]
+shader = ExtResource("23_j40bf")
+shader_parameter/backColor = null
+shader_parameter/valueColor = Color(0, 0.866667, 0.705882, 1)
+shader_parameter/lastValueColor = Color(1, 1, 1, 1)
+shader_parameter/maxValue = 100
+shader_parameter/value = 50
+shader_parameter/lastValue = 50
+shader_parameter/circleThickness = 0.3
 
 [node name="Node3D" type="Node3D"]
 
@@ -315,6 +338,7 @@ script = ExtResource("12_4e5j0")
 
 [node name="Energy" type="Node" parent="CharacterNode/Statistics"]
 script = ExtResource("13_u5i2p")
+energyRegenRate = 10.0
 
 [node name="CoyoteTimerNode" type="Node" parent="CharacterNode"]
 script = ExtResource("8_vvuy2")
@@ -467,3 +491,40 @@ mesh = SubResource("BoxMesh_cnox6")
 shape = SubResource("BoxShape3D_wc5f3")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+
+[node name="GUI" type="Control" parent="."]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("22_s5dkl")
+
+[node name="statBars" type="HBoxContainer" parent="GUI"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="healthCircle" type="ColorRect" parent="GUI/statBars"]
+material = SubResource("ShaderMaterial_1acy2")
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+script = ExtResource("23_5gnsa")
+valueColor = Color(1, 0.34902, 0.364706, 1)
+circleThickness = 0.3
+decreasingTextColor = Color(1, 0, 0, 1)
+
+[node name="energyCircle" type="ColorRect" parent="GUI/statBars"]
+material = SubResource("ShaderMaterial_vnk2b")
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+script = ExtResource("23_5gnsa")
+valueColor = Color(0, 0.866667, 0.705882, 1)
+circleThickness = 0.3
+drawFloatingText = true
+decreasingTextColor = Color(1, 0, 0, 1)
+
+[connection signal="changeHealth" from="CharacterNode/Statistics/Health" to="GUI" method="_on_health_change_health"]
+[connection signal="changeENERGY" from="CharacterNode/Statistics/Energy" to="GUI" method="_on_energy_change_energy"]

@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://dnoprrlguwkem"]
+
+[ext_resource type="Shader" path="res://addons/FateFramework/GUI/statCircle.gdshader" id="1_37phm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_txsiw"]
+shader = ExtResource("1_37phm")
+shader_parameter/backColor = Color(0, 0, 0, 1)
+shader_parameter/valueColor = Color(0.498039, 1, 0.34902, 1)
+shader_parameter/lastValueColor = null
+shader_parameter/maxValue = 100
+shader_parameter/value = 30
+shader_parameter/lastValue = 50
+shader_parameter/circleThickness = 0.25
+
+[node name="guiTesting" type="Node2D"]
+
+[node name="Control" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_txsiw")
+custom_minimum_size = Vector2(32, 32)
+offset_right = 40.0
+offset_bottom = 40.0

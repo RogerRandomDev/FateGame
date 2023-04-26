@@ -1,13 +1,15 @@
 @tool
 extends AbilityEffectResource
 class_name AbilityMeshResource
+##Ability Effect that uses a [MeshInstance3D]
 
 
+##[Mesh] for the ability effect
 @export var AbilityMesh:Mesh
 
 
-
-func getNode(addTo:Node):
+##returns a [MeshInstance3D] with [member AbilityMesh] applied[br]
+func getNode(addTo:Node)->Node3D:
 	var AbilityNode=MeshInstance3D.new()
 	AbilityNode.mesh=AbilityMesh
 	addTo.add_child(AbilityNode)
@@ -15,8 +17,8 @@ func getNode(addTo:Node):
 	return AbilityNode
 
 
-
-func loadAnimation(AbilityNode,root:Node):
+##applies the animation to the ability effect in the same way as [AbilityEffectResource]
+func loadAnimation(AbilityNode:Node3D,root:Node)->void:
 	var tween:Tween=root.create_tween()
 	AbilityNode.position=AbilityMeshAnimations[0].offset
 	AbilityNode.rotation=AbilityMeshAnimations[0].rotation

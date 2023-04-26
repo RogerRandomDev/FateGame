@@ -1,7 +1,8 @@
 extends Node
 class_name StateManagerNode
+##Manager For handling [StateNode]
 
-
+##current [StateNode] in use
 var activeState:Node;
 
 #disasbles all states by default
@@ -12,7 +13,7 @@ func _ready():
 
 
 
-#sets the active state if available
+##sets the active state if available
 func setActiveState(state:String)->Node:
 	var newState=get_node_or_null(state)
 	if(newState==null):return
@@ -23,13 +24,13 @@ func setActiveState(state:String)->Node:
 	return newState
 
 
-#changes process mode for any states
+##changes process mode for any states
 func setStateProcess(state:Node,process:bool):
 	state.set_physics_process(process)
 	state.set_process_input(process)
 	state.set_physics_process_internal(process)
 	if(process):state.onTrigger()
 
-#returns relevant state
+##returns relevant state
 func getState(state:String):
 	return get_node_or_null(state);

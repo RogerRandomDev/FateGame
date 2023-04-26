@@ -1,13 +1,19 @@
 @tool
 extends Resource
 class_name AbilityPassiveEffect
+##Creates the passive effect for the [AbilityPassiveResource]
 
 
-enum test{a,b,c}
+##mesh for the effect[br]
+##will be the particle mesh if [member EffectParticles] is not null
 @export var EffectMesh:Mesh
+##Script that is attached to the effect
 @export var effectScript:Script
 @export_group("AnimationData")
+##duration in seconds of the animation
 @export var animationLength:float=1.
+##Animation keys for the effect[br]
+##supports position, rotation, scale, and calling functions
 @export var EffectAnimationKeys:Array[Dictionary]:
 	set(value):
 		if(value.size()>0):
@@ -20,13 +26,19 @@ enum test{a,b,c}
 			
 		EffectAnimationKeys=value
 @export_group("Particles")
+##Sets the [GPUParticles3D] if it is not null
+##uses the [member EffectMesh] for particle mesh if not null
 @export var EffectParticles:ShaderMaterial
+##amount of particles
 @export var Amount:int
-@export var LifeTime:int
+##particle lifetime
+@export var LifeTime:float
+##particle explosiveness
 @export var Explosiveness:int
 
-#loads the effect into the scene attached to the attachTo
-func loadEffect(attachTo:Node,root:Node):
+##loads the effect into the scene attached to the attachTo[br]
+##returns the created effect node
+func loadEffect(attachTo:Node,root:Node)->Node:
 	#defaults to setting particles if they exist
 	#trying to optimize is painful
 	var effectNode=MeshInstance3D.new()
@@ -55,7 +67,8 @@ func loadEffect(attachTo:Node,root:Node):
 #they are just less versatile for it
 #not to mention more taxing on the cpu
 #since i would have to recreate it each loop
-func loadAnimation(animateOn:Node3D):
+##loads the animation using the [member EffectAnimationKeys] and [member animationLength]
+func loadAnimation(animateOn:Node3D)->void:
 	var animationHolder:=AnimationPlayer.new()
 	var nodeAnimation=Animation.new()
 	var animationLibrary:=AnimationLibrary.new()
@@ -84,9 +97,11 @@ func loadAnimation(animateOn:Node3D):
 	
 	animationHolder.play("passive/passive")
 	nodeAnimation.length=animationLength
-	
 
-func getTrackNumber(param:String):
+
+##returns the related number to set the
+##animation track to based on the param
+func getTrackNumber(param:String)->int:
 	return (
 		int(param=="position")+
 		int(param=="rotation")*2+

@@ -1,10 +1,15 @@
 @tool
 extends Resource
 class_name AbilityEffectResource
+##Resource for handling ability effect[br]
+##extend this to create more varied sub-effects[br]
+##used by [AbilityMeshResource] and [AbilityParticleResource]
 
-
+##the shader parameter to be modified by [member AbilityMeshAnimations][br]
+##only supports floats
 @export var AbilityShaderProgressionValue:String
 
+##creates the animation format for parsing in [method loadAnimation]
 @export var AbilityMeshAnimations:Array[Dictionary]:
 	set(value):
 		if value.size()>0:
@@ -20,12 +25,14 @@ class_name AbilityEffectResource
 				if(value.size()-1==0):value[0].erase("duration")
 		AbilityMeshAnimations=value
 	get:return AbilityMeshAnimations
-
+##creates a second [AbilityEffectResource] after itself[br]
+##used to create multi-layered effects
 @export var NextPass:AbilityEffectResource
 
-
-func getNode(addTo:Node):
-	var AbilityNode=MeshInstance3D.new()
+##creates the ability node and loads the animations onto it[br]
+##then adds self as child to addTo before calling [method loadAnimation]
+func getNode(addTo:Node)->Node3D:
+	var AbilityNode=Node3D.new()
 	addTo.add_child(AbilityNode)
 	loadAnimation(AbilityNode,addTo)
 	if NextPass:
@@ -33,8 +40,8 @@ func getNode(addTo:Node):
 	return AbilityNode
 
 
-
-func loadAnimation(AbilityNode,root:Node):
+##loads the animation from [member AbilityMeshAnimations] into a [Tween][br]
+func loadAnimation(AbilityNode:Node3D,root:Node):
 	var tween:Tween=root.create_tween()
 	AbilityNode.position=AbilityMeshAnimations[0].offset
 	AbilityNode.rotation=AbilityMeshAnimations[0].rotation

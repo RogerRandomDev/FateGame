@@ -1,13 +1,16 @@
 extends Node
 class_name PassiveScriptResource
+##base resource for [annotation Passive Ability] Scripts
 
+##reference to the [RigidBody3D] that contains the passive
 var root:Node
+##the shape query for the passive
 var shapeQuery=PhysicsShapeQueryParameters3D.new()
 
 
 
-
-func checkWithinRange(pos:Vector3,range:float):
+##returns all nodes excluding [member root] within range of [member shapeQuery]
+func checkWithinRange(pos:Vector3,range:float)->Array:
 	shapeQuery.exclude=[root]
 	
 	shapeQuery.shape=SphereShape3D.new()

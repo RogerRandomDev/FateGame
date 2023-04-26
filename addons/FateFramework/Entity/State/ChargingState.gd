@@ -1,6 +1,7 @@
 extends StateNode
 class_name ChargingState
 
+
 @export var duration:float
 @export var exitToState:String
 @export var SPEED:float

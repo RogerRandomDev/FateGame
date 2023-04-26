@@ -1,17 +1,23 @@
 @tool
 extends AbilityEffectResource
 class_name AbilityParticleResource
+##Ability Effect that uses a [GPUParticles3D]
 
-
+##The [ShaderMaterial] for the particles
 @export var AbilityParticles:ShaderMaterial
+##The [Mesh] for the particles
 @export var ParticlesMesh:Mesh
+##Particle Explosiveness
 @export_range(0.,1.) var Explosiveness:float=0.
+##Particle lifetime
 @export var Lifetime:float=0.
+##particle quantity
 @export var particleAmount:int=16
+##if particles are one shot or not
 @export var one_shot:bool
 
-
-func getNode(addTo:Node):
+##returns a [GPUParticles3D] with the [member Lifetime] [member particleAmount] [member Explosiveness] and [member one_shot] applied[br]
+func getNode(addTo:Node)->Node3D:
 	var AbilityNode=GPUParticles3D.new()
 	AbilityNode.lifetime=Lifetime
 	AbilityNode.explosiveness=Explosiveness
@@ -25,8 +31,8 @@ func getNode(addTo:Node):
 	
 	return AbilityNode
 
-
-func loadAnimation(AbilityNode,root:Node):
+##animates the [GPUParticles3D] in the same way as [AbilityEffectResource]
+func loadAnimation(AbilityNode:Node3D,root:Node)->void:
 	var tween:Tween=root.create_tween()
 	AbilityNode.position=AbilityMeshAnimations[0].offset
 	AbilityNode.rotation=AbilityMeshAnimations[0].rotation

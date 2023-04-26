@@ -112,3 +112,4 @@ func getStairCheck():
 	stairFinder.transform.origin=transform.origin-Vector3(0,0.55,0)
 	var stairChecks:=get_viewport().world_3d.direct_space_state.get_rest_info(stairFinder)
 	return stairChecks
+
