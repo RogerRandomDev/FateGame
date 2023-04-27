@@ -1,25 +1,31 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnoprrlguwkem"]
+[gd_scene load_steps=4 format=3 uid="uid://ct8lhcelqmbqq"]
 
-[ext_resource type="Shader" path="res://addons/FateFramework/GUI/statCircle.gdshader" id="1_37phm"]
+[ext_resource type="Shader" path="res://addons/FateFramework/GUI/statCircle/statCircle.gdshader" id="1_37phm"]
+[ext_resource type="Script" path="res://addons/FateFramework/GUI/statCircle/statCircle.gd" id="2_qe5h6"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_txsiw"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ua3ba"]
 shader = ExtResource("1_37phm")
-shader_parameter/backColor = Color(0, 0, 0, 1)
-shader_parameter/valueColor = Color(0.498039, 1, 0.34902, 1)
+shader_parameter/backColor = null
+shader_parameter/valueColor = Color(0.313726, 0.313726, 0.313726, 1)
 shader_parameter/lastValueColor = Color(1, 1, 1, 1)
-shader_parameter/maxValue = 100
-shader_parameter/value = 30
-shader_parameter/lastValue = 50
-shader_parameter/lengthOfLine = 0.75
+shader_parameter/innerColor = Color(0.403922, 0.403922, 0.403922, 1)
+shader_parameter/maxValue = 100.0
+shader_parameter/value = 100.0
+shader_parameter/lastValue = 100.0
+shader_parameter/lengthOfLine = 0.932203
 shader_parameter/lineAccountsPercentage = 0.5
-shader_parameter/circleThickness = 0.25
+shader_parameter/circleThickness = 12.0
 shader_parameter/borderThickness = 4
-shader_parameter/halfSize = Vector2(48, 48)
+shader_parameter/halfSize = Vector2(24, 24)
 
 [node name="guiTesting" type="Node2D"]
 
-[node name="Control" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_txsiw")
-custom_minimum_size = Vector2(32, 32)
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="statCircle" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_ua3ba")
+offset_right = 354.0
+offset_bottom = 48.0
+script = ExtResource("2_qe5h6")
+valueColor = Color(0.313726, 0.313726, 0.313726, 1)
+innerColor = Color(0.403922, 0.403922, 0.403922, 1)
+circleThickness = 0.25
+circleSize = Vector2(48, 48)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=46 format=3 uid="uid://duiuit7nx1n3f"]
+[gd_scene load_steps=53 format=3 uid="uid://hvjhwjweg2lt"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
+[ext_resource type="Shader" path="res://Testing/sky.gdshader" id="1_3dpcg"]
 [ext_resource type="Material" uid="uid://bx6qeabdhq2s" path="res://addons/kenney_prototype_tools/materials/dark/material_01.tres" id="1_ml5j2"]
 [ext_resource type="Material" uid="uid://blfyvmtrl8jdy" path="res://addons/kenney_prototype_tools/materials/light/material_01.tres" id="2_wxrih"]
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/Character.gd" id="3_ksv2x"]
@@ -22,8 +23,8 @@
 [ext_resource type="Shader" path="res://Testing/hoverParticle.gdshader" id="15_geotk"]
 [ext_resource type="Texture2D" uid="uid://dbhc28easidsg" path="res://Testing/hover.png" id="16_kh7c3"]
 [ext_resource type="Script" path="res://Testing/GUI.gd" id="22_s5dkl"]
-[ext_resource type="Script" path="res://addons/FateFramework/GUI/statCircle.gd" id="23_5gnsa"]
-[ext_resource type="Shader" path="res://addons/FateFramework/GUI/statCircle.gdshader" id="23_j40bf"]
+[ext_resource type="Shader" path="res://addons/FateFramework/GUI/statCircle/statCircle.gdshader" id="23_w46vi"]
+[ext_resource type="Script" path="res://addons/FateFramework/GUI/statCircle/statCircle.gd" id="24_cc8w1"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_iycrs"]
 noise_type = 2
@@ -38,19 +39,69 @@ width = 1152
 height = 648
 noise = SubResource("FastNoiseLite_iycrs")
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_imuy6"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nkkvf"]
+seed = 7
+frequency = 0.059
+fractal_octaves = 10
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_o7c6x"]
+seamless = true
+noise = SubResource("FastNoiseLite_nkkvf")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ol64f"]
+seed = 3
+frequency = 0.052
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2j4ea"]
+noise = SubResource("FastNoiseLite_ol64f")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_o65xn"]
+frequency = 0.096
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_14060"]
+noise = SubResource("FastNoiseLite_o65xn")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7lib6"]
+shader = ExtResource("1_3dpcg")
+shader_parameter/day_bottom_color = Color(0.156863, 0.662745, 0.8, 1)
+shader_parameter/day_top_color = Color(0, 1, 1, 1)
+shader_parameter/sunset_bottom_color = Color(0, 0, 0, 1)
+shader_parameter/sunset_top_color = Color(0.00784314, 0.00784314, 0.00784314, 1)
+shader_parameter/night_bottom_color = Color(0.0705882, 0.0470588, 0.117647, 1)
+shader_parameter/night_top_color = Color(0.0705882, 0.0470588, 0.117647, 1)
+shader_parameter/horizon_color_day = Color(0.215686, 0.282353, 0.498039, 1)
+shader_parameter/horizon_color_sunset = Color(0.188235, 0.188235, 0.188235, 1)
+shader_parameter/horizon_color_night = Color(0, 0, 0, 1)
+shader_parameter/horizon_falloff = 0.6
+shader_parameter/sun_col = Color(1, 1, 0, 1)
+shader_parameter/sun_size = 0.075
+shader_parameter/sun_blur = 0.161
+shader_parameter/moon_col = Color(0.419608, 0.376471, 1, 1)
+shader_parameter/moon_size = 0.074
+shader_parameter/moon_crescent_offset = 0.037
+shader_parameter/clouds_main_color = Color(1, 1, 1, 1)
+shader_parameter/clouds_edge_color = Color(1, 1, 1, 1)
+shader_parameter/clouds_speed = 0.1
+shader_parameter/clouds_scale = 0.1
+shader_parameter/clouds_cutoff = 0.16
+shader_parameter/clouds_fuzziness = 0.03
+shader_parameter/cloud_outline = 0.801
+shader_parameter/stars_cutoff = 0.763
+shader_parameter/stars_speed = 0.0
+shader_parameter/clouds_texture = SubResource("NoiseTexture2D_2j4ea")
+shader_parameter/clouds_noise_texture = SubResource("NoiseTexture2D_o7c6x")
+shader_parameter/stars_texture = SubResource("NoiseTexture2D_14060")
 
 [sub_resource type="Sky" id="Sky_bklcs"]
-sky_material = SubResource("ProceduralSkyMaterial_imuy6")
+sky_material = SubResource("ShaderMaterial_7lib6")
+radiance_size = 0
 
 [sub_resource type="Environment" id="Environment_hbd8x"]
 background_mode = 2
 sky = SubResource("Sky_bklcs")
 tonemap_mode = 2
-tonemap_exposure = 4.0
-tonemap_white = 12.0
+tonemap_exposure = 1.3
+tonemap_white = 6.0
 ssr_fade_in = 0.219613
 ssao_sharpness = 1.0
 ssao_light_affect = 0.22
@@ -58,6 +109,7 @@ ssao_ao_channel_affect = 1.0
 ssil_radius = 7.82
 ssil_intensity = 12.32
 sdfgi_y_scale = 0
+glow_enabled = true
 glow_levels/1 = 1.0
 glow_levels/2 = 0.3
 glow_levels/3 = 0.21
@@ -120,38 +172,40 @@ size = Vector3(0.75, 0.7, 0.75)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wc5f3"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xfo1m"]
-shader = ExtResource("23_j40bf")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xey6j"]
+shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(1, 0.34902, 0.364706, 1)
 shader_parameter/lastValueColor = Color(1, 1, 1, 1)
+shader_parameter/innerColor = Color(0, 0, 0, 1)
 shader_parameter/maxValue = 100.0
-shader_parameter/value = 100
+shader_parameter/value = 100.0
 shader_parameter/lastValue = 100.0
 shader_parameter/lengthOfLine = 0.827957
-shader_parameter/lineAccountsPercentage = 0.495
+shader_parameter/lineAccountsPercentage = 0.5
 shader_parameter/circleThickness = 44.8
 shader_parameter/borderThickness = 4
 shader_parameter/halfSize = Vector2(64, 64)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_87on8"]
-shader = ExtResource("23_j40bf")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yeyya"]
+shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(0, 0.866667, 0.705882, 1)
 shader_parameter/lastValueColor = Color(1, 1, 1, 1)
+shader_parameter/innerColor = Color(0.145098, 0.184314, 0.211765, 1)
 shader_parameter/maxValue = 100.0
-shader_parameter/value = -8
+shader_parameter/value = 100.0
 shader_parameter/lastValue = 100.0
 shader_parameter/lengthOfLine = 0.8
 shader_parameter/lineAccountsPercentage = 0.25
 shader_parameter/circleThickness = 25.6
-shader_parameter/borderThickness = null
+shader_parameter/borderThickness = 4
 shader_parameter/halfSize = Vector2(48, 64)
 
 [node name="Node3D" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, -0.5, 0.866025, 0, -0.866025, -0.5, 0, 5, 0)
 shadow_enabled = true
 shadow_normal_bias = 4.639
 shadow_blur = 10.0
@@ -537,16 +591,15 @@ offset_right = 372.0
 offset_bottom = 128.0
 
 [node name="healthCircle" type="ColorRect" parent="GUI/statBars"]
-material = SubResource("ShaderMaterial_xfo1m")
+material = SubResource("ShaderMaterial_xey6j")
 custom_minimum_size = Vector2(372, 128)
 layout_mode = 2
 offset_right = 372.0
 offset_bottom = 128.0
-script = ExtResource("23_5gnsa")
+script = ExtResource("24_cc8w1")
 valueColor = Color(1, 0.34902, 0.364706, 1)
 circleThickness = 0.35
 decreasingTextColor = Color(1, 0, 0, 1)
-linePercentage = 0.495
 circleSize = Vector2(128, 128)
 
 [node name="Label" type="Label" parent="GUI/statBars/healthCircle"]
@@ -562,7 +615,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="energyCircle" type="ColorRect" parent="GUI/statBars" node_paths=PackedStringArray("textContents")]
-material = SubResource("ShaderMaterial_87on8")
+material = SubResource("ShaderMaterial_yeyya")
 custom_minimum_size = Vector2(240, 128)
 layout_mode = 2
 offset_left = 128.0
@@ -571,9 +624,10 @@ offset_right = 368.0
 offset_bottom = 131.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-script = ExtResource("23_5gnsa")
+script = ExtResource("24_cc8w1")
 textContents = NodePath("Label")
 valueColor = Color(0, 0.866667, 0.705882, 1)
+innerColor = Color(0.145098, 0.184314, 0.211765, 1)
 circleThickness = 0.2
 decreasingTextColor = Color(1, 0, 0, 1)
 linePercentage = 0.25
@@ -583,12 +637,13 @@ circleSize = Vector2(96, 128)
 layout_mode = 0
 offset_left = 24.0
 offset_top = 40.0
-offset_right = 72.0
-offset_bottom = 88.0
+offset_right = 71.0
+offset_bottom = 87.0
 theme_override_constants/line_spacing = -4
 theme_override_font_sizes/font_size = 16
 text = "test"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="changeHealth" from="CharacterNode/Statistics/Health" to="GUI" method="_on_health_change_health"]
 [connection signal="changeENERGY" from="CharacterNode/Statistics/Energy" to="GUI" method="_on_energy_change_energy"]

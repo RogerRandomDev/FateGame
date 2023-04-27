@@ -18,6 +18,12 @@ class_name statCircle
 		backColor=v
 		if(material):material.set_shader_parameter("backColor",backColor)
 	get:return backColor
+##sets the color of the inner circle of the progress circle
+@export var innerColor:Color:
+	set(v):
+		innerColor=v
+		if(material):material.set_shader_parameter("innerColor",innerColor)
+	get:return innerColor
 ##adjusts the thickness of the circle
 @export_range(0.,0.5) var circleThickness:float:
 	set(v):
@@ -56,7 +62,7 @@ var _lastValue:float=0.
 
 func _init():
 	var mat=ShaderMaterial.new()
-	mat.shader=load("res://addons/FateFramework/GUI/statCircle.gdshader")
+	mat.shader=load("res://addons/FateFramework/GUI/statCircle/statCircle.gdshader")
 	mat.setup_local_to_scene()
 	material=mat
 	material.set_shader_parameter("maxValue",max_value)
