@@ -3,7 +3,8 @@ extends ColorRect
 class_name statCircle
 ##a circle for handling the stats to display
 
-var _textContents:Label=Label.new()
+##a label to hold the text for the circle
+@export var textContents:Label
 
 ##sets the color for the progress itself
 @export var valueColor:Color:
@@ -21,7 +22,7 @@ var _textContents:Label=Label.new()
 @export_range(0.,0.5) var circleThickness:float:
 	set(v):
 		circleThickness=v
-		if(material):material.set_shader_parameter("circleThickness",v)
+		if(material):updateDimensions()
 	get:return circleThickness
 ##dictates whether or not to have [floatingText] when changing values
 @export var drawFloatingText:bool=false
@@ -41,8 +42,17 @@ var value:float=100:
 		if(material):material.set_shader_parameter("value",v)
 		
 	get:return value
+##percent of the value accounted for in the line of the stat circle
+@export_range(0.,1.) var linePercentage:float=0.5
+##sets the halfSize of the circle in the shader
+@export var circleSize:Vector2:
+	set(v):
+		circleSize=v
+		if(material):updateDimensions()
+	get:return circleSize
 #the last value of value
 var _lastValue:float=0.
+
 
 func _init():
 	var mat=ShaderMaterial.new()
@@ -51,15 +61,9 @@ func _init():
 	material=mat
 	material.set_shader_parameter("maxValue",max_value)
 	material.set_shader_parameter("value",value)
-
-func _ready():
-	add_child(_textContents)
-	_textContents.vertical_alignment=VERTICAL_ALIGNMENT_CENTER
-	_textContents.horizontal_alignment=HORIZONTAL_ALIGNMENT_CENTER
-	_textContents.add_theme_constant_override("line_spacing",-(size.x/64)*6)
-	_textContents.add_theme_font_size_override("font_size",(size.x/64)*16)
-	_textContents.size=size
 	
+func _ready():
+	updateDimensions()
 	updateText()
 #updates last value to move towards the current value
 func _process(delta):
@@ -74,23 +78,24 @@ func setMax(max:int):
 
 ##updates the text for the circle
 func updateText():
-	_textContents.text="%s\n%s"%[value,max_value]
+	if !textContents:return
+	textContents.text="%s\n%s"%[value,max_value]
 
 
 ##updates current values and then calls [method updateText]
 func updateValues(current:int=value,max:int=max_value,changedBy:int=0):
-	if(drawFloatingText&&changedBy<0):
-		var floatingChange:floatingText=floatingText.new()
-		floatingChange.build(
-			Vector2(randf_range(-32,32),randf_range(-32,0)),
-			Vector2.DOWN*64,
-			1.0,
-			str(abs(changedBy)),
-			decreasingTextColor,
-			0.75
-		)
-		floatingChange.position=Vector2(0,0.5).rotated(-getValueAngle())*custom_minimum_size.x+custom_minimum_size/2
-		add_child(floatingChange)
+#	if(drawFloatingText&&changedBy<0):
+#		var floatingChange:floatingText=floatingText.new()
+#		floatingChange.build(
+#			Vector2(randf_range(-32,32),randf_range(-32,0)),
+#			Vector2.DOWN*64,
+#			1.0,
+#			str(abs(changedBy)),
+#			decreasingTextColor,
+#			0.75
+#		)
+#		floatingChange.position=Vector2(0,0.5).rotated(-getValueAngle())*custom_minimum_size.x+custom_minimum_size/2
+#		add_child(floatingChange)
 	max_value=max
 	value=current
 	updateText()
@@ -98,3 +103,12 @@ func updateValues(current:int=value,max:int=max_value,changedBy:int=0):
 ##returns the angle from vertical to where the [annotation Value] is cutting at
 func getValueAngle()->float:
 	return (value/max_value)*PI*2-PI
+
+##updates size data in the shader to map the values correctly
+func updateDimensions():
+	var dimMax:float=max(size.x,size.y)
+	var dimMin:float=min(size.x,size.y)
+	material.set_shader_parameter("lengthOfLine",(size.x-circleSize.x/2)/size.x)
+	material.set_shader_parameter("lineAccountsPercentage",linePercentage)
+	material.set_shader_parameter("halfSize",circleSize/2)
+	material.set_shader_parameter("circleThickness",dimMin * circleThickness)

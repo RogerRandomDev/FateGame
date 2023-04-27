@@ -6,11 +6,15 @@
 shader = ExtResource("1_37phm")
 shader_parameter/backColor = Color(0, 0, 0, 1)
 shader_parameter/valueColor = Color(0.498039, 1, 0.34902, 1)
-shader_parameter/lastValueColor = null
+shader_parameter/lastValueColor = Color(1, 1, 1, 1)
 shader_parameter/maxValue = 100
 shader_parameter/value = 30
 shader_parameter/lastValue = 50
+shader_parameter/lengthOfLine = 0.75
+shader_parameter/lineAccountsPercentage = 0.5
 shader_parameter/circleThickness = 0.25
+shader_parameter/borderThickness = 4
+shader_parameter/halfSize = Vector2(48, 48)
 
 [node name="guiTesting" type="Node2D"]
 
