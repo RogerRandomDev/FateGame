@@ -5,4 +5,5 @@ uniform float distortionAmount=16.;
 void fragment() {
 	vec2 rippleStrength=distance(mod(NORMAL.z*10.+TIME,1.),1.)*distortionAmount/VIEWPORT_SIZE;
 	ALBEDO.rgb=texture(SCREEN_TEXTURE,SCREEN_UV+NORMAL.xy*rippleStrength).rgb+vec3(0.,0.,0.75);
+	ALPHA=0.;
 }

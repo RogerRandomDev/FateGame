@@ -16,10 +16,10 @@ void vertex() {
 void fragment() {
 	ALBEDO = vec3(0.);
 	
-	vec2 screen_size = vec2(textureSize(SCREEN_TEXTURE, 1));
+	vec2 screen_size = vec2(textureSize(SCREEN_TEXTURE, 0));
 	
-	float px = 0.5/screen_size.x;
-	float py = 0.5/screen_size.y;
+	float px = 1./screen_size.x;
+	float py = 1./screen_size.y;
 	
 	//calculate outlines
 	
@@ -29,9 +29,14 @@ void fragment() {
 	float dd = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(0.0, -py)).x;
 	float dr = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(px, 0.0)).x;
 	float dl = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(-px, 0.0)).x;
+	float p = texture(SCREEN_TEXTURE, SCREEN_UV).x;
+	float pu = texture(SCREEN_TEXTURE, SCREEN_UV+vec2(0.0, py)).x;
+	float pd = texture(SCREEN_TEXTURE, SCREEN_UV+vec2(0.0, -py)).x;
+	float pr = texture(SCREEN_TEXTURE, SCREEN_UV+vec2(px, 0.0)).x;
+	float pl = texture(SCREEN_TEXTURE, SCREEN_UV+vec2(-px, 0.0)).x;
 	
-	
-	ALPHA=round((0.0 + abs(abs(abs(d)-abs(du)) - abs(abs(d)-abs(dd))) + abs(abs(abs(d)-abs(dl)) - abs(abs(d)-abs(dr))))*300.+ outline_bias);
+	ALPHA=round(
+		(0.0 + abs(abs(abs(d)-abs(du)) - abs(abs(d)-abs(dd))) + abs(abs(abs(d)-abs(dl)) - abs(abs(d)-abs(dr))))*300.+ outline_bias);
 	
 }
 

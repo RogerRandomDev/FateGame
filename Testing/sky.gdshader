@@ -9,8 +9,6 @@ uniform vec3 day_top_color : source_color = vec3(1.0, 1.0, 1.0);
 uniform vec3 sunset_bottom_color : source_color = vec3(0.0, 0.0, 0.0);
 uniform vec3 sunset_top_color : source_color = vec3(0.0, 0.0, 0.0);
 
-uniform vec3 night_bottom_color : source_color = vec3(0.0, 0.0, 0.0);
-uniform vec3 night_top_color : source_color = vec3(0.0, 0.0, 0.0);
 
 
 // Horizon Stuff
@@ -63,11 +61,9 @@ void sky() {
 	float sunset_amount = clamp(1.0 - abs(LIGHT0_DIRECTION.y), 0.0, 1.0);
 	vec3 gradient_sunset = mix(sunset_bottom_color, sunset_top_color, clamp(EYEDIR.y, 0.0, 1.0)) * sunset_amount;
 	
-	float night_amount = clamp(-LIGHT0_DIRECTION.y, 0.0, 1.0);
-	vec3 gradient_night = mix(night_bottom_color, night_top_color, clamp(EYEDIR.y, 0.0, 1.0)) * night_amount;
 	
 	
-	vec3 sky_gradients = gradient_day + gradient_sunset + gradient_night;
+	vec3 sky_gradients = gradient_day + gradient_sunset;
 	
 	
 	

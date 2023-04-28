@@ -1,9 +1,8 @@
-[gd_scene load_steps=53 format=3 uid="uid://hvjhwjweg2lt"]
+[gd_scene load_steps=62 format=3 uid="uid://hvjhwjweg2lt"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
 [ext_resource type="Shader" path="res://Testing/sky.gdshader" id="1_3dpcg"]
-[ext_resource type="Material" uid="uid://bx6qeabdhq2s" path="res://addons/kenney_prototype_tools/materials/dark/material_01.tres" id="1_ml5j2"]
-[ext_resource type="Material" uid="uid://blfyvmtrl8jdy" path="res://addons/kenney_prototype_tools/materials/light/material_01.tres" id="2_wxrih"]
+[ext_resource type="Material" uid="uid://2rb3d00ow3rp" path="res://Testing/Testingf.tres" id="2_mpqg3"]
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/Character.gd" id="3_ksv2x"]
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/StateManager.gd" id="4_hcm5x"]
 [ext_resource type="Script" path="res://addons/FateFramework/Ability/AbilityManager.gd" id="5_6op11"]
@@ -22,30 +21,42 @@
 [ext_resource type="Shader" path="res://Testing/HoveringCompanion.gdshader" id="14_hwgyj"]
 [ext_resource type="Shader" path="res://Testing/hoverParticle.gdshader" id="15_geotk"]
 [ext_resource type="Texture2D" uid="uid://dbhc28easidsg" path="res://Testing/hover.png" id="16_kh7c3"]
+[ext_resource type="Shader" path="res://Testing/a.gdshader" id="19_01vdm"]
 [ext_resource type="Script" path="res://Testing/GUI.gd" id="22_s5dkl"]
+[ext_resource type="Shader" path="res://Testing/PASS2.gdshader" id="23_saokr"]
 [ext_resource type="Shader" path="res://addons/FateFramework/GUI/statCircle/statCircle.gdshader" id="23_w46vi"]
 [ext_resource type="Script" path="res://addons/FateFramework/GUI/statCircle/statCircle.gd" id="24_cc8w1"]
+[ext_resource type="Texture2D" uid="uid://c435jumq6lkn1" path="res://addons/kenney_prototype_tools/textures/orange/texture_10.png" id="24_n78rk"]
+[ext_resource type="Shader" path="res://Testing/box.gdshader" id="25_fvx2a"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_iycrs"]
+[sub_resource type="Gradient" id="Gradient_sp72x"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.318801)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_l2mko"]
 noise_type = 2
-frequency = 0.2
+frequency = 0.3
 fractal_type = 0
-fractal_octaves = 1
-cellular_distance_function = 3
 cellular_jitter = 0.0
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_a5ip3"]
-width = 1152
-height = 648
-noise = SubResource("FastNoiseLite_iycrs")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_d4mm4"]
+width = 576
+height = 324
+color_ramp = SubResource("Gradient_sp72x")
+noise = SubResource("FastNoiseLite_l2mko")
+
+[sub_resource type="Gradient" id="Gradient_aspj8"]
+offsets = PackedFloat32Array(0.396226, 1)
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_nkkvf"]
 seed = 7
-frequency = 0.059
+frequency = 0.046
 fractal_octaves = 10
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_o7c6x"]
 seamless = true
+color_ramp = SubResource("Gradient_aspj8")
 noise = SubResource("FastNoiseLite_nkkvf")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ol64f"]
@@ -67,8 +78,6 @@ shader_parameter/day_bottom_color = Color(0.156863, 0.662745, 0.8, 1)
 shader_parameter/day_top_color = Color(0, 1, 1, 1)
 shader_parameter/sunset_bottom_color = Color(0, 0, 0, 1)
 shader_parameter/sunset_top_color = Color(0.00784314, 0.00784314, 0.00784314, 1)
-shader_parameter/night_bottom_color = Color(0.0705882, 0.0470588, 0.117647, 1)
-shader_parameter/night_top_color = Color(0.0705882, 0.0470588, 0.117647, 1)
 shader_parameter/horizon_color_day = Color(0.215686, 0.282353, 0.498039, 1)
 shader_parameter/horizon_color_sunset = Color(0.188235, 0.188235, 0.188235, 1)
 shader_parameter/horizon_color_night = Color(0, 0, 0, 1)
@@ -85,7 +94,7 @@ shader_parameter/clouds_speed = 0.1
 shader_parameter/clouds_scale = 0.1
 shader_parameter/clouds_cutoff = 0.16
 shader_parameter/clouds_fuzziness = 0.03
-shader_parameter/cloud_outline = 0.801
+shader_parameter/cloud_outline = 1.0
 shader_parameter/stars_cutoff = 0.763
 shader_parameter/stars_speed = 0.0
 shader_parameter/clouds_texture = SubResource("NoiseTexture2D_2j4ea")
@@ -100,8 +109,8 @@ radiance_size = 0
 background_mode = 2
 sky = SubResource("Sky_bklcs")
 tonemap_mode = 2
-tonemap_exposure = 1.3
-tonemap_white = 6.0
+tonemap_exposure = 1.25
+tonemap_white = 8.0
 ssr_fade_in = 0.219613
 ssao_sharpness = 1.0
 ssao_light_affect = 0.22
@@ -110,11 +119,11 @@ ssil_radius = 7.82
 ssil_intensity = 12.32
 sdfgi_y_scale = 0
 glow_enabled = true
-glow_levels/1 = 1.0
-glow_levels/2 = 0.3
-glow_levels/3 = 0.21
-glow_levels/4 = 0.48
-glow_levels/5 = 0.17
+glow_levels/1 = 0.1
+glow_levels/2 = 0.7
+glow_levels/3 = 0.3
+glow_levels/4 = 0.5
+glow_levels/5 = 0.25
 glow_normalized = true
 glow_intensity = 0.37
 glow_strength = 0.59
@@ -123,7 +132,7 @@ glow_blend_mode = 1
 glow_hdr_threshold = 2.57
 glow_hdr_luminance_cap = 34.59
 glow_map_strength = 1.0
-glow_map = SubResource("NoiseTexture2D_a5ip3")
+glow_map = SubResource("NoiseTexture2D_d4mm4")
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_lv8pw"]
 friction = 0.0
@@ -136,9 +145,9 @@ radius = 0.55
 radius = 0.1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tqvm7"]
-render_priority = 1
+render_priority = 127
 shader = ExtResource("1_1a4ut")
-shader_parameter/outline_bias = 0.0120005
+shader_parameter/outline_bias = 0.0100005
 
 [sub_resource type="QuadMesh" id="QuadMesh_70gyy"]
 material = SubResource("ShaderMaterial_tqvm7")
@@ -151,6 +160,15 @@ size = Vector2(2, 2)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_soy35"]
 material = SubResource("StandardMaterial3D_fc326")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u7m1i"]
+render_priority = 0
+shader = ExtResource("23_saokr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mo5lc"]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_u7m1i")
+shader = ExtResource("19_01vdm")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jvah7"]
 shader = ExtResource("14_hwgyj")
@@ -168,11 +186,22 @@ size = Vector2(0.5, 0.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_w6i1x"]
 size = Vector3(0.75, 0.7, 0.75)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v2i44"]
+render_priority = 0
+shader = ExtResource("23_saokr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vtl7p"]
+render_priority = 0
+next_pass = SubResource("ShaderMaterial_v2i44")
+shader = ExtResource("25_fvx2a")
+shader_parameter/TEX = ExtResource("24_n78rk")
+
 [sub_resource type="BoxMesh" id="BoxMesh_cnox6"]
+material = SubResource("ShaderMaterial_vtl7p")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wc5f3"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xey6j"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lqv15"]
 shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(1, 0.34902, 0.364706, 1)
@@ -187,7 +216,7 @@ shader_parameter/circleThickness = 44.8
 shader_parameter/borderThickness = 4
 shader_parameter/halfSize = Vector2(64, 64)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yeyya"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0obkt"]
 shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(0, 0.866667, 0.705882, 1)
@@ -207,8 +236,13 @@ shader_parameter/halfSize = Vector2(48, 64)
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.5, 0.866025, 0, -0.866025, -0.5, 0, 5, 0)
 shadow_enabled = true
-shadow_normal_bias = 4.639
-shadow_blur = 10.0
+directional_shadow_split_1 = 0.033
+directional_shadow_split_2 = 0.053
+directional_shadow_split_3 = 0.175
+directional_shadow_blend_splits = true
+directional_shadow_fade_start = 0.103
+directional_shadow_max_distance = 64.0
+directional_shadow_pancake_size = 11.3
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_hbd8x")
@@ -219,155 +253,155 @@ collision_priority = 1e+18
 
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
 size = Vector3(64, 1, 80)
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="stairs" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.75, 2.5, 0.6, 0)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D5/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = ExtResource("2_wxrih")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 3.75, -10.45)
 size = Vector3(4, 1, 7)
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGPolygon3D" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.5, 0)
 polygon = PackedVector2Array(-5.5, 0, 0, 1, 1, 1, 1, 0)
 depth = 3.0
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGPolygon3D2" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3, 0.5, 1.31134e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 1.5, 1, 1.5, 1, 0)
 depth = 3.0
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGPolygon3D3" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6, 0.5, 2.62268e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 2, 1, 2, 1, 0)
 depth = 3.0
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGPolygon3D4" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -9, 0.5, 3.93402e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 3, 1, 3, 1, 0)
 depth = 3.0
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGPolygon3D5" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12, 0.5, 5.24536e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 4, 1, 4, 1, 0)
 depth = 3.0
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGPolygon3D6" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -15, 0.5, 6.5567e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 5, 1, 5, 1, 0)
 depth = 3.0
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGPolygon3D7" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -18, 0.5, 7.86805e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 6, 1, 6, 1, 0)
 depth = 3.0
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="CSGPolygon3D8" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -21, 0.5, 9.17939e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 7, 1, 7, 1, 0)
 depth = 3.0
-material = ExtResource("1_ml5j2")
+material = ExtResource("2_mpqg3")
 
 [node name="CharacterNode" type="RigidBody3D" parent="."]
 transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 8, 1.501, 0)
@@ -443,13 +477,16 @@ maxRotUp = 1.047
 maxRotDown = 0.785
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterNode/CameraArm/PlayerCamera"]
+visible = false
 mesh = SubResource("QuadMesh_70gyy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterNode"]
 shape = SubResource("CapsuleShape3D_jdsxf")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterNode"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_soy35")
+surface_material_override/0 = SubResource("ShaderMaterial_mo5lc")
 
 [node name="Node3D" type="Node3D" parent="."]
 
@@ -591,7 +628,7 @@ offset_right = 372.0
 offset_bottom = 128.0
 
 [node name="healthCircle" type="ColorRect" parent="GUI/statBars"]
-material = SubResource("ShaderMaterial_xey6j")
+material = SubResource("ShaderMaterial_lqv15")
 custom_minimum_size = Vector2(372, 128)
 layout_mode = 2
 offset_right = 372.0
@@ -615,7 +652,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="energyCircle" type="ColorRect" parent="GUI/statBars" node_paths=PackedStringArray("textContents")]
-material = SubResource("ShaderMaterial_yeyya")
+material = SubResource("ShaderMaterial_0obkt")
 custom_minimum_size = Vector2(240, 128)
 layout_mode = 2
 offset_left = 128.0
@@ -644,6 +681,12 @@ theme_override_font_sizes/font_size = 16
 text = "test"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="GUI"]
+visible = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
 
 [connection signal="changeHealth" from="CharacterNode/Statistics/Health" to="GUI" method="_on_health_change_health"]
 [connection signal="changeENERGY" from="CharacterNode/Statistics/Energy" to="GUI" method="_on_energy_change_energy"]
