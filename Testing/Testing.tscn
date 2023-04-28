@@ -108,8 +108,11 @@ radiance_size = 0
 [sub_resource type="Environment" id="Environment_hbd8x"]
 background_mode = 2
 sky = SubResource("Sky_bklcs")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.0
 tonemap_mode = 2
-tonemap_exposure = 1.25
+tonemap_exposure = 1.3
 tonemap_white = 8.0
 ssr_fade_in = 0.219613
 ssao_sharpness = 1.0
@@ -201,7 +204,7 @@ material = SubResource("ShaderMaterial_vtl7p")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wc5f3"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lqv15"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cjaan"]
 shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(1, 0.34902, 0.364706, 1)
@@ -216,7 +219,7 @@ shader_parameter/circleThickness = 44.8
 shader_parameter/borderThickness = 4
 shader_parameter/halfSize = Vector2(64, 64)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_0obkt"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vtdyf"]
 shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(0, 0.866667, 0.705882, 1)
@@ -235,14 +238,12 @@ shader_parameter/halfSize = Vector2(48, 64)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.5, 0.866025, 0, -0.866025, -0.5, 0, 5, 0)
+light_bake_mode = 0
 shadow_enabled = true
-directional_shadow_split_1 = 0.033
-directional_shadow_split_2 = 0.053
-directional_shadow_split_3 = 0.175
+shadow_transmittance_bias = 0.39
+shadow_blur = 0.773
+directional_shadow_mode = 0
 directional_shadow_blend_splits = true
-directional_shadow_fade_start = 0.103
-directional_shadow_max_distance = 64.0
-directional_shadow_pancake_size = 11.3
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_hbd8x")
@@ -484,7 +485,6 @@ mesh = SubResource("QuadMesh_70gyy")
 shape = SubResource("CapsuleShape3D_jdsxf")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterNode"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("CapsuleMesh_soy35")
 surface_material_override/0 = SubResource("ShaderMaterial_mo5lc")
 
@@ -573,7 +573,7 @@ mesh = SubResource("BoxMesh_cnox6")
 shape = SubResource("BoxShape3D_wc5f3")
 
 [node name="RigidBody3D8" type="RigidBody3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 2, 10.5)
+transform = Transform3D(-0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 5, 2, 10.5)
 metadata/_edit_group_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/RigidBody3D8"]
@@ -603,7 +603,7 @@ mesh = SubResource("BoxMesh_cnox6")
 shape = SubResource("BoxShape3D_wc5f3")
 
 [node name="RigidBody3D11" type="RigidBody3D" parent="Node3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 4, 4.10572)
+transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 5, 4, 4.10572)
 metadata/_edit_group_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/RigidBody3D11"]
@@ -628,7 +628,7 @@ offset_right = 372.0
 offset_bottom = 128.0
 
 [node name="healthCircle" type="ColorRect" parent="GUI/statBars"]
-material = SubResource("ShaderMaterial_lqv15")
+material = SubResource("ShaderMaterial_cjaan")
 custom_minimum_size = Vector2(372, 128)
 layout_mode = 2
 offset_right = 372.0
@@ -652,7 +652,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="energyCircle" type="ColorRect" parent="GUI/statBars" node_paths=PackedStringArray("textContents")]
-material = SubResource("ShaderMaterial_0obkt")
+material = SubResource("ShaderMaterial_vtdyf")
 custom_minimum_size = Vector2(240, 128)
 layout_mode = 2
 offset_left = 128.0

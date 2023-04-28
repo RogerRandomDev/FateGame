@@ -118,9 +118,6 @@ void sky() {
 	float clouds_negative = 1.0 - clouds_value;
 	
 	
-	vec3 stars = texture(stars_texture, sky_uv + (stars_speed * TIME)).rgb;
-	stars *= clamp(-LIGHT0_DIRECTION.y, 0., 1.0);
-	stars = step(stars_cutoff, stars);
 	
 	
 	
@@ -131,7 +128,7 @@ void sky() {
 	
 	
 	
-	vec3 sky = horizon_glow + sky_gradients + sun_moon + stars + clouds;
+	vec3 sky = horizon_glow + sky_gradients + sun_moon + clouds;
 	sky*=1.-float(clouds_value>0.&&clouds_value<cloud_outline);
 	
 	

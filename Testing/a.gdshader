@@ -5,6 +5,7 @@ void fragment(){
 }
 
 void light(){
-	float a=(ATTENUATION<0.75?(-0.75+abs(1.5-distance(sin(FRAGCOORD.x*20.),cos(FRAGCOORD.y*20.)))):1.);
-	DIFFUSE_LIGHT=vec3(a)*LIGHT_COLOR;
+	float a=(float(distance(sin(FRAGCOORD.x*150.),cos(FRAGCOORD.y*150.))*(1.-ATTENUATION)));
+	DIFFUSE_LIGHT=vec3(-a);
+	
 }
