@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AbilityResource" load_steps=22 format=3 uid="uid://djt2065h1lg35"]
+[gd_resource type="Resource" script_class="AbilityResource" load_steps=26 format=3 uid="uid://djt2065h1lg35"]
 
 [ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.gd" id="1_3futf"]
 [ext_resource type="Shader" path="res://Components/Abilities/KnockBackAbility/knockBackAbility.gdshader" id="2_pfw3w"]
@@ -11,9 +11,25 @@
 [ext_resource type="Script" path="res://addons/FateFramework/Ability/AbilityResource.gd" id="6_utigs"]
 [ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/passiveKnockbackScript.gd" id="7_y1ihh"]
 
+[sub_resource type="Shader" id="Shader_uecdr"]
+code = "shader_type spatial;
+render_mode unshaded,cull_front,vertex_lighting;
+void vertex(){
+	VERTEX+=normalize(VERTEX)*0.05;
+}
+void fragment(){
+	ALBEDO=vec3(0.);
+	ALPHA=float(NORMAL.z<0.);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fwlov"]
+render_priority = 0
+shader = SubResource("Shader_uecdr")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o0gie"]
 resource_local_to_scene = true
 render_priority = 0
+next_pass = SubResource("ShaderMaterial_fwlov")
 shader = ExtResource("2_pfw3w")
 shader_parameter/rippleStrength = 16.0
 shader_parameter/rippleProgress = 0.0
@@ -44,18 +60,37 @@ AbilityMeshAnimations = Array[Dictionary]([{
 "shaderParameter": 1.0
 }])
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qu8g8"]
-cull_mode = 2
+[sub_resource type="Shader" id="Shader_ypjid"]
+code = "shader_type spatial;
+render_mode unshaded,cull_front,vertex_lighting;
+void vertex(){
+	VERTEX+=normalize(VERTEX)*0.025;
+	MODELVIEW_MATRIX = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0], INV_VIEW_MATRIX[1], INV_VIEW_MATRIX[2], MODEL_MATRIX[3]);
+	MODELVIEW_NORMAL_MATRIX = mat3(MODELVIEW_MATRIX);
+}
+void fragment(){
+	ALBEDO=vec3(0.);
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yuvib"]
+render_priority = 0
+shader = SubResource("Shader_ypjid")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yhsu1"]
+next_pass = SubResource("ShaderMaterial_yuvib")
+albedo_color = Color(0.403922, 0, 0.980392, 1)
+emission_enabled = true
+emission = Color(0.37, 0, 2, 1)
 billboard_mode = 1
 
-[sub_resource type="QuadMesh" id="QuadMesh_ny5h3"]
-material = SubResource("StandardMaterial3D_qu8g8")
-size = Vector2(0.1, 0.1)
+[sub_resource type="BoxMesh" id="BoxMesh_o3mp1"]
+material = SubResource("StandardMaterial3D_yhsu1")
+size = Vector3(0.1, 0.1, 0.01)
 
 [sub_resource type="Resource" id="Resource_xap75"]
 script = ExtResource("5_dsgo8")
 AbilityParticles = ExtResource("4_0qjji")
-ParticlesMesh = SubResource("QuadMesh_ny5h3")
+ParticlesMesh = SubResource("BoxMesh_o3mp1")
 Explosiveness = 1.0
 Lifetime = 1.0
 particleAmount = 16
