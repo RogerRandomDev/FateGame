@@ -8,11 +8,11 @@ class_name PlayerSlidingState
 var initialVelocity:float=0.
 func onTrigger():
 	initialVelocity=root.linear_velocity.length()
-	root.get_node("MeshInstance3D").rotation.x=PI/2.5
-	root.get_node("MeshInstance3D").position.y=-0.5
+	root.get_node("Model").rotation.x=PI/2.5
+	root.get_node("Model").position.y=-0.5
 func revertMesh():
-	root.get_node("MeshInstance3D").rotation.x=0
-	root.get_node("MeshInstance3D").position.y=0
+	root.get_node("Model").rotation.x=0
+	root.get_node("Model").position.y=0
 #updates current motion for the root node
 func _physics_process(delta):
 	

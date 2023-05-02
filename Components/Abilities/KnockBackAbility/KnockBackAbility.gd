@@ -12,7 +12,7 @@ class_name KnockBackAbility
 func _ready():
 	super._ready()
 	updateShape()
-	abilityResource.PassiveEffect.loadPassive.call_deferred(root.get_node("MeshInstance3D"),root)
+	abilityResource.PassiveEffect.loadPassive.call_deferred(root.get_node("AbilityOrigin"),root)
 func updateShape():
 	var s=SphereShape3D.new()
 	s.radius=range

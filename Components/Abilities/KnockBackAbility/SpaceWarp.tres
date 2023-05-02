@@ -64,7 +64,7 @@ AbilityMeshAnimations = Array[Dictionary]([{
 code = "shader_type spatial;
 render_mode unshaded,cull_front,vertex_lighting;
 void vertex(){
-	VERTEX+=normalize(VERTEX)*0.025;
+	VERTEX+=normalize(VERTEX)*0.0125;
 	MODELVIEW_MATRIX = VIEW_MATRIX * mat4(INV_VIEW_MATRIX[0], INV_VIEW_MATRIX[1], INV_VIEW_MATRIX[2], MODEL_MATRIX[3]);
 	MODELVIEW_NORMAL_MATRIX = mat3(MODELVIEW_MATRIX);
 }
@@ -76,24 +76,29 @@ void fragment(){
 render_priority = 0
 shader = SubResource("Shader_ypjid")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yhsu1"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wwxve"]
 next_pass = SubResource("ShaderMaterial_yuvib")
-albedo_color = Color(0.403922, 0, 0.980392, 1)
-emission_enabled = true
-emission = Color(0.37, 0, 2, 1)
+depth_draw_mode = 2
+shading_mode = 0
+specular_mode = 2
+albedo_color = Color(0.4, 0, 16.56, 1)
+disable_receive_shadows = true
 billboard_mode = 1
 
-[sub_resource type="BoxMesh" id="BoxMesh_o3mp1"]
-material = SubResource("StandardMaterial3D_yhsu1")
-size = Vector3(0.1, 0.1, 0.01)
+[sub_resource type="SphereMesh" id="SphereMesh_cqpb0"]
+material = SubResource("StandardMaterial3D_wwxve")
+radius = 0.063
+height = 0.125
+radial_segments = 4
+rings = 8
 
 [sub_resource type="Resource" id="Resource_xap75"]
 script = ExtResource("5_dsgo8")
 AbilityParticles = ExtResource("4_0qjji")
-ParticlesMesh = SubResource("BoxMesh_o3mp1")
+ParticlesMesh = SubResource("SphereMesh_cqpb0")
 Explosiveness = 1.0
 Lifetime = 1.0
-particleAmount = 16
+particleAmount = 48
 one_shot = false
 AbilityShaderProgressionValue = ""
 AbilityMeshAnimations = Array[Dictionary]([{
@@ -107,7 +112,7 @@ AbilityMeshAnimations = Array[Dictionary]([{
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ev50p"]
 render_priority = 0
 shader = ExtResource("6_12k6g")
-shader_parameter/distortionAmount = 16.0
+shader_parameter/distortionAmount = 4.0
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ias42"]
 material = SubResource("ShaderMaterial_ev50p")

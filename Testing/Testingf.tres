@@ -11,7 +11,7 @@ shader = ExtResource("1_1xqiy")
 code = "// NOTE: Shader automatically converted from Godot Engine 4.0.1.stable's StandardMaterial3D.
 
 shader_type spatial;
-render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_disabled;
+render_mode blend_mix,depth_draw_opaque,diffuse_burley,specular_disabled,world_vertex_coords,cull_disabled;
 uniform vec4 albedo : source_color;
 uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
 uniform float point_size : hint_range(0,128);
@@ -28,7 +28,7 @@ uniform vec3 uv1_scale;
 uniform vec3 uv1_offset;
 uniform vec3 uv2_scale;
 uniform vec3 uv2_offset;
-
+varying vec2 shadowCoords;
 
 void vertex() {
 	if (!OUTPUT_IS_SRGB) {
@@ -46,6 +46,15 @@ void vertex() {
 	uv1_triplanar_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0f)).xyz * uv1_scale + uv1_offset;
 	uv1_power_normal/=dot(uv1_power_normal,vec3(1.0));
 	uv1_triplanar_pos *= vec3(1.0,-1.0, 1.0);
+	// Transform the vertex position to object space
+	vec3 objPos = VERTEX-NODE_POSITION_WORLD;
+	
+	// Calculate the 2D coordinates of the vertex in object space
+//	shadowCoords = objPos.xy*NORMAL.z+objPos.xz*NORMAL.y+objPos.zy*NORMAL.x;
+	shadowCoords = vec2(dot(TANGENT, objPos), dot(BINORMAL, objPos));
+
+	// Output the vertex position in world space
+	
 }
 
 
@@ -72,9 +81,19 @@ void fragment() {
 }
 
 
-void light(){
-	float a=(float(distance(sin(FRAGCOORD.x*150.),cos(FRAGCOORD.y*150.))*(1.-ATTENUATION)));
-	DIFFUSE_LIGHT=vec3(-a);
+global uniform float DOTRATE;
+
+// Per-vertex input/output
+
+
+
+void light() {
+	// Calculate the shadow intensity based on the dot product of the shadow coordinates
+	// and the DOT_RATE parameter
+	float shadowIntensity = abs(sin(shadowCoords.x * DOTRATE) * cos(shadowCoords.y * DOTRATE))*(1.-ATTENUATION);
+	shadowIntensity=clamp(float(shadowIntensity>0.5)*2.+0.9*(1.-ATTENUATION),0.,1.);
+	// Apply the shadow intensity as a diffuse color
+	DIFFUSE_LIGHT = vec3(-shadowIntensity);
 }"
 
 [resource]

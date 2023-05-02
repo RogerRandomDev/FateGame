@@ -96,13 +96,13 @@ slide={
 
 3d/physics_engine="GodotPhysics3D"
 
-[rendering]
-
-lights_and_shadows/positional_shadow/soft_shadow_filter_quality=1
-
 [shader_globals]
 
 character_position={
 "type": "vec3",
 "value": Vector3(8, 1.5, 0)
+}
+DOTRATE={
+"type": "float",
+"value": 48.0
 }
