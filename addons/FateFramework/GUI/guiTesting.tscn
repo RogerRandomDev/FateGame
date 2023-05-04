@@ -3,7 +3,7 @@
 [ext_resource type="Shader" path="res://addons/FateFramework/GUI/statCircle/statCircle.gdshader" id="1_37phm"]
 [ext_resource type="Script" path="res://addons/FateFramework/GUI/statCircle/statCircle.gd" id="2_qe5h6"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_am2wr"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wn8me"]
 shader = ExtResource("1_37phm")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(0.313726, 0.313726, 0.313726, 1)
@@ -21,7 +21,7 @@ shader_parameter/halfSize = Vector2(24, 24)
 [node name="guiTesting" type="Node2D"]
 
 [node name="statCircle" type="ColorRect" parent="."]
-material = SubResource("ShaderMaterial_am2wr")
+material = SubResource("ShaderMaterial_wn8me")
 offset_right = 354.0
 offset_bottom = 48.0
 script = ExtResource("2_qe5h6")

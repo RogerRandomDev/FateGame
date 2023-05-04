@@ -1,6 +1,6 @@
 shader_type spatial;
 
-render_mode world_vertex_coords,cull_disabled,ensure_correct_normals;
+
 
 
 
@@ -15,7 +15,7 @@ varying vec2 shadowCoords;
 
 void vertex() {
 	// Transform the vertex position to object space
-	vec3 objPos = VERTEX-NODE_POSITION_WORLD;
+	vec3 objPos = VERTEX;
 	
 	// Calculate the 2D coordinates of the vertex in object space
 //	shadowCoords = objPos.xy*NORMAL.z+objPos.xz*NORMAL.y+objPos.zy*NORMAL.x;

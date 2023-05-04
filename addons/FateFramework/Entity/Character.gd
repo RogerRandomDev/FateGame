@@ -10,7 +10,7 @@ var GRAVITY:Vector3
 @export var decelSpeed:float=0.75
 @export var amplifiedDecelInMotion:float=2.0
 @export_range(0,1) var rotationDamping:float=0.125;
-
+@export var abilityOrigin:Node
 
 @export_category("Impulse")
 @export var stairForce:float=2.

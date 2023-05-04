@@ -117,14 +117,19 @@ shader_parameter/distortionAmount = 4.0
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_ias42"]
 material = SubResource("ShaderMaterial_ev50p")
 radius = 0.525
-height = 2.1
+radial_segments = 16
+rings = 4
 
 [sub_resource type="Resource" id="Resource_1o7fk"]
 script = ExtResource("6_brf6g")
 EffectMesh = SubResource("CapsuleMesh_ias42")
 effectScript = ExtResource("7_y1ihh")
 animationLength = 2.0
-EffectAnimationKeys = Array[Dictionary]([])
+EffectAnimationKeys = Array[Dictionary]([{
+"Parameter": "position",
+"Time": 0.0,
+"Value": Vector3(0, -0.55, 0)
+}])
 Amount = 0
 LifeTime = 0.0
 Explosiveness = 0

@@ -11,7 +11,7 @@ shader = ExtResource("1_1xqiy")
 code = "// NOTE: Shader automatically converted from Godot Engine 4.0.1.stable's StandardMaterial3D.
 
 shader_type spatial;
-render_mode blend_mix,depth_draw_opaque,diffuse_burley,specular_disabled,world_vertex_coords,cull_disabled;
+render_mode blend_mix,depth_draw_opaque,diffuse_burley,specular_disabled;
 uniform vec4 albedo : source_color;
 uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
 uniform float point_size : hint_range(0,128);
@@ -47,7 +47,7 @@ void vertex() {
 	uv1_power_normal/=dot(uv1_power_normal,vec3(1.0));
 	uv1_triplanar_pos *= vec3(1.0,-1.0, 1.0);
 	// Transform the vertex position to object space
-	vec3 objPos = VERTEX-NODE_POSITION_WORLD;
+	vec3 objPos = VERTEX;
 	
 	// Calculate the 2D coordinates of the vertex in object space
 //	shadowCoords = objPos.xy*NORMAL.z+objPos.xz*NORMAL.y+objPos.zy*NORMAL.x;
