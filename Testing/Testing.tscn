@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://hvjhwjweg2lt"]
+[gd_scene load_steps=68 format=3 uid="uid://hvjhwjweg2lt"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
 [ext_resource type="Shader" path="res://Testing/sky.gdshader" id="1_3dpcg"]
@@ -30,7 +30,6 @@
 [ext_resource type="Script" path="res://addons/FateFramework/GUI/statCircle/statCircle.gd" id="24_cc8w1"]
 [ext_resource type="Texture2D" uid="uid://c435jumq6lkn1" path="res://addons/kenney_prototype_tools/textures/orange/texture_10.png" id="24_n78rk"]
 [ext_resource type="Shader" path="res://Testing/box.gdshader" id="25_fvx2a"]
-[ext_resource type="PackedScene" uid="uid://c4gvfkbakke70" path="res://Testing/ete.gltf" id="30_oc1fb"]
 
 [sub_resource type="Gradient" id="Gradient_sp72x"]
 interpolation_mode = 1
@@ -162,8 +161,13 @@ size = Vector2(2, 2)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jdsxf"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_52f2a"]
+render_priority = 0
+shader = ExtResource("23_saokr")
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4gm77"]
 render_priority = 0
+next_pass = SubResource("ShaderMaterial_52f2a")
 shader = ExtResource("19_01vdm")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3kltt"]
@@ -279,7 +283,7 @@ material = SubResource("ShaderMaterial_vtl7p")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wc5f3"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_m2ppm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k1ap6"]
 shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(1, 0.34902, 0.364706, 1)
@@ -294,7 +298,7 @@ shader_parameter/circleThickness = 44.8
 shader_parameter/borderThickness = 4
 shader_parameter/halfSize = Vector2(64, 64)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_bfwjn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kgkoh"]
 shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(0, 0.866667, 0.705882, 1)
@@ -308,10 +312,6 @@ shader_parameter/lineAccountsPercentage = 0.25
 shader_parameter/circleThickness = 25.6
 shader_parameter/borderThickness = 4
 shader_parameter/halfSize = Vector2(48, 64)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_tuhsm"]
-render_priority = 0
-shader = ExtResource("19_01vdm")
 
 [node name="Node3D" type="Node3D"]
 
@@ -563,7 +563,6 @@ visible = false
 mesh = SubResource("QuadMesh_70gyy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterNode"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_jdsxf")
 
 [node name="Model" type="Node3D" parent="CharacterNode"]
@@ -578,7 +577,6 @@ surface_material_override/0 = SubResource("ShaderMaterial_4gm77")
 surface_material_override/0 = SubResource("ShaderMaterial_4gm77")
 
 [node name="cylinder" parent="CharacterNode/Model/bean/Node2" index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("ArrayMesh_emfct")
 surface_material_override/0 = SubResource("ShaderMaterial_4gm77")
 
@@ -728,7 +726,7 @@ offset_right = 372.0
 offset_bottom = 128.0
 
 [node name="healthCircle" type="ColorRect" parent="GUI/statBars"]
-material = SubResource("ShaderMaterial_m2ppm")
+material = SubResource("ShaderMaterial_k1ap6")
 custom_minimum_size = Vector2(372, 128)
 layout_mode = 2
 offset_right = 372.0
@@ -752,7 +750,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="energyCircle" type="ColorRect" parent="GUI/statBars" node_paths=PackedStringArray("textContents")]
-material = SubResource("ShaderMaterial_bfwjn")
+material = SubResource("ShaderMaterial_kgkoh")
 custom_minimum_size = Vector2(240, 128)
 layout_mode = 2
 offset_left = 128.0
@@ -788,16 +786,8 @@ layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 648.0
 
-[node name="ete" parent="." instance=ExtResource("30_oc1fb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6, 1)
-
-[node name="sphere" parent="ete/Node2" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.7, -5, -11)
-material_override = SubResource("ShaderMaterial_tuhsm")
-
 [connection signal="changeHealth" from="CharacterNode/Statistics/Health" to="GUI" method="_on_health_change_health"]
 [connection signal="changeENERGY" from="CharacterNode/Statistics/Energy" to="GUI" method="_on_energy_change_energy"]
 
 [editable path="CharacterNode/Model/bean"]
 [editable path="Node3D/RigidBody3D/Companion"]
-[editable path="ete"]
