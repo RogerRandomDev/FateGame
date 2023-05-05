@@ -41,7 +41,7 @@ func getNode(addTo:Node)->Node3D:
 
 
 ##loads the animation from [member AbilityMeshAnimations] into a [Tween][br]
-func loadAnimation(AbilityNode:Node3D,root:Node):
+func loadAnimation(AbilityNode:Node3D,root:Node)->Tween:
 	var tween:Tween=root.create_tween()
 	AbilityNode.position=AbilityMeshAnimations[0].offset
 	AbilityNode.rotation=AbilityMeshAnimations[0].rotation
@@ -57,5 +57,5 @@ func loadAnimation(AbilityNode:Node3D,root:Node):
 		if AbilityShaderProgressionValue!="":
 			tween.tween_method(func(val):AbilityNode.mesh.surface_get_material(0).set_shader_parameter(AbilityShaderProgressionValue,val),lastFrameShaderParameter,AbilityAnimationFrame.shaderParameter,AbilityAnimationFrame.duration)
 			lastFrameShaderParameter=AbilityAnimationFrame.shaderParameter
-	
+	return tween
 

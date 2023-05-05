@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=3 uid="uid://hvjhwjweg2lt"]
+[gd_scene load_steps=71 format=3 uid="uid://hvjhwjweg2lt"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
 [ext_resource type="Shader" path="res://Testing/sky.gdshader" id="1_3dpcg"]
@@ -23,6 +23,8 @@
 [ext_resource type="Texture2D" uid="uid://dbhc28easidsg" path="res://Testing/hover.png" id="16_kh7c3"]
 [ext_resource type="PackedScene" uid="uid://bq2whroq8gjsx" path="res://Testing/bean.gltf" id="17_44kmx"]
 [ext_resource type="Shader" path="res://Testing/a.gdshader" id="19_01vdm"]
+[ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponState.gd" id="20_xsito"]
+[ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponRangedResource.gd" id="21_l15ym"]
 [ext_resource type="Texture2D" uid="uid://ktxx7eux5umf" path="res://Testing/Companion_0.png" id="21_y7mbe"]
 [ext_resource type="Script" path="res://Testing/GUI.gd" id="22_s5dkl"]
 [ext_resource type="Shader" path="res://Testing/PASS2.gdshader" id="23_saokr"]
@@ -42,7 +44,7 @@ frequency = 0.3
 fractal_type = 0
 cellular_jitter = 0.0
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_d4mm4"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_q5g2k"]
 width = 576
 height = 324
 color_ramp = SubResource("Gradient_sp72x")
@@ -56,7 +58,7 @@ seed = 7
 frequency = 0.046
 fractal_octaves = 10
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_o7c6x"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_puxo0"]
 seamless = true
 color_ramp = SubResource("Gradient_aspj8")
 noise = SubResource("FastNoiseLite_nkkvf")
@@ -65,13 +67,13 @@ noise = SubResource("FastNoiseLite_nkkvf")
 seed = 3
 frequency = 0.052
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_2j4ea"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ecq1n"]
 noise = SubResource("FastNoiseLite_ol64f")
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_o65xn"]
 frequency = 0.096
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_14060"]
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_h41ml"]
 noise = SubResource("FastNoiseLite_o65xn")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7lib6"]
@@ -99,17 +101,17 @@ shader_parameter/clouds_fuzziness = 0.03
 shader_parameter/cloud_outline = 1.0
 shader_parameter/stars_cutoff = 0.763
 shader_parameter/stars_speed = 0.0
-shader_parameter/clouds_texture = SubResource("NoiseTexture2D_2j4ea")
-shader_parameter/clouds_noise_texture = SubResource("NoiseTexture2D_o7c6x")
-shader_parameter/stars_texture = SubResource("NoiseTexture2D_14060")
+shader_parameter/clouds_texture = SubResource("NoiseTexture2D_ecq1n")
+shader_parameter/clouds_noise_texture = SubResource("NoiseTexture2D_puxo0")
+shader_parameter/stars_texture = SubResource("NoiseTexture2D_h41ml")
 
-[sub_resource type="Sky" id="Sky_bklcs"]
+[sub_resource type="Sky" id="Sky_rvnjh"]
 sky_material = SubResource("ShaderMaterial_7lib6")
 radiance_size = 0
 
 [sub_resource type="Environment" id="Environment_hbd8x"]
 background_mode = 2
-sky = SubResource("Sky_bklcs")
+sky = SubResource("Sky_rvnjh")
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.0
@@ -137,7 +139,7 @@ glow_blend_mode = 1
 glow_hdr_threshold = 2.57
 glow_hdr_luminance_cap = 34.59
 glow_map_strength = 1.0
-glow_map = SubResource("NoiseTexture2D_d4mm4")
+glow_map = SubResource("NoiseTexture2D_q5g2k")
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_lv8pw"]
 friction = 0.0
@@ -207,6 +209,13 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_8tor2")
+
+[sub_resource type="Resource" id="Resource_wxcpu"]
+script = ExtResource("21_l15ym")
+ProjectileCount = 1
+ProjectileSpread = 0.0
+AttackSpeed = 0.0
+Damage = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_abkh1"]
 render_priority = 0
@@ -283,7 +292,7 @@ material = SubResource("ShaderMaterial_vtl7p")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wc5f3"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_k1ap6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l8of5"]
 shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(1, 0.34902, 0.364706, 1)
@@ -298,7 +307,7 @@ shader_parameter/circleThickness = 44.8
 shader_parameter/borderThickness = 4
 shader_parameter/halfSize = Vector2(64, 64)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kgkoh"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_pbqtc"]
 shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(0, 0.866667, 0.705882, 1)
@@ -583,6 +592,10 @@ surface_material_override/0 = SubResource("ShaderMaterial_4gm77")
 [node name="AbilityOrigin" type="Node3D" parent="CharacterNode/Model"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
+[node name="WeaponState" type="Node" parent="CharacterNode"]
+script = ExtResource("20_xsito")
+WeaponData = SubResource("Resource_wxcpu")
+
 [node name="Node3D" type="Node3D" parent="."]
 
 [node name="RigidBody3D" type="RigidBody3D" parent="Node3D" node_paths=PackedStringArray("lookAt")]
@@ -726,7 +739,7 @@ offset_right = 372.0
 offset_bottom = 128.0
 
 [node name="healthCircle" type="ColorRect" parent="GUI/statBars"]
-material = SubResource("ShaderMaterial_k1ap6")
+material = SubResource("ShaderMaterial_l8of5")
 custom_minimum_size = Vector2(372, 128)
 layout_mode = 2
 offset_right = 372.0
@@ -750,7 +763,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="energyCircle" type="ColorRect" parent="GUI/statBars" node_paths=PackedStringArray("textContents")]
-material = SubResource("ShaderMaterial_kgkoh")
+material = SubResource("ShaderMaterial_pbqtc")
 custom_minimum_size = Vector2(240, 128)
 layout_mode = 2
 offset_left = 128.0

@@ -32,7 +32,8 @@ func getNode(addTo:Node)->Node3D:
 	return AbilityNode
 
 ##animates the [GPUParticles3D] in the same way as [AbilityEffectResource]
-func loadAnimation(AbilityNode:Node3D,root:Node)->void:
+##ignoreFree is used by the inspector plugin to prevent issues
+func loadAnimation(AbilityNode:Node3D,root:Node,ignoreFree:bool=false)->Tween:
 	var tween:Tween=root.create_tween()
 	AbilityNode.position=AbilityMeshAnimations[0].offset
 	AbilityNode.rotation=AbilityMeshAnimations[0].rotation
@@ -48,4 +49,5 @@ func loadAnimation(AbilityNode:Node3D,root:Node)->void:
 			tween.parallel().tween_method(func(val):AbilityNode.mesh.surface_get_material(0).set_shader_parameter(AbilityShaderProgressionValue,val),lastFrameShaderParameter,AbilityAnimationFrame.shaderParameter,AbilityAnimationFrame.duration)
 			lastFrameShaderParameter=AbilityAnimationFrame.shaderParameter
 		tween.tween_interval(AbilityAnimationFrame.delay)
-	tween.tween_callback(AbilityNode.queue_free)
+	if !ignoreFree:tween.tween_callback(AbilityNode.queue_free)
+	return tween

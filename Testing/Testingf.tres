@@ -1,11 +1,6 @@
-[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://2rb3d00ow3rp"]
+[gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://2rb3d00ow3rp"]
 
-[ext_resource type="Shader" path="res://Testing/PASS2.gdshader" id="1_1xqiy"]
 [ext_resource type="Texture2D" uid="uid://bjki20y2o2s7c" path="res://addons/kenney_prototype_tools/textures/dark/texture_01.png" id="1_y64gg"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yebuf"]
-render_priority = 0
-shader = ExtResource("1_1xqiy")
 
 [sub_resource type="Shader" id="Shader_kmnhw"]
 code = "// NOTE: Shader automatically converted from Godot Engine 4.0.1.stable's StandardMaterial3D.
@@ -98,7 +93,6 @@ void light() {
 
 [resource]
 render_priority = 0
-next_pass = SubResource("ShaderMaterial_yebuf")
 shader = SubResource("Shader_kmnhw")
 shader_parameter/albedo = Color(1, 1, 1, 1)
 shader_parameter/point_size = 1.0

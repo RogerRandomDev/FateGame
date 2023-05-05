@@ -32,7 +32,7 @@ render_priority = 0
 next_pass = SubResource("ShaderMaterial_fwlov")
 shader = ExtResource("2_pfw3w")
 shader_parameter/rippleStrength = 16.0
-shader_parameter/rippleProgress = 0.0
+shader_parameter/rippleProgress = 0.933333
 
 [sub_resource type="SphereMesh" id="SphereMesh_1dbpn"]
 material = SubResource("ShaderMaterial_o0gie")
