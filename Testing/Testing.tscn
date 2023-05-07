@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://hvjhwjweg2lt"]
+[gd_scene load_steps=75 format=3 uid="uid://hvjhwjweg2lt"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
 [ext_resource type="Shader" path="res://Testing/sky.gdshader" id="1_3dpcg"]
@@ -6,9 +6,13 @@
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/Character.gd" id="3_ksv2x"]
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/StateManager.gd" id="4_hcm5x"]
 [ext_resource type="Script" path="res://addons/FateFramework/Ability/AbilityManager.gd" id="5_6op11"]
+[ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponState.gd" id="5_a3nu5"]
 [ext_resource type="Script" path="res://Components/Player/States/WalkingState.gd" id="5_tl3c6"]
+[ext_resource type="PackedScene" uid="uid://cvcjmd70plvvr" path="res://Components/Weapons/testingWeapon.tscn" id="6_2o1yg"]
 [ext_resource type="Script" path="res://Components/Player/States/JumpingState.gd" id="6_o4wij"]
+[ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponRangedResource.gd" id="6_rosny"]
 [ext_resource type="Script" path="res://Components/Player/States/slidingState.gd" id="7_bm1ph"]
+[ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponRangedScript.gd" id="7_e1nnx"]
 [ext_resource type="Script" path="res://Components/Player/Camera.gd" id="8_hhj4s"]
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/Utility/CoyoteTime.gd" id="8_vvuy2"]
 [ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.gd" id="9_fdwbi"]
@@ -17,38 +21,40 @@
 [ext_resource type="Script" path="res://Testing/companion.gd" id="12_1ilwa"]
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/Utility/Health.gd" id="12_4e5j0"]
 [ext_resource type="PackedScene" uid="uid://f0w5jath3f2f" path="res://Testing/Companion.gltf" id="12_jbs16"]
+[ext_resource type="Script" path="res://Components/Player/States/deathState.gd" id="13_agppg"]
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/Utility/Energy.gd" id="13_u5i2p"]
 [ext_resource type="Shader" path="res://Testing/HoveringCompanion.gdshader" id="14_hwgyj"]
 [ext_resource type="Shader" path="res://Testing/hoverParticle.gdshader" id="15_geotk"]
 [ext_resource type="Texture2D" uid="uid://dbhc28easidsg" path="res://Testing/hover.png" id="16_kh7c3"]
 [ext_resource type="PackedScene" uid="uid://bq2whroq8gjsx" path="res://Testing/bean.gltf" id="17_44kmx"]
 [ext_resource type="Shader" path="res://Testing/a.gdshader" id="19_01vdm"]
-[ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponState.gd" id="20_xsito"]
-[ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponRangedResource.gd" id="21_l15ym"]
+[ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponStateManager.gd" id="19_a048f"]
 [ext_resource type="Texture2D" uid="uid://ktxx7eux5umf" path="res://Testing/Companion_0.png" id="21_y7mbe"]
 [ext_resource type="Script" path="res://Testing/GUI.gd" id="22_s5dkl"]
+[ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponModelManager.gd" id="23_87buu"]
 [ext_resource type="Shader" path="res://Testing/PASS2.gdshader" id="23_saokr"]
 [ext_resource type="Shader" path="res://addons/FateFramework/GUI/statCircle/statCircle.gdshader" id="23_w46vi"]
 [ext_resource type="Script" path="res://addons/FateFramework/GUI/statCircle/statCircle.gd" id="24_cc8w1"]
 [ext_resource type="Texture2D" uid="uid://c435jumq6lkn1" path="res://addons/kenney_prototype_tools/textures/orange/texture_10.png" id="24_n78rk"]
+[ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponAttachmentPoint.gd" id="24_rwr3k"]
 [ext_resource type="Shader" path="res://Testing/box.gdshader" id="25_fvx2a"]
 
-[sub_resource type="Gradient" id="Gradient_sp72x"]
+[sub_resource type="Gradient" id="Gradient_kgoht"]
 interpolation_mode = 1
-offsets = PackedFloat32Array(0, 0.318801)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+offsets = PackedFloat32Array(0, 0.605042)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_l2mko"]
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ea1tr"]
 noise_type = 2
-frequency = 0.3
+frequency = 0.2
 fractal_type = 0
+cellular_distance_function = 1
 cellular_jitter = 0.0
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_q5g2k"]
-width = 576
-height = 324
-color_ramp = SubResource("Gradient_sp72x")
-noise = SubResource("FastNoiseLite_l2mko")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xauhc"]
+width = 864
+height = 486
+color_ramp = SubResource("Gradient_kgoht")
+noise = SubResource("FastNoiseLite_ea1tr")
 
 [sub_resource type="Gradient" id="Gradient_aspj8"]
 offsets = PackedFloat32Array(0.396226, 1)
@@ -115,8 +121,9 @@ sky = SubResource("Sky_rvnjh")
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.0
+reflected_light_source = 1
 tonemap_mode = 2
-tonemap_exposure = 1.3
+tonemap_exposure = 1.2
 tonemap_white = 8.0
 ssr_fade_in = 0.219613
 ssao_sharpness = 1.0
@@ -126,20 +133,15 @@ ssil_radius = 7.82
 ssil_intensity = 12.32
 sdfgi_y_scale = 0
 glow_enabled = true
-glow_levels/1 = 0.1
-glow_levels/2 = 0.7
-glow_levels/3 = 0.3
-glow_levels/4 = 0.5
-glow_levels/5 = 0.25
-glow_normalized = true
-glow_intensity = 0.37
-glow_strength = 0.59
-glow_bloom = 0.24
-glow_blend_mode = 1
-glow_hdr_threshold = 2.57
-glow_hdr_luminance_cap = 34.59
+glow_levels/2 = 0.18
+glow_levels/3 = 0.0
+glow_levels/5 = 0.19
+glow_intensity = 0.75
+glow_strength = 0.86
+glow_bloom = 0.01
+glow_hdr_threshold = 4.0
 glow_map_strength = 1.0
-glow_map = SubResource("NoiseTexture2D_q5g2k")
+glow_map = SubResource("NoiseTexture2D_xauhc")
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_lv8pw"]
 friction = 0.0
@@ -148,13 +150,23 @@ friction = 0.0
 custom_solver_bias = 0.146
 radius = 0.55
 
+[sub_resource type="Resource" id="Resource_pauen"]
+script = ExtResource("6_rosny")
+ProjectileCount = 1
+ProjectileSpread = Vector2(0, 0)
+ProjectileAlongX = 0
+WeaponModel = ExtResource("6_2o1yg")
+WeaponScript = ExtResource("7_e1nnx")
+AttackSpeed = 0.1
+Damage = 100
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_aa1pn"]
 radius = 0.1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tqvm7"]
 render_priority = 127
 shader = ExtResource("1_1a4ut")
-shader_parameter/outline_bias = 0.0100005
+shader_parameter/outline_bias = 0.0
 
 [sub_resource type="QuadMesh" id="QuadMesh_70gyy"]
 material = SubResource("ShaderMaterial_tqvm7")
@@ -163,13 +175,8 @@ size = Vector2(2, 2)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jdsxf"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_52f2a"]
-render_priority = 0
-shader = ExtResource("23_saokr")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4gm77"]
 render_priority = 0
-next_pass = SubResource("ShaderMaterial_52f2a")
 shader = ExtResource("19_01vdm")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3kltt"]
@@ -209,13 +216,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_8tor2")
-
-[sub_resource type="Resource" id="Resource_wxcpu"]
-script = ExtResource("21_l15ym")
-ProjectileCount = 1
-ProjectileSpread = 0.0
-AttackSpeed = 0.0
-Damage = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_abkh1"]
 render_priority = 0
@@ -277,13 +277,8 @@ size = Vector2(0.5, 0.5)
 [sub_resource type="BoxShape3D" id="BoxShape3D_w6i1x"]
 size = Vector3(0.75, 0.7, 0.75)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_v2i44"]
-render_priority = 0
-shader = ExtResource("23_saokr")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vtl7p"]
 render_priority = 0
-next_pass = SubResource("ShaderMaterial_v2i44")
 shader = ExtResource("25_fvx2a")
 shader_parameter/TEX = ExtResource("24_n78rk")
 
@@ -292,7 +287,7 @@ material = SubResource("ShaderMaterial_vtl7p")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wc5f3"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_l8of5"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rtcjd"]
 shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(1, 0.34902, 0.364706, 1)
@@ -307,7 +302,7 @@ shader_parameter/circleThickness = 44.8
 shader_parameter/borderThickness = 4
 shader_parameter/halfSize = Vector2(64, 64)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_pbqtc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_edlcd"]
 shader = ExtResource("23_w46vi")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(0, 0.866667, 0.705882, 1)
@@ -516,6 +511,13 @@ abilityOrigin = NodePath("Model/AbilityOrigin")
 jumpForce = 12.0
 stairCheckShape = SubResource("SphereShape3D_dkrjm")
 
+[node name="Weapons" type="Node" parent="CharacterNode"]
+script = ExtResource("19_a048f")
+
+[node name="WeaponState" type="Node" parent="CharacterNode/Weapons"]
+script = ExtResource("5_a3nu5")
+WeaponData = SubResource("Resource_pauen")
+
 [node name="States" type="Node" parent="CharacterNode"]
 script = ExtResource("4_hcm5x")
 
@@ -529,6 +531,9 @@ script = ExtResource("5_tl3c6")
 script = ExtResource("7_bm1ph")
 slideSpeedMult = 3.0
 speedDecay = 0.75
+
+[node name="PlayerDeathState" type="Node" parent="CharacterNode/States"]
+script = ExtResource("13_agppg")
 
 [node name="Abilities" type="Node" parent="CharacterNode"]
 script = ExtResource("5_6op11")
@@ -568,7 +573,6 @@ maxRotUp = 1.047
 maxRotDown = 0.785
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterNode/CameraArm/PlayerCamera"]
-visible = false
 mesh = SubResource("QuadMesh_70gyy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterNode"]
@@ -592,9 +596,15 @@ surface_material_override/0 = SubResource("ShaderMaterial_4gm77")
 [node name="AbilityOrigin" type="Node3D" parent="CharacterNode/Model"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
-[node name="WeaponState" type="Node" parent="CharacterNode"]
-script = ExtResource("20_xsito")
-WeaponData = SubResource("Resource_wxcpu")
+[node name="Primary" type="Node3D" parent="CharacterNode/Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, -0.199999)
+
+[node name="WeaponModelManager" type="Node3D" parent="CharacterNode"]
+script = ExtResource("23_87buu")
+
+[node name="HoldingGun" type="Marker3D" parent="CharacterNode/WeaponModelManager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
+script = ExtResource("24_rwr3k")
 
 [node name="Node3D" type="Node3D" parent="."]
 
@@ -622,6 +632,21 @@ draw_pass_1 = SubResource("PlaneMesh_fqmlr")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/RigidBody3D"]
 shape = SubResource("BoxShape3D_w6i1x")
+
+[node name="Statistics" type="Node" parent="Node3D/RigidBody3D"]
+script = ExtResource("11_vketg")
+
+[node name="Health" type="Node" parent="Node3D/RigidBody3D/Statistics"]
+script = ExtResource("12_4e5j0")
+
+[node name="Abilities" type="Node" parent="Node3D/RigidBody3D"]
+script = ExtResource("5_6op11")
+
+[node name="KnockBackAbility" type="Node" parent="Node3D/RigidBody3D/Abilities"]
+script = ExtResource("9_fdwbi")
+range = 7.5
+power = 20.0
+abilityResource = ExtResource("10_3jbsm")
 
 [node name="RigidBody3D2" type="RigidBody3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 8)
@@ -738,13 +763,14 @@ anchors_preset = 0
 offset_right = 372.0
 offset_bottom = 128.0
 
-[node name="healthCircle" type="ColorRect" parent="GUI/statBars"]
-material = SubResource("ShaderMaterial_l8of5")
+[node name="healthCircle" type="ColorRect" parent="GUI/statBars" node_paths=PackedStringArray("textContents")]
+material = SubResource("ShaderMaterial_rtcjd")
 custom_minimum_size = Vector2(372, 128)
 layout_mode = 2
 offset_right = 372.0
 offset_bottom = 128.0
 script = ExtResource("24_cc8w1")
+textContents = NodePath("Label")
 valueColor = Color(1, 0.34902, 0.364706, 1)
 circleThickness = 0.35
 decreasingTextColor = Color(1, 0, 0, 1)
@@ -763,7 +789,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="energyCircle" type="ColorRect" parent="GUI/statBars" node_paths=PackedStringArray("textContents")]
-material = SubResource("ShaderMaterial_pbqtc")
+material = SubResource("ShaderMaterial_edlcd")
 custom_minimum_size = Vector2(240, 128)
 layout_mode = 2
 offset_left = 128.0
@@ -801,6 +827,7 @@ offset_bottom = 648.0
 
 [connection signal="changeHealth" from="CharacterNode/Statistics/Health" to="GUI" method="_on_health_change_health"]
 [connection signal="changeENERGY" from="CharacterNode/Statistics/Energy" to="GUI" method="_on_energy_change_energy"]
+[connection signal="rotation_changed" from="CharacterNode/CameraArm/PlayerCamera" to="CharacterNode" method="_on_player_camera_rotation_changed"]
 
 [editable path="CharacterNode/Model/bean"]
 [editable path="Node3D/RigidBody3D/Companion"]

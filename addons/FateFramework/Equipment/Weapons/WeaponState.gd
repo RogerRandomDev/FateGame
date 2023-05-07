@@ -6,4 +6,9 @@ class_name WeaponState
 ##stored using a [WeaponResource]
 @export var WeaponData:WeaponResource
 
+func _ready():
+	WeaponData._ready()
+	get_parent().get_parent().get_node("WeaponModelManager").loadWeapon("HoldingGun",WeaponData)
+
+
 

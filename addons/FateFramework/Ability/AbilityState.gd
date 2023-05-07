@@ -14,9 +14,9 @@ var space_state:PhysicsDirectSpaceState3D
 var root:Node3D
 
 ##main ability just activated
-var justTrigered:bool=false
+var justTriggered:bool=false
 ##secondary ability just activated
-var justTrigeredSecondary:bool=false
+var justTriggeredSecondary:bool=false
 #motion ability just activated
 var justTriggeredMotion:bool=false
 func _ready():
@@ -30,34 +30,7 @@ func _process(delta):
 	abilityResource._process()
 
 
-func _unhandled_input(event):
-	#prevents double-trigger if moving mouse while pressing
-	#not sure why it does that but i'm guessing 2 actions same frame, so it counted it still
-	
-	if Input.is_action_just_pressed("TriggerAbility")&&abilityResource._mainTimeLeft<=0.:
-		if !abilityResource.attemptTriggerMain():return
-		abilityResource._mainTimeLeft=abilityResource.abilityDelay
-		justTrigered=true
-		AbilityTrigger()
-	if Input.is_action_just_released("TriggerAbility")&&justTrigered:
-		justTrigered=false
-		AbilityRelease()
-	if Input.is_action_just_pressed("TriggerAbilitySecondary")&&abilityResource._secondaryTimeLeft<=0.:
-		if !abilityResource.attemptTriggerSecondary():return
-		abilityResource._secondaryTimeLeft=abilityResource.secondaryAbilityDelay
-		justTrigeredSecondary=true
-		AbilitySecondaryTrigger()
-	if Input.is_action_just_released("TriggerAbilitySecondary")&&justTrigeredSecondary:
-		justTrigeredSecondary=false
-		AbilitySecondaryRelease()
-	if Input.is_action_just_pressed("TriggerAbilityMotion")&&abilityResource._motionTimeLeft<=0.:
-		if !abilityResource.attemptTriggerMotion():return
-		abilityResource._motionTimeLeft=abilityResource.motionAbilityDelay
-		justTriggeredMotion=true
-		AbilityMotionTrigger()
-	if Input.is_action_just_released("TriggerAbilityMotion")&&justTriggeredMotion:
-		justTriggeredMotion=false
-		AbilityMotionRelease()
+
 
 
 ##sets the [member abilityArea] shape
@@ -93,6 +66,10 @@ func AbilitySecondaryRelease()->void:pass
 func AbilityMotionTrigger()->void:pass
 ##runs on releasing the [annotation motion ability]
 func AbilityMotionRelease()->void:pass
+##intercepts attempts to die to see if it should do anything.
+##should return a boolean of true or false based on if it will still die or not
+func attemptingDeathCheck()->bool:return true
+
 
 #ability drawing function
 #put in the code that creates the vfx for the ability itself

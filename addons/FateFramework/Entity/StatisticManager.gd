@@ -30,4 +30,34 @@ func getStatistic(statisticName:String)->Node:
 	return statistic
 
 
-#applies the change to the relevant statistic
+##applies the change to the relevant statistic
+func inflictModifier(statisticName:String,modifierElement:String,modifierValue:int)->void:
+	
+	var stat=getStatistic(statisticName)
+	if !stat:return
+	stat.changeBy(modifierValue)
+
+
+##runs the method of the given name on all the statistics
+##returns an array of the returned values
+func attemptRunAll(funcName:String,nodeCalled:Node)->Array:
+	var returnedValues:Array=[]
+	for stat in get_children():
+		if stat.has_method(funcName):returnedValues.push_back(stat.call(funcName,nodeCalled))
+	
+	return returnedValues
+
+##runs on all available section managers to check for any responses.
+##returns an array of any responses.
+func runFullExternalCheck(checkName:String,nodeCalled:Node,endOn)->Array:
+	var responses:Array=[]
+	var abi=get_parent().get_node_or_null("Abilities")
+	var wep=get_parent().get_node_or_null("Weapons")
+	var sta=get_parent().get_node_or_null("States")
+	if abi:responses.append_array(abi.attemptRunAll(checkName,nodeCalled))
+	if responses.any(func(a):return a==endOn):return responses
+	if wep:responses.append_array(wep.attemptRunAll(checkName,nodeCalled))
+	if responses.any(func(a):return a==endOn):return responses
+	if sta:responses.append_array(sta.attemptRunAll(checkName,nodeCalled))
+	if responses.any(func(a):return a==endOn):return responses
+	return responses

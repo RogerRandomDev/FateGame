@@ -31,6 +31,10 @@ import/fbx/enabled=false
 
 gravity=Vector3(0, -32, 0)
 
+[graphics]
+
+DrawBulletImpacts=true
+
 [input]
 
 forward={
@@ -92,8 +96,13 @@ slide={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_10="HealthBearer"
+
 [physics]
 
+common/physics_ticks_per_second=120
 3d/physics_engine="GodotPhysics3D"
 
 [shader_globals]

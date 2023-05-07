@@ -7,9 +7,10 @@ var activeWeapon:Node;
 
 #disasbles all Weapons by default
 func _ready():
-	for weapon in get_children():
-		setWeaponProcess(weapon,false)
-	swapWeapon("Main")
+	pass
+#	for weapon in get_children():
+#		setWeaponProcess(weapon,false)
+#	swapWeapon("Main")
 
 
 
@@ -24,9 +25,9 @@ func swapWeapon(Weapon:String):
 	activeWeapon=newWeapon
 
 
-##changes process mode for any Abilities[br]
+##changes process mode for any weapons[br]
 ##does not disable [method _process] so as to allow miscellaneous functionality[br]
-##calls [method WeaponState.onTrigger] to the activated ability if set to process true
+##calls [method WeaponState.onTrigger] to the activated weapon if set to process true
 func setWeaponProcess(Weapon:Node,process:bool)->void:
 	Weapon.set_physics_process(process)
 	Weapon.set_process_input(process)
@@ -36,3 +37,15 @@ func setWeaponProcess(Weapon:Node,process:bool)->void:
 ##returns relevant [WeaponState]
 func getWeapon(Weapon:String)->WeaponState:
 	return get_node_or_null(Weapon);
+
+
+
+##runs the method of the given name on all the weapon
+##returns an array of the returned values
+func attemptRunAll(funcName:String,nodeCalled:Node)->Array:
+	var returnedValues:Array=[]
+	for weapon in get_children():
+		#need to implement this into weapons later
+		if weapon.has_method(funcName):returnedValues.push_back(weapon.call(funcName,nodeCalled))
+	
+	return returnedValues

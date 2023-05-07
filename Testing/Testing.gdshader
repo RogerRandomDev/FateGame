@@ -18,8 +18,8 @@ void fragment() {
 	
 	vec2 screen_size = vec2(textureSize(SCREEN_TEXTURE, 0));
 	
-	float px = 1./screen_size.x;
-	float py = 1./screen_size.y;
+	float px = 0.5/screen_size.x;
+	float py = 0.5/screen_size.y;
 	
 	//calculate outlines
 	
@@ -36,7 +36,7 @@ void fragment() {
 	float pl = texture(SCREEN_TEXTURE, SCREEN_UV+vec2(-px, 0.0)).x;
 	
 	ALPHA=round(
-		(0.0 + abs(abs(abs(d)-abs(du)) - abs(abs(d)-abs(dd))) + abs(abs(abs(d)-abs(dl)) - abs(abs(d)-abs(dr))))*300.+ outline_bias);
+		(0.0 + abs(abs(abs(d)-abs(du)) - abs(abs(d)-abs(dd))) + abs(abs(abs(d)-abs(dl)) - abs(abs(d)-abs(dr))))*1200.+ outline_bias);
 	
 }
 

@@ -25,11 +25,18 @@ var _WeaponInstance:Node3D
 
 
 #used only to create the starting _WeaponInstance for convenience
-func _init():
+func _ready():
 	_WeaponInstance=WeaponModel.instantiate()
+
+
+
+
 
 ##returns the [Node3D] of the weapon model
 func getWeaponModel()->Node3D:return _WeaponInstance
+
+
+
 
 ##returns the weapon statistics
 func getWeaponStats()->Dictionary:

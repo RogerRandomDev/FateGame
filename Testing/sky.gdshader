@@ -113,7 +113,7 @@ void sky() {
 	float clouds_value = clamp(smoothstep(clouds_cutoff, clouds_cutoff + clouds_fuzziness, clouds_noise_value), 0.0, 1.0);
 	
 	
-	vec3 clouds = mix(clouds_edge_color,  clouds_main_color , clouds_value) * clouds_value;
+	vec3 clouds = mix(clouds_edge_color,  clouds_main_color*max(day_amount,0.025) , clouds_value) * clouds_value;
 	
 	float clouds_negative = 1.0 - clouds_value;
 	

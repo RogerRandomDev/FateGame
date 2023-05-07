@@ -9,15 +9,15 @@ func _ready():
 	EnergyStatistic.updateExternalModifier(1.25)
 
 func inflictAOE():
-	var inRange:Array=checkWithinRange(get_parent().global_position,2)
+	var inRange:Array=checkWithinRange(get_parent().global_position,4)
 	for collider in inRange:
 		if !collider.collider.get_node_or_null("Statistics"):continue
 		collider.collider.get_node("Statistics").inflictModifier(
 			"Health",
 			ELEMENT,
-			Damage
+			-Damage
 		)
 
 
 func _process(_delta):
-	inflictAOE()
+	pass

@@ -12,10 +12,15 @@ func _ready():
 	viewParticles=$SubViewportContainer/SubViewport/Particles
 	viewCamera=$SubViewportContainer/SubViewport/Origin/Camera3D
 	viewOrigin=$SubViewportContainer/SubViewport/Origin
-
+	$HSlider.value=95
 func _input(event):
-	if not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE):return
-	if not event is InputEventMouseMotion:return
+	var mPos=get_local_mouse_position()
+	
+	if(
+		not Input.is_mouse_button_pressed(MOUSE_BUTTON_MIDDLE) or 
+		not event is InputEventMouseMotion or 
+		mPos.x<0 or mPos.y<0 or mPos.x>size.x or mPos.y>size.y
+		):return
 	viewOrigin.rotation.y+=event.relative.x*0.01
 	viewOrigin.rotation.x=clamp(viewOrigin.rotation.x+event.relative.y*0.01,-PI/2,PI/2)
 

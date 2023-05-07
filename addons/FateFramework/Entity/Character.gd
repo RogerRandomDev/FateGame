@@ -76,8 +76,16 @@ func _integrate_forces(state):
 	var velY=max(min(linear_velocity.y,velocity.y),GRAVITY.y)
 	velocity=-linear_velocity*decelSpeed
 	velocity.y=velY
-	
-	
+
+
+
+func _input(event):
+	if Input.is_action_just_pressed("TriggerAbility"):get_node("Abilities").triggerAbility(0)
+	if Input.is_action_just_pressed("TriggerAbilitySecondary"):get_node("Abilities").triggerAbility(1)
+	if Input.is_action_just_pressed("TriggerAbilityMotion"):get_node("Abilities").triggerAbility(2)
+	if Input.is_action_just_released("TriggerAbility"):get_node("Abilities").releaseAbility(0)
+	if Input.is_action_just_released("TriggerAbilitySecondary"):get_node("Abilities").releaseAbility(1)
+	if Input.is_action_just_released("TriggerAbilityMotion"):get_node("Abilities").releaseAbility(2)
 
 
 #handles updating velocity when rotating
@@ -113,3 +121,10 @@ func getStairCheck():
 	var stairChecks:=get_viewport().world_3d.direct_space_state.get_rest_info(stairFinder)
 	return stairChecks
 
+##returns the look direction of the character currently
+func getFaceDirection()->Vector3:
+	return Vector3($CameraArm.global_rotation.x,global_rotation.y,0.)
+
+
+func _on_player_camera_rotation_changed(rotationNew):
+	$WeaponModelManager.updateRotations(rotationNew)

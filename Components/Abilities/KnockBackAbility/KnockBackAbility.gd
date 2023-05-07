@@ -12,7 +12,8 @@ class_name KnockBackAbility
 func _ready():
 	super._ready()
 	updateShape()
-	abilityResource.PassiveEffect.loadPassive.call_deferred(root.get_node("Model/AbilityOrigin"),root)
+	if root.get_node_or_null("Model/AbilityOrigin"):
+		abilityResource.PassiveEffect.loadPassive.call_deferred(root.get_node("Model/AbilityOrigin"),root)
 func updateShape():
 	var s=SphereShape3D.new()
 	s.radius=range
@@ -90,5 +91,14 @@ func drawMotionAbilityEffect(norm:bool=true,data:Dictionary={}):
 	ability.draw_pass_1.surface_set_material(0,a)
 	ability.process_material=load("res://Components/Abilities/KnockBackAbility/knockBackAbilityMotion.tres")
 	root.get_parent().add_child(ability)
+
+##intercept the death attempt for self and prevents it
+func attemptingToDie(nodeCalled:Node):
+	var stat=root.get_node("Statistics").getStatistic("Energy")
+	if not stat:return 'dontDie'
+	if !stat.attemptCast(nodeCalled._remainderLeft):return 'failedSave'
 	
+	stat.changeBy(-nodeCalled._remainderLeft)
+	nodeCalled.changeBy(1)
 	
+	return 'dontDie'
