@@ -6,8 +6,10 @@ class_name PlayerSlidingState
 @export var minDecay:float=10.
 @export var downhillGain:float=5.
 var initialVelocity:float=0.
+var initialDirection:Vector3=Vector3.FORWARD
 func onTrigger():
 	initialVelocity=root.linear_velocity.length()
+	initialDirection=(root.linear_velocity*Vector3(1,0,1)).normalized()
 	root.get_node("Model").rotation.x+=PI/2.5
 	root.get_node("Model").position.y-=0.5
 	
@@ -19,7 +21,13 @@ func revertMesh():
 func _physics_process(delta):
 	
 	initialVelocity-=root.linear_velocity.y*delta * downhillGain * int(root.on_floor)
-	var moveDirection=-Vector3(sin(root.rotation.y),0,cos(root.rotation.y))*root.SPEED*slideSpeedMult
+	var faceDir=root.getFaceDirection()
+	faceDir=-Vector3(sin(faceDir.y),0,cos(faceDir.y))
+	var dir=applyFacingDirection(Vector2(Input.get_axis("forward","backward"),Input.get_axis("left","right")))
+	if(dir==Vector3.ZERO):dir=applyFacingDirection(Vector2(-1,0))
+	dir=(dir+faceDir*2)/3
+	initialDirection=initialDirection.move_toward(dir,delta*5)
+	var moveDirection=initialDirection*root.SPEED*slideSpeedMult
 	initialVelocity-=max(initialVelocity*delta*speedDecay,minDecay*delta)
 	
 	moveDirection*=initialVelocity

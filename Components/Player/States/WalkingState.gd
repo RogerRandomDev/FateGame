@@ -3,7 +3,7 @@ class_name PlayerWalkingState
 
 
 #updates current motion for the root node
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	var moveDirection=applyFacingDirection(Vector2(
 		Input.get_axis("forward","backward"),

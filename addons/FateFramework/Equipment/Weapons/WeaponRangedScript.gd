@@ -8,11 +8,12 @@ var _timeTillNext:float=0.0
 
 ##the maximum range a projectile can be fired
 const MAX_PROJECTILE_RANGE:float=100.
-
+var weaponOrigin:Vector3
 func _ready():
 	super._ready()
 	projectileCast.exclude=[_body]
 	projectileCast.collision_mask=harmLayer+worldLayer
+	weaponOrigin=_root.get_child(0).position
 
 func _physics_process(delta):
 	if _timeTillNext>0.:
@@ -20,12 +21,21 @@ func _physics_process(delta):
 		return
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		attack()
-		_timeTillNext=_root.weaponStats.AttackSpeed
+		
 
 ##triggers the attack action as long as [member weaponStats] is not empty
 func attack()->void:
+	if _timeTillNext>0.:return
 	var weaponStats=_root.weaponStats;
 	if not weaponStats.size():return
+	
+	#consume relevant energy for firing
+	var energyNode=_body.get_node("Statistics").getStatistic("Energy")
+	if !energyNode||!energyNode.attemptCast(weaponStats.Cost):return
+	energyNode.changeBy(-weaponStats.Cost)
+	
+	_timeTillNext=_root.weaponStats.AttackSpeed
+	
 	
 	
 	var calculatedSpread:Array[Vector2]=[]
@@ -38,17 +48,37 @@ func attack()->void:
 			weaponStats.Spread,
 			weaponStats.BulletsX
 			)
+	flashMuzzle()
 	fireProjectiles(calculatedSpread)
-
+##creates a muzzle flash at the barrel of the ranged weapon
+func flashMuzzle():
+	var flash=Sprite3D.new()
+	flash.texture=load("res://addons/kenney_particle_pack/magic_03.png")
+	flash.pixel_size=0.002
+	flash.position.z-=0.5
+	add_child(flash)
+	var t=flash.create_tween()
+	t.tween_interval(0.1)
+	t.tween_property(flash,'transparency',1.,0.0)
+	t.parallel().tween_property(_root.get_child(0),'position',_root.get_child(0).position+Vector3(0,0,0.25),min(_root.weaponStats.AttackSpeed*0.25,0.0625))
+	t.tween_property(_root.get_child(0),'position',weaponOrigin,min(_root.weaponStats.AttackSpeed*0.75,0.1875))
+	t.tween_callback(flash.queue_free)
+	
+	
+	
+	
 ##fires [annotation Projectiles] along the [annotation spreadArray] vectors
 func fireProjectiles(spreadArray:Array[Vector2]):
-	projectileCast.from=_root.global_transform.origin
-	var faceDirection:Vector3=_body.getFaceDirection()
+	var from=_body.get_node("CameraArm")
+	projectileCast.from=from.global_transform.origin
+	var faceDirection:Vector3=from.global_rotation
 	for projectileDirection in spreadArray:
 		var q=Quaternion.from_euler(faceDirection+Vector3(projectileDirection.x,projectileDirection.y,0.))
-		var inDir=Vector3(0,0,MAX_PROJECTILE_RANGE).rotated(q.get_axis().normalized(),q.get_angle())
+		var n=q.get_axis().normalized()
+		while !n.is_normalized():n=n.normalized()
+		var inDir=Vector3(0,0,MAX_PROJECTILE_RANGE).rotated(n,q.get_angle())
 		projectileCast.to=(
-			_root.global_transform.origin-
+			from.global_transform.origin-
 			inDir
 			)
 		
@@ -87,14 +117,17 @@ func applyBulletImpactEntity(col)->void:
 ##only requires the position, collider, and normal values.
 func createImpactEffect(col)->void:
 	var s=Sprite3D.new()
-	s.texture=load("res://Testing/hover.png")
-	s.pixel_size=0.002
+	s.texture=load("res://addons/kenney_particle_pack/star_09.png")
+	s.pixel_size=0.0005
+	s.transparency=0.5
+	
 	col.collider.add_child(s)
-	if (col.normal.normalized()-Vector3(0,0,-1)).length_squared()>0.01:s.look_at_from_position(Vector3.ZERO,col.normal.normalized(),Vector3.FORWARD)
+	if abs(col.normal.normalized()).distance_squared_to(abs(Vector3.FORWARD))>0.001:
+		s.look_at_from_position(Vector3.ZERO,col.normal.normalized(),Vector3.FORWARD)
 	s.global_position=col.position+col.normal*0.01
 	var t=create_tween()
 	t.tween_interval(10)
-	t.tween_property(s,'modulate',Color(1,1,1,0),0.5)
+	t.tween_property(s,'transparency',1,0.5)
 	t.tween_callback(s.queue_free)
 
 
@@ -115,7 +148,7 @@ func generateSpreadArray(N:int,spreadRange:Vector2,spreadRatio:int)->Array[Vecto
 		#and y is the floored curLeft over spreadRatio
 		var bulletVector:Vector2=Vector2(
 			float(curLeft%spreadRatio)*spreadModifier.x-(spreadRange/2.).x,
-			floor(float(curLeft)/float(spreadRatio))*spreadModifier.y-(spreadRange/2.).y
+			floor(float(curLeft)/float(spreadRatio)-0.01)*spreadModifier.y-(spreadRange/2.).y
 		)
 		directionVectors.push_back(bulletVector)
 		curLeft-=1;

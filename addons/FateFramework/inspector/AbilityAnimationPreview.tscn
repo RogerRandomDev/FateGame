@@ -1,7 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://c3ho4gcylph66"]
+[gd_scene load_steps=18 format=3]
 
 [ext_resource type="Script" path="res://addons/FateFramework/inspector/AbilityAnimationPreview.gd" id="1_x0ico"]
-[ext_resource type="Shader" path="res://Testing/sky.gdshader" id="2_y7y34"]
+[ext_resource type="Shader" path="res://Components/Sky/sky.gdshader" id="2_y7y34"]
 [ext_resource type="Material" uid="uid://2rb3d00ow3rp" path="res://Testing/Testingf.tres" id="3_nxkly"]
 
 [sub_resource type="Gradient" id="Gradient_ewfu8"]

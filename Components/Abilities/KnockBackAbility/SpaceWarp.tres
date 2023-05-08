@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="AbilityResource" load_steps=26 format=3 uid="uid://djt2065h1lg35"]
+[gd_resource type="Resource" script_class="AbilityResource" load_steps=26 format=3 uid="uid://damyqjrk81vvv"]
 
 [ext_resource type="Script" path="res://Components/Abilities/KnockBackAbility/KnockBackAbility.gd" id="1_3futf"]
 [ext_resource type="Shader" path="res://Components/Abilities/KnockBackAbility/knockBackAbility.gdshader" id="2_pfw3w"]
 [ext_resource type="Script" path="res://addons/FateFramework/Ability/Effect/AbilityMeshResource.gd" id="3_a8c8m"]
 [ext_resource type="Material" uid="uid://c3s2y2gnf7lhp" path="res://Components/Abilities/KnockBackAbility/knockBackAbilityMotion.tres" id="4_0qjji"]
 [ext_resource type="Script" path="res://addons/FateFramework/Ability/Effect/AbilityParticleResource.gd" id="5_dsgo8"]
-[ext_resource type="Shader" path="res://Testing/passiveKnockback.gdshader" id="6_12k6g"]
+[ext_resource type="Shader" path="res://Components/Abilities/passiveKnockback.gdshader" id="6_12k6g"]
 [ext_resource type="Script" path="res://addons/FateFramework/Ability/Effect/AbilityPassiveEffectResource.gd" id="6_brf6g"]
 [ext_resource type="Script" path="res://addons/FateFramework/Ability/Effect/AbilityPassiveResource.gd" id="6_dvjyf"]
 [ext_resource type="Script" path="res://addons/FateFramework/Ability/AbilityResource.gd" id="6_utigs"]
@@ -162,25 +162,25 @@ AbilityMeshAnimations = Array[Dictionary]([{
 script = ExtResource("6_utigs")
 Name = "Space Warp"
 hasMain = true
-MainName = ""
+MainName = "Repel"
 MainDescription = ""
 MainEffect = SubResource("Resource_miuv5")
 abilityDelay = 0.25
 mainAbilityEnergy = 5
 hasSecondary = true
-SecondaryName = ""
+SecondaryName = "Attract"
 SecondaryDescription = ""
 SecondaryEffect = SubResource("Resource_5q02e")
 secondaryAbilityDelay = 0.25
 secondaryAbilityEnergy = 5
 hasMotion = true
-MotionName = ""
+MotionName = "Space Tunnel"
 MotionDescription = ""
 MotionEffect = SubResource("Resource_xap75")
 motionAbilityDelay = 1.0
 motionAbilityEnergy = 20
 hasPassive = true
-PassiveName = ""
+PassiveName = "Warp"
 PassiveDescription = ""
 PassiveEffect = SubResource("Resource_4hain")
 AbilityScript = ExtResource("1_3futf")

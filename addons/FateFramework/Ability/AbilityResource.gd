@@ -4,6 +4,11 @@ class_name AbilityResource
 ##handles storing the information of an ability[br]
 ##encompases main, secondary, motion, passive, and the name and descriptions
 
+
+signal PrimaryDelayUpdated(maxDelay:float,curDelay:float)
+signal SecondaryDelayUpdated(maxDelay:float,curDelay:float)
+signal MotionDelayUpdated(maxDelay:float,curDelay:float)
+
 ##Name for the Ability itself
 @export var Name:String
 @export_group("Abilities")
@@ -80,9 +85,17 @@ func _process():
 	var newTime=Time.get_ticks_msec()
 	var _delta=(_lastTime-newTime)*0.001
 	_lastTime=newTime
-	_mainTimeLeft+=_delta
-	_secondaryTimeLeft+=_delta
-	_motionTimeLeft+=_delta
+	
+	if _mainTimeLeft>0.:
+		_mainTimeLeft+=_delta
+		emit_signal("PrimaryDelayUpdated",abilityDelay,_mainTimeLeft)
+	if _secondaryTimeLeft>0.:
+		_secondaryTimeLeft+=_delta
+		emit_signal("SecondaryDelayUpdated",secondaryAbilityDelay,_secondaryTimeLeft)
+	
+	if _motionTimeLeft>0.:
+		_motionTimeLeft+=_delta
+		emit_signal("MotionDelayUpdated",motionAbilityDelay,_motionTimeLeft)
 
 
 
@@ -102,11 +115,21 @@ func getName()->String:
 ##returns a [Dictionary] containing the data for the ability and it's separate parts
 func getDescription()->Dictionary:
 	var out={}
-	if hasMain:out.Primary={"Name":MainName,"Description":MainDescription}
-	if hasSecondary:out.Secondary={"Name":SecondaryName,"Description":SecondaryDescription}
-	if hasMotion:out.Motion={"Name":MotionName,"Description":MotionDescription}
+	if hasMain:out.Primary={"Name":MainName,"Description":MainDescription,"Cost":mainAbilityEnergy}
+	if hasSecondary:out.Secondary={"Name":SecondaryName,"Description":SecondaryDescription,"Cost":secondaryAbilityEnergy}
+	if hasMotion:out.Motion={"Name":MotionName,"Description":MotionDescription,"Cost":motionAbilityEnergy}
 	if hasPassive:out.Passive={"Name":PassiveName,"Description":PassiveDescription}
 	return out
+
+##returns a dictionary of the abilty data
+func getAbilityData()->Dictionary:
+	var out:Dictionary={}
+	#adds the descriptions and names of the component abilities
+	out.merge(getDescription())
+	
+	return out
+
+
 
 
 ##returns a [Boolean] based on if you have enough energy to trigger the [annotation Main Ability][br]
@@ -128,7 +151,6 @@ func canTriggerMotion()->bool:
 ##if it triggers, it will consume the corresponding [annotation ENERGY] for the ability
 func attemptTriggerMain()->bool:
 	if !canTriggerMain():return false
-	
 	var energy=_inheritedRoot.get_node("Statistics").getStatistic("Energy")
 	if energy!=null:energy.changeBy(-mainAbilityEnergy)
 	

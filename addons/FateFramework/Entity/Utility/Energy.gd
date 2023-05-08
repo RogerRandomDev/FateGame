@@ -41,6 +41,7 @@ func _process(delta):
 ##based on if it was an increase or decrease[br]
 ##[member ENERGY] is clamped between 0 and [member externalModifier] times [member maxENERGY]
 func changeBy(modifier:int)->void:
+	
 	var currentENERGY:int=ENERGY;
 	ENERGY=clamp(ENERGY+modifier,0,int(maxENERGY*externalModifier))
 	##begin regen delay timer

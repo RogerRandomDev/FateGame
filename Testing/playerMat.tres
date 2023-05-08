@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" script_class="FateMaterial" load_steps=3 format=3 uid="uid://dvuqjlloyj7n7"]
+
+[ext_resource type="Script" path="res://addons/FateFramework/Environment/BaseFateMaterial.gd" id="1_nht7s"]
+[ext_resource type="Shader" path="res://addons/FateFramework/Environment/fateMaterial.gdshader" id="2_v0xkb"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("2_v0xkb")
+script = ExtResource("1_nht7s")

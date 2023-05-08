@@ -18,6 +18,7 @@ config/features=PackedStringArray("4.0", "Forward Plus")
 
 Dialogue="*res://dialogue/GUI/dialogue.gd"
 Fate="*res://addons/FateFramework/tools.gd"
+SpecialRender="*res://addons/FateFramework/specialRendering.gd"
 
 [editor_plugins]
 

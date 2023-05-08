@@ -6,7 +6,7 @@ extends RigidBody3D
 @export var lookAt:Node
 @export var moveForce:float=2.
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var moveBy=(global_position - targetPos)
 	moveBy.x=clamp(moveBy.x,-2,2)
 	moveBy.y=clamp(moveBy.y,-5,5)

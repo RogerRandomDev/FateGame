@@ -1,6 +1,8 @@
 extends Resource
 class_name WeaponResource
 
+
+
 @export_group('GENERIC DATA')
 ##The Weapon model mesh.
 ##It expects the input to be a GLTF format
@@ -14,6 +16,9 @@ class_name WeaponResource
 ##Damage dealt per hit.
 ##Is the default damage applied to projectiles from [WeaponRangedResource].
 @export var Damage:int=1
+##amount of a resource consumed per use of the weapon.
+##primarily used via the [WeaponRangedResource] weapons
+@export var CostPerShot:int=1
 
 
 
@@ -51,6 +56,7 @@ func _getGenericStats()->Dictionary:
 		'AttackSpeed':AttackSpeed,
 		'Damage':Damage,
 		'WeaponModel':_WeaponInstance,
+		'Cost':CostPerShot,
 		'Script':WeaponScript
 		}
 

@@ -20,7 +20,7 @@ var justTriggeredSecondary:bool=false
 #motion ability just activated
 var justTriggeredMotion:bool=false
 func _ready():
-	
+	abilityResource.setup_local_to_scene()
 	root=get_parent().get_parent()
 	space_state=get_viewport().find_world_3d().direct_space_state
 	abilityResource._inheritedRoot=root

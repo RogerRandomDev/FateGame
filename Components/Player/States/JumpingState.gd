@@ -8,7 +8,7 @@ func onTrigger():
 #	root.apply_central_force(Vector3(0,root.jumpForce,0))
 	
 #updates current motion for the root node
-func _physics_process(delta):
+func _physics_process(_delta):
 	var moveDirection=applyFacingDirection(Vector2(
 		Input.get_axis("forward","backward"),
 		Input.get_axis("left","right")

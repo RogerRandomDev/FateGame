@@ -1,11 +1,11 @@
 extends AbilityState
 class_name KnockBackAbility
 
-@export var range:float:
+@export var rangeOf:float:
 	set(value):
-		range=value
+		rangeOf=value
 		updateShape()
-	get:return range
+	get:return rangeOf
 @export var power:float
 
 
@@ -16,12 +16,12 @@ func _ready():
 		abilityResource.PassiveEffect.loadPassive.call_deferred(root.get_node("Model/AbilityOrigin"),root)
 func updateShape():
 	var s=SphereShape3D.new()
-	s.radius=range
+	s.radius=rangeOf
 	setShape(s)
 
 
 func AbilityTrigger():
-	var ability=abilityResource.MainEffect.getNode(root)
+	var _ability=abilityResource.MainEffect.getNode(root)
 	
 	setShapeTransform(root.global_transform)
 	var targets=getEntitiesInRange()
@@ -29,16 +29,16 @@ func AbilityTrigger():
 		if target is RigidBody3D:
 			var dir=(target.global_position-root.global_position)
 			
-			target.apply_central_impulse(-(dir.normalized()*(dir.length()-range)/range)*power)
+			target.apply_central_impulse(-(dir.normalized()*(dir.length()-rangeOf)/rangeOf)*power)
 func AbilitySecondaryTrigger():
-	var ability=abilityResource.SecondaryEffect.getNode(root)
+	var _ability=abilityResource.SecondaryEffect.getNode(root)
 	setShapeTransform(root.global_transform)
 	var targets=getEntitiesInRange()
 	for target in targets:
 		if target is RigidBody3D:
 			var dir=(target.global_position-root.global_position)
 			
-			target.apply_central_impulse((dir.normalized()*(dir.length()-range)/range)*power)
+			target.apply_central_impulse((dir.normalized()*(dir.length()-rangeOf)/rangeOf)*power)
 
 func AbilityMotionTrigger():
 #	var state=root.get_node("States").setActiveState("ChargingState")
@@ -74,23 +74,6 @@ func AbilityMotionTrigger():
 
 
 
-func drawMotionAbilityEffect(norm:bool=true,data:Dictionary={}):
-	var ability=GPUParticles3D.new()
-	
-	
-	ability.amount=32
-	ability.explosiveness=1
-	ability.draw_pass_1=PlaneMesh.new()
-	ability.draw_pass_1.size=Vector2(0.1,0.1)
-	ability.draw_pass_1.orientation=PlaneMesh.FACE_Z
-	var b=PlaneMesh.new()
-	
-	var a=StandardMaterial3D.new()
-	a.billboard_mode=BaseMaterial3D.BILLBOARD_ENABLED
-	
-	ability.draw_pass_1.surface_set_material(0,a)
-	ability.process_material=load("res://Components/Abilities/KnockBackAbility/knockBackAbilityMotion.tres")
-	root.get_parent().add_child(ability)
 
 ##intercept the death attempt for self and prevents it
 func attemptingToDie(nodeCalled:Node):

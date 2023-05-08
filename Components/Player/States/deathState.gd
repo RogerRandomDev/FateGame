@@ -7,7 +7,7 @@ func onTrigger():
 	root.freeze=true
 
 
-func attemptingToDie(nodeCalled:Node):
+func attemptingToDie(_nodeCalled:Node):
 	get_parent().setActiveState("PlayerDeathState")
 	get_parent().lock()
 	
