@@ -1,8 +1,8 @@
-[gd_scene load_steps=51 format=3 uid="uid://pcusqnl0gl13"]
+[gd_scene load_steps=49 format=3 uid="uid://pcusqnl0gl13"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
 [ext_resource type="Shader" path="res://Components/Sky/sky.gdshader" id="1_2xi3d"]
-[ext_resource type="Texture2D" uid="uid://bnl2b77gyng7m" path="res://addons/kenney_prototype_textures/dark/texture_01.png" id="2_jkdal"]
+[ext_resource type="Material" uid="uid://3mfv0c5pf2sh" path="res://Testing/Testing.tres" id="2_abb46"]
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/Character.gd" id="3_ksv2x"]
 [ext_resource type="Script" path="res://addons/FateFramework/Entity/StateManager.gd" id="4_hcm5x"]
 [ext_resource type="Script" path="res://addons/FateFramework/Ability/AbilityManager.gd" id="5_6op11"]
@@ -132,106 +132,6 @@ glow_hdr_threshold = 4.0
 glow_map_strength = 1.0
 glow_map = SubResource("NoiseTexture2D_xauhc")
 
-[sub_resource type="Shader" id="Shader_x713m"]
-code = "// NOTE: Shader automatically converted from Godot Engine 4.0.1.stable's StandardMaterial3D.
-
-shader_type spatial;
-render_mode blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
-uniform vec4 albedo : source_color;
-uniform sampler2D texture_albedo : source_color,filter_linear_mipmap,repeat_enable;
-uniform float point_size : hint_range(0,128);
-uniform float roughness : hint_range(0,1);
-uniform sampler2D texture_metallic : hint_default_white,filter_linear_mipmap,repeat_enable;
-uniform vec4 metallic_texture_channel;
-uniform sampler2D texture_roughness : hint_roughness_r,filter_linear_mipmap,repeat_enable;
-uniform float specular;
-uniform float metallic;
-varying vec3 uv1_triplanar_pos;
-uniform float uv1_blend_sharpness;
-varying vec3 uv1_power_normal;
-uniform vec3 uv1_scale;
-uniform vec3 uv1_offset;
-uniform vec3 uv2_scale;
-uniform vec3 uv2_offset;
-
-global uniform float DOTRATE;
-
-
-// Per-vertex input/output
-varying vec2 shadowCoords;
-
-void vertex() {
-	TANGENT = vec3(0.0,0.0,-1.0) * abs(NORMAL.x);
-	TANGENT+= vec3(1.0,0.0,0.0) * abs(NORMAL.y);
-	TANGENT+= vec3(1.0,0.0,0.0) * abs(NORMAL.z);
-	TANGENT = normalize(TANGENT);
-	BINORMAL = vec3(0.0,1.0,0.0) * abs(NORMAL.x);
-	BINORMAL+= vec3(0.0,0.0,-1.0) * abs(NORMAL.y);
-	BINORMAL+= vec3(0.0,1.0,0.0) * abs(NORMAL.z);
-	BINORMAL = normalize(BINORMAL);
-	uv1_power_normal=pow(abs(NORMAL),vec3(uv1_blend_sharpness));
-	uv1_triplanar_pos = VERTEX * uv1_scale + uv1_offset;
-	uv1_power_normal/=dot(uv1_power_normal,vec3(1.0));
-	uv1_triplanar_pos *= vec3(1.0,-1.0, 1.0);
-	// Transform the vertex position to object space
-	vec3 objPos = VERTEX;
-	
-	// Calculate the 2D coordinates of the vertex in object space
-//	shadowCoords = objPos.xy*NORMAL.z+objPos.xz*NORMAL.y+objPos.zy*NORMAL.x;
-	shadowCoords = vec2(dot(TANGENT, objPos), dot(BINORMAL, objPos));
-	// Output the vertex position in world space
-	
-}
-
-
-
-
-vec4 triplanar_texture(sampler2D p_sampler,vec3 p_weights,vec3 p_triplanar_pos) {
-	vec4 samp=vec4(0.0);
-	samp+= texture(p_sampler,p_triplanar_pos.xy) * p_weights.z;
-	samp+= texture(p_sampler,p_triplanar_pos.xz) * p_weights.y;
-	samp+= texture(p_sampler,p_triplanar_pos.zy * vec2(-1.0,1.0)) * p_weights.x;
-	return samp;
-}
-
-
-void fragment() {
-	vec4 albedo_tex = triplanar_texture(texture_albedo,uv1_power_normal,uv1_triplanar_pos);
-	ALBEDO = albedo.rgb * albedo_tex.rgb;
-	float metallic_tex = dot(triplanar_texture(texture_metallic,uv1_power_normal,uv1_triplanar_pos),metallic_texture_channel);
-	METALLIC = metallic_tex * metallic;
-	vec4 roughness_texture_channel = vec4(1.0,0.0,0.0,0.0);
-	float roughness_tex = dot(triplanar_texture(texture_roughness,uv1_power_normal,uv1_triplanar_pos),roughness_texture_channel);
-	ROUGHNESS = roughness_tex * roughness;
-	SPECULAR = specular;
-}
-
-
-void light() {
-	// Calculate the shadow intensity based on the dot product of the shadow coordinates
-	// and the DOT_RATE parameter
-	float shadowIntensity = abs(sin(shadowCoords.x * DOTRATE) * cos(shadowCoords.y * DOTRATE))*(1.-ATTENUATION);
-	shadowIntensity=clamp(float(shadowIntensity>0.5)*2.+0.9*(1.-ATTENUATION),0.,1.);
-	// Apply the shadow intensity as a diffuse color
-	DIFFUSE_LIGHT = vec3(-shadowIntensity);
-}"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_mf76k"]
-render_priority = 0
-shader = SubResource("Shader_x713m")
-shader_parameter/albedo = Color(1, 1, 1, 1)
-shader_parameter/point_size = 1.0
-shader_parameter/roughness = 1.0
-shader_parameter/metallic_texture_channel = Plane(1, 0, 0, 0)
-shader_parameter/specular = 0.5
-shader_parameter/metallic = 0.0
-shader_parameter/uv1_blend_sharpness = 1.0
-shader_parameter/uv1_scale = Vector3(1, 1, 1)
-shader_parameter/uv1_offset = Vector3(0, 0, 0)
-shader_parameter/uv2_scale = Vector3(1, 1, 1)
-shader_parameter/uv2_offset = Vector3(0, 0, 0)
-shader_parameter/texture_albedo = ExtResource("2_jkdal")
-
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_lv8pw"]
 friction = 0.0
 
@@ -241,9 +141,9 @@ radius = 0.55
 
 [sub_resource type="Resource" id="Resource_pauen"]
 script = ExtResource("6_rosny")
-ProjectileCount = 1
-ProjectileSpread = Vector2(0, 0)
-ProjectileAlongX = 1
+ProjectileCount = 25
+ProjectileSpread = Vector2(0.098, 0.098)
+ProjectileAlongX = 5
 WeaponModel = ExtResource("6_2o1yg")
 WeaponScript = ExtResource("7_e1nnx")
 AttackSpeed = 0.05
@@ -289,155 +189,155 @@ collision_priority = 1e+18
 [node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.382, 0, 0)
 size = Vector3(64, 1, 80)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="stairs" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.75, 2.5, 0.6, 0)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D5" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="CSGCombiner3D/stairs/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D4/CSGBox3D4/CSGBox3D5/CSGBox3D6/CSGBox3D5/CSGBox3D5"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5)
 size = Vector3(1.5, 0.1, 0.5)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="CSGCombiner3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 3.75, -10.45)
 size = Vector3(4, 1, 7)
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGPolygon3D" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.5, 0)
 polygon = PackedVector2Array(-5.5, 0, 0, 1, 1, 1, 1, 0)
 depth = 3.0
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGPolygon3D2" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3, 0.5, 1.31134e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 1.5, 1, 1.5, 1, 0)
 depth = 3.0
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGPolygon3D3" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -6, 0.5, 2.62268e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 2, 1, 2, 1, 0)
 depth = 3.0
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGPolygon3D4" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -9, 0.5, 3.93402e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 3, 1, 3, 1, 0)
 depth = 3.0
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGPolygon3D5" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -12, 0.5, 5.24536e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 4, 1, 4, 1, 0)
 depth = 3.0
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGPolygon3D6" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -15, 0.5, 6.5567e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 5, 1, 5, 1, 0)
 depth = 3.0
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGPolygon3D7" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -18, 0.5, 7.86805e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 6, 1, 6, 1, 0)
 depth = 3.0
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CSGPolygon3D8" type="CSGPolygon3D" parent="CSGCombiner3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -21, 0.5, 9.17939e-07)
 polygon = PackedVector2Array(-5.5, 0, 0, 7, 1, 7, 1, 0)
 depth = 3.0
-material = SubResource("ShaderMaterial_mf76k")
+material = ExtResource("2_abb46")
 
 [node name="CharacterNode" type="RigidBody3D" parent="." node_paths=PackedStringArray("abilityOrigin")]
 transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 3.00001, 1.501, -7.99999)

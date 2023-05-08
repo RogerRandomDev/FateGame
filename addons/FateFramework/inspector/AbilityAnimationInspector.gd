@@ -5,7 +5,7 @@ extends EditorInspectorPlugin
 func _can_handle(object):
 	return object is AbilityEffectResource
 
-const AnimationPreview=preload("res://addons/FateFramework/inspector/AbilityAnimationPreview.tscn")
+const AnimationPreview=preload("res://addons/FateFramework/inspector/PreviewAnimation.tscn")
 var activePreview=null
 
 func _parse_property(object, type, name, hint_type, hint_string, usage_flags, wide):
