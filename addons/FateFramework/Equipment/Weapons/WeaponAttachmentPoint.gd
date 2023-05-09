@@ -19,10 +19,12 @@ func loadWeapon(weapon:WeaponResource)->Node3D:
 			remove_child(child);continue
 		child.queue_free()
 	weapon.reloadInstance()
+	
 	#stores stats
 	weaponStats=weapon.getWeaponStats()
 	MODEL=weaponStats.WeaponModel
 	MODEL.name="WEAPONMODEL"
+	MODEL.rotation.y=-PI/2
 	SCRIPT=Node3D.new()
 	SCRIPT.set_script(weaponStats.Script)
 	

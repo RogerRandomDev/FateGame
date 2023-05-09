@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://Components/GUI/PlayerHUD/AbilityCooldownListItem.gd" id="4_gsq4g"]
 [ext_resource type="Texture2D" uid="uid://cbdvpd5ih3h4" path="res://crosshair.png" id="5_by6lw"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_prn6m"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_top82"]
 shader = ExtResource("1_r04gq")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(1, 0.34902, 0.364706, 1)
@@ -21,7 +21,7 @@ shader_parameter/circleThickness = 44.8
 shader_parameter/borderThickness = 4
 shader_parameter/halfSize = Vector2(64, 64)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_u8nxm"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cefkd"]
 shader = ExtResource("1_r04gq")
 shader_parameter/backColor = null
 shader_parameter/valueColor = Color(0, 0.866667, 0.705882, 1)
@@ -48,7 +48,7 @@ offset_right = 372.0
 offset_bottom = 128.0
 
 [node name="healthCircle" type="ColorRect" parent="statBars" node_paths=PackedStringArray("textContents")]
-material = SubResource("ShaderMaterial_prn6m")
+material = SubResource("ShaderMaterial_top82")
 custom_minimum_size = Vector2(372, 128)
 layout_mode = 2
 offset_right = 372.0
@@ -73,7 +73,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="energyCircle" type="ColorRect" parent="statBars" node_paths=PackedStringArray("textContents")]
-material = SubResource("ShaderMaterial_u8nxm")
+material = SubResource("ShaderMaterial_cefkd")
 custom_minimum_size = Vector2(240, 128)
 layout_mode = 2
 offset_left = 128.0
