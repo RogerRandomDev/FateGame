@@ -7,5 +7,6 @@
 [resource]
 render_priority = 0
 shader = ExtResource("2_vvtlj")
+shader_parameter/scaleMult = 0.5
 shader_parameter/TEXTURE = ExtResource("3_kt78o")
 script = ExtResource("1_kanv3")

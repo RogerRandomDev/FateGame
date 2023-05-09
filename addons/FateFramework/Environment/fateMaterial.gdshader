@@ -1,7 +1,7 @@
 shader_type spatial;
 render_mode cull_disabled;
 uniform sampler2D TEXTURE:filter_nearest;
-
+uniform float scaleMult=1.;
 
 
 
@@ -28,7 +28,7 @@ void vertex() {
 void light() {
 	// Calculate the shadow intensity based on the dot product of the shadow coordinates
 	// and the DOT_RATE parameter
-	float shadowIntensity = abs(sin(shadowCoords.x * DOTRATE) * cos(shadowCoords.y * DOTRATE))*(1.-ATTENUATION);
+	float shadowIntensity = abs(sin(shadowCoords.x * DOTRATE*scaleMult) * cos(shadowCoords.y * DOTRATE*scaleMult))*(1.-ATTENUATION);
 	shadowIntensity=clamp(float(shadowIntensity>0.5)*2.+0.9*(1.-ATTENUATION),0.,1.);
 	// Apply the shadow intensity as a diffuse color
 	DIFFUSE_LIGHT = vec3(-shadowIntensity);

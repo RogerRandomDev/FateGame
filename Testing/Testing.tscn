@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://pcusqnl0gl13"]
+[gd_scene load_steps=54 format=3 uid="uid://pcusqnl0gl13"]
 
 [ext_resource type="Shader" path="res://Testing/Testing.gdshader" id="1_1a4ut"]
 [ext_resource type="Shader" path="res://Components/Sky/sky.gdshader" id="1_2xi3d"]
@@ -27,6 +27,7 @@
 [ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponModelManager.gd" id="23_87buu"]
 [ext_resource type="Script" path="res://addons/FateFramework/Equipment/Weapons/WeaponAttachmentPoint.gd" id="24_rwr3k"]
 [ext_resource type="PackedScene" uid="uid://d7t1ftib0g50" path="res://Testing/Box.gltf" id="26_6g8gy"]
+[ext_resource type="PackedScene" uid="uid://mgoy2mv5l0md" path="res://Testing/sword.glb" id="29_bdt05"]
 [ext_resource type="PackedScene" uid="uid://c006hss4ibvij" path="res://Components/GUI/PlayerHUD/HUD.tscn" id="36_jgpkh"]
 
 [sub_resource type="Gradient" id="Gradient_kgoht"]
@@ -461,7 +462,7 @@ maxCoyoteTime = 0.125
 [node name="CameraArm" type="SpringArm3D" parent="CharacterNode"]
 transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 0.475, 0.5, 0)
 shape = SubResource("SphereShape3D_aa1pn")
-spring_length = 6.0
+spring_length = 4.0
 
 [node name="PlayerCamera" type="Camera3D" parent="CharacterNode/CameraArm"]
 current = true
@@ -686,7 +687,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_ybm2n")
 
 [node name="guns" parent="." instance=ExtResource("6_lf850")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 5, 7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 2, 7)
+
+[node name="sword" parent="." instance=ExtResource("29_bdt05")]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 5, 2.9, 7.2)
 
 [connection signal="changeHealth" from="CharacterNode/Statistics/Health" to="GUI" method="_on_health_change_health"]
 [connection signal="changeENERGY" from="CharacterNode/Statistics/Energy" to="GUI" method="_on_energy_change_energy"]

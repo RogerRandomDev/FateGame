@@ -59,9 +59,6 @@ func flashMuzzle():
 	add_child(flash)
 	var t=flash.create_tween()
 	t.tween_interval(0.1)
-	t.tween_property(flash,'transparency',1.,0.0)
-	t.parallel().tween_property(_root.get_child(0),'position',_root.get_child(0).position+Vector3(0,0,0.25),min(_root.weaponStats.AttackSpeed*0.25,0.0625))
-	t.tween_property(_root.get_child(0),'position',weaponOrigin,min(_root.weaponStats.AttackSpeed*0.75,0.1875))
 	t.tween_callback(flash.queue_free)
 	
 	
