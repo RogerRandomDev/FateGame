@@ -20,8 +20,7 @@ func getEntitiesInRange()->Array:
 var root:Node=null
 
 func _ready():
-	space_state=get_viewport().find_world_3d().direct_space_state
-	root=get_parent().get_parent().get_parent()
+	space_state=root.get_viewport().find_world_3d().direct_space_state
 	loadAbility()
 
 ##unique to each ability, loads ability-specific data

@@ -73,8 +73,8 @@ func _ready():
 	updateText()
 #updates last value to move towards the current value
 func _process(delta):
-	_lastValue=max(_lastValue-delta*max_value*0.25,value)
 	material.set_shader_parameter("lastValue",_lastValue)
+	_lastValue=max(_lastValue-delta*max_value*0.25,value)
 
 
 ##sets the [annotation max value] for the circle and calls [method updateText]

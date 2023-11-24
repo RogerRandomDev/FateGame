@@ -4,10 +4,27 @@ class_name AbilityResource
 ##handles storing the information of an ability[br]
 ##encompases main, secondary, motion, passive, and the name and descriptions
 
-
+##delay for primary updated
 signal PrimaryDelayUpdated(maxDelay:float,curDelay:float)
+##delay for secondary updated
 signal SecondaryDelayUpdated(maxDelay:float,curDelay:float)
+##delay for motion updated
 signal MotionDelayUpdated(maxDelay:float,curDelay:float)
+
+##emited whenever the ability attempts to trigger while [member is_active_currently] is set to true
+##type is 0,1,2 based on primary secondary or motion, 3 when it is a special condition I.E. passive
+##ability should be the ability resource itself
+##failReason is for if it did not succeed, optional value to set why
+signal ability_trigger_attempted(type:int,succeeded:bool,failReason:String,ability:AbilityResource)
+
+##primary ability triggered
+signal PrimaryTriggered
+##secondary ability triggered
+signal SecondaryTriggered
+##motion ability triggered
+signal MotionTriggered
+
+
 
 ##Name for the Ability itself
 @export var Name:String
@@ -20,7 +37,14 @@ signal MotionDelayUpdated(maxDelay:float,curDelay:float)
 ##main ability description
 @export_multiline var MainDescription:String
 ##main ability [AbilityActionResource]
-@export var MainEffect:Script
+@export var MainEffect:Script:
+	set(v):
+		MainEffect=v
+		var n=Node.new()
+		n.set_script(v)
+		MainNode=n
+	get:return MainEffect
+var MainNode:Node
 ##delay between using the main Ability
 @export var abilityDelay:float=0.
 var _mainTimeLeft:float=0.
@@ -35,7 +59,14 @@ var _mainTimeLeft:float=0.
 ##secondary ability description
 @export_multiline var SecondaryDescription:String
 ##secondary ability [AbilityActionResource]
-@export var SecondaryEffect:Script
+@export var SecondaryEffect:Script:
+	set(v):
+		SecondaryEffect=v
+		var n=Node.new()
+		n.set_script(v)
+		SecondaryNode=n
+	get:return SecondaryEffect
+var SecondaryNode:Node
 ##delay between using the secondary ability
 @export var secondaryAbilityDelay:float=0.
 var _secondaryTimeLeft:float=0.
@@ -50,7 +81,15 @@ var _secondaryTimeLeft:float=0.
 ##motion ability description
 @export_multiline var MotionDescription:String
 ##motion ability [AbilityActionResource]
-@export var MotionEffect:Script
+@export var MotionEffect:Script:
+	set(v):
+		MotionEffect=v
+		var n=Node.new()
+		n.set_script(v)
+		MotionNode=n
+	get:return MotionEffect
+var MotionNode:Node
+
 ##delay between using the motion ability
 @export var motionAbilityDelay:float=0.
 ##energy used for the motion ability
@@ -67,48 +106,85 @@ var _last_motion_press:int=0
 ##passive ability description
 @export_multiline var PassiveDescription:String
 ##passive ability [AbilityActionResource]
-@export var PassiveEffect:Script
+@export var PassiveEffect:Script:
+	set(v):
+		PassiveEffect=v
+		var n=Node.new()
+		n.set_script(v)
+		PassiveNode=n
+	get:return PassiveEffect
+
+var PassiveNode:Node
 
 #this is set to the character containing the ability list
 #it is used for getting things like statistics from the character
 #using the ability
 var _inheritedRoot:Node
 
-##state for the ability, which is used by the ability manager
-var state:AbilityState=AbilityState.new()
-
 var _lastTime:int=0
 
 
-##loads the ability state into [member state] for calling in the game
-func _init():
-	state.abilityResource=self
+
+
+##set to manage if the ability can be triggered or not
+##makes it easier to manage the signals from other abilities as well
+var is_active_currently:bool=false
+
+##links the signals to the ability sub-scripts
+func _initialize_signals()->void:
+	PrimaryTriggered.connect(MainNode.trigger)
+
+##sets root node for all sub scripts
+##mainly to keep them laid out correctly and
+##for ease of use
+func load_structure_root(root_node:Node)->void:
+	MainNode.root=root_node
+	SecondaryNode.root=root_node
+	MotionNode.root=root_node
+	
+	MainNode._ready()
+	SecondaryNode._ready()
+	MotionNode._ready()
+
+
+##updates whether this ability is currently active.
+##Sets [member is_active_currently] to if the input is itself
+func updateActive(changedTo:AbilityResource)->void:
+	is_active_currently=(changedTo==self)
 	
 
 
 #updates the time left
-func _process():
-	var newTime=Time.get_ticks_msec()
-	var _delta=(_lastTime-newTime)*0.001
-	_lastTime=newTime
-	
-	
+func _process(_delta:float=0.0):
 	if _mainTimeLeft>0.:
-		_mainTimeLeft+=_delta
+		_mainTimeLeft-=_delta
 		emit_signal("PrimaryDelayUpdated",abilityDelay,_mainTimeLeft)
 	if _secondaryTimeLeft>0.:
-		_secondaryTimeLeft+=_delta
+		_secondaryTimeLeft-=_delta
 		emit_signal("SecondaryDelayUpdated",secondaryAbilityDelay,_secondaryTimeLeft)
 	
 	if _motionTimeLeft>0.:
-		_motionTimeLeft+=_delta
+		_motionTimeLeft-=_delta
 		emit_signal("MotionDelayUpdated",motionAbilityDelay,_motionTimeLeft)
 
 
+##checks and emits trigger signals based on abilities and conditions
+func checkTrigger(type:int)->void:
+	#don't skip if it is 3, in case it is a passive ability check
+	if !is_active_currently&&type!=3:return
+	match type:
+		0:
+			if _mainTimeLeft>0.:return emit_signal("ability_trigger_attempted",0,false,"still_on_cooldown",self)
+			if !attemptTriggerMain():return emit_signal("ability_trigger_attempted",0,false,"energy_low",self)
+			emit_signal("PrimaryTriggered")
+			_mainTimeLeft=abilityDelay
+			
+			return emit_signal("ability_trigger_attempted",0,true,"success",self)
+		1:emit_signal("SecondaryTriggered")
+		2:emit_signal("MotionTriggered")
 
-#returns the ability node for the resource
-func getAbilityNode()->AbilityState:
-	return state
+
+
 
 
 ##returns the [member Name] of the ability itself[br]

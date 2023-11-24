@@ -7,7 +7,7 @@ uniform vec3 innerColor:source_color=vec3(0.);
 
 uniform int maxValue=100;
 uniform int value=50;
-uniform int lastValue=50;
+uniform float lastValue=50.0;
 uniform float lengthOfLine:hint_range(0.,1.)=0.75;
 uniform float lineAccountsPercentage:hint_range(0.,1.)=0.5;
 
@@ -30,9 +30,9 @@ void vertex(){
 	}
 	int workingValue=maxValue-value;
 	curStraightVal=1.-(float(workingValue)/(float(maxValue)*lineAccountsPercentage));
-	lastStraightVal=1.-(float(maxValue-lastValue)/(float(maxValue)*lineAccountsPercentage));
+	lastStraightVal=1.-((float(maxValue)-lastValue)/(float(maxValue)*lineAccountsPercentage));
 	angle=((float(workingValue)-(float(maxValue)*lineAccountsPercentage))/(float(maxValue)))*PI*2. /(1.-lineAccountsPercentage);
-	lastAngle=((float(maxValue-lastValue)-(float(maxValue)*lineAccountsPercentage))/float(maxValue))*PI*2. /(1.-lineAccountsPercentage);
+	lastAngle=(((float(maxValue)-lastValue)-(float(maxValue)*lineAccountsPercentage))/float(maxValue))*PI*2. /(1.-lineAccountsPercentage);
 	corner.x=max(corner.x,VERTEX.x);
 	corner.y=max(corner.y,VERTEX.y);
 }

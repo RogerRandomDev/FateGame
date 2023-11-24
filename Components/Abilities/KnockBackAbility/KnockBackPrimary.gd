@@ -10,7 +10,7 @@ func loadAbility()->void:
 
 func trigger():
 	loadAbilityVisuals()
-	await get_tree().create_timer(0.25).timeout
+	await root.get_tree().create_timer(0.25).timeout
 	setShapeTransform(root.global_transform)
 	var targets=getEntitiesInRange()
 	for target in targets:

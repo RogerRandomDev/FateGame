@@ -2,9 +2,8 @@ extends Control
 
 
 func _ready():
-	var abilityList=get_parent().get_node("CharacterNode/Abilities/KnockBackAbility")
-	updateAbilities(abilityList.abilityResource)
-
+	var abilityList=get_parent().get_node("CharacterNode/Abilities")
+	abilityList.ActiveAbilityChanged.connect(updateAbilities)
 
 
 func updateAbilities(ability:AbilityResource)->void:

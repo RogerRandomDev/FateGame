@@ -40,6 +40,11 @@ folder_colors={
 "res://Components/Weapons/": "red",
 "res://Components/World/": "orange",
 "res://addons/FateFramework/": "green",
+"res://addons/FateFramework/Ability/": "red",
+"res://addons/FateFramework/Entity/": "purple",
+"res://addons/FateFramework/Equipment/": "orange",
+"res://addons/FateFramework/GUI/": "purple",
+"res://addons/FateFramework/inspector/": "pink",
 "res://addons/clyde/": "blue"
 }
 

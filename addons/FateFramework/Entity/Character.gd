@@ -49,13 +49,16 @@ func _physics_process(delta):
 
 
 
+#needs to be made into its own node/resource to allow swapping
+#what handles the triggers more easily
+
 func _input(event):
-	if Input.is_action_just_pressed("TriggerAbility"):get_node("Abilities").triggerAbility(0)
-	if Input.is_action_just_pressed("TriggerAbilitySecondary"):get_node("Abilities").triggerAbility(1)
-	if Input.is_action_just_pressed("TriggerAbilityMotion"):get_node("Abilities").triggerAbility(2)
-	if Input.is_action_just_released("TriggerAbility"):get_node("Abilities").releaseAbility(0)
-	if Input.is_action_just_released("TriggerAbilitySecondary"):get_node("Abilities").releaseAbility(1)
-	if Input.is_action_just_released("TriggerAbilityMotion"):get_node("Abilities").releaseAbility(2)
+	if Input.is_action_just_pressed("TriggerAbility"):get_node("Abilities").emit_signal("AbilityTriggered",0)
+	#if Input.is_action_just_pressed("TriggerAbilitySecondary"):get_node("Abilities").triggerAbility(1)
+	#if Input.is_action_just_pressed("TriggerAbilityMotion"):get_node("Abilities").triggerAbility(2)
+	#if Input.is_action_just_released("TriggerAbility"):get_node("Abilities").releaseAbility(0)
+	#if Input.is_action_just_released("TriggerAbilitySecondary"):get_node("Abilities").releaseAbility(1)
+	#if Input.is_action_just_released("TriggerAbilityMotion"):get_node("Abilities").releaseAbility(2)
 
 
 #handles updating velocity when rotating
