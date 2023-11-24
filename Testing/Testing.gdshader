@@ -23,20 +23,18 @@ void fragment() {
 	
 	//calculate outlines
 	
+	float d=(
+		texture(DEPTH_TEXTURE,SCREEN_UV+vec2(px,py)).r+
+		texture(DEPTH_TEXTURE,SCREEN_UV-vec2(px,py)).r-
+		texture(DEPTH_TEXTURE,SCREEN_UV+vec2(0,py)).r-
+		texture(DEPTH_TEXTURE,SCREEN_UV-vec2(0,py)).r+
+		texture(DEPTH_TEXTURE,SCREEN_UV+vec2(-px,py)).r+
+		texture(DEPTH_TEXTURE,SCREEN_UV-vec2(-px,py)).r-
+		texture(DEPTH_TEXTURE,SCREEN_UV+vec2(px,0)).r-
+		texture(DEPTH_TEXTURE,SCREEN_UV-vec2(px,0)).r
+	)*4.0;
 	
-	float d = texture(DEPTH_TEXTURE, SCREEN_UV).x;
-	float du = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(0.0, py)).x;
-	float dd = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(0.0, -py)).x;
-	float dr = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(px, 0.0)).x;
-	float dl = texture(DEPTH_TEXTURE, SCREEN_UV+vec2(-px, 0.0)).x;
-	float p = texture(SCREEN_TEXTURE, SCREEN_UV).x;
-	float pu = texture(SCREEN_TEXTURE, SCREEN_UV+vec2(0.0, py)).x;
-	float pd = texture(SCREEN_TEXTURE, SCREEN_UV+vec2(0.0, -py)).x;
-	float pr = texture(SCREEN_TEXTURE, SCREEN_UV+vec2(px, 0.0)).x;
-	float pl = texture(SCREEN_TEXTURE, SCREEN_UV+vec2(-px, 0.0)).x;
-	
-	ALPHA=round(
-		(0.0 + abs(abs(abs(d)-abs(du)) - abs(abs(d)-abs(dd))) + abs(abs(abs(d)-abs(dl)) - abs(abs(d)-abs(dr))))*1200.+ outline_bias);
+	ALPHA=float(d<-0.001);
 	
 }
 

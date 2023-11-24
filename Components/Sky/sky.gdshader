@@ -47,7 +47,7 @@ uniform sampler2D stars_texture: filter_linear_mipmap;
 uniform float stars_cutoff;
 uniform float stars_speed: hint_range(0.0, 0.1);
 
-
+uniform float starMult:hint_range(0.0,1.0)=0.0;
 
 
 
@@ -128,7 +128,11 @@ void sky() {
 	
 	
 	
+	
 	vec3 sky = horizon_glow + sky_gradients + sun_moon + clouds;
+	
+	sky = (sky.b<0.01?vec3(float(pow(texture(stars_texture,SKY_COORDS).r,2.0)>stars_cutoff&&clouds.x<0.001)):sky);
+	
 	sky*=1.-float(clouds_value>0.&&clouds_value<cloud_outline);
 	
 	

@@ -34,3 +34,7 @@ func _process(_delta):
 		maxRotDown
 	)
 #	if(get_parent().get_hit_length()<0.15):get_parent().position.x*=-1
+
+func get_crosshair_pos():
+	
+	pass

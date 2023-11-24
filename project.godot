@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="FateGame"
+config/tags=PackedStringArray("open_world")
 run/main_scene="res://Testing/Testing.tscn"
-config/features=PackedStringArray("4.0", "Forward Plus")
+config/features=PackedStringArray("4.2", "Forward Plus")
 
 [autoload]
 
@@ -20,9 +21,27 @@ Dialogue="*res://dialogue/GUI/dialogue.gd"
 Fate="*res://addons/FateFramework/tools.gd"
 SpecialRender="*res://addons/FateFramework/specialRendering.gd"
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/clyde/plugin.cfg", "res://addons/FateFramework/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://Components/": "teal",
+"res://Components/Abilities/": "red",
+"res://Components/GUI/": "purple",
+"res://Components/Sky/": "orange",
+"res://Components/Weapons/": "red",
+"res://Components/World/": "orange",
+"res://addons/FateFramework/": "green",
+"res://addons/clyde/": "blue"
+}
 
 [filesystem]
 

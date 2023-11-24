@@ -8,6 +8,7 @@ var viewOrigin
 var activeResource
 var activeTween:Tween
 func _ready():
+	
 	viewMesh=$SubViewportContainer/SubViewport/Mesh
 	viewParticles=$SubViewportContainer/SubViewport/Particles
 	viewCamera=$SubViewportContainer/SubViewport/Origin/Camera3D

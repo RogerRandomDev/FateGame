@@ -1,11 +1,12 @@
 extends PlayerController
 class_name PlayerJumpingState
 
-const JUMP_DAMPING:float=0.5
+const JUMP_DAMPING:float=0.75
 
 func onTrigger():
-	root.linear_velocity.y=root.jumpForce
+	root.velocity.y= root.jumpForce
 #	root.apply_central_force(Vector3(0,root.jumpForce,0))
+	root.anim_data["state"]="Jumping"
 	
 #updates current motion for the root node
 func _physics_process(_delta):

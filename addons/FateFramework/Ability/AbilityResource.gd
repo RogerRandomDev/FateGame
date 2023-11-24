@@ -19,8 +19,8 @@ signal MotionDelayUpdated(maxDelay:float,curDelay:float)
 @export var MainName:String
 ##main ability description
 @export_multiline var MainDescription:String
-##main ability [AbilityEffectResource]
-@export var MainEffect:AbilityEffectResource
+##main ability [AbilityActionResource]
+@export var MainEffect:Script
 ##delay between using the main Ability
 @export var abilityDelay:float=0.
 var _mainTimeLeft:float=0.
@@ -34,8 +34,8 @@ var _mainTimeLeft:float=0.
 @export var SecondaryName:String
 ##secondary ability description
 @export_multiline var SecondaryDescription:String
-##secondary ability [AbilityEffectResource]
-@export var SecondaryEffect:AbilityEffectResource
+##secondary ability [AbilityActionResource]
+@export var SecondaryEffect:Script
 ##delay between using the secondary ability
 @export var secondaryAbilityDelay:float=0.
 var _secondaryTimeLeft:float=0.
@@ -49,14 +49,15 @@ var _secondaryTimeLeft:float=0.
 @export var MotionName:String
 ##motion ability description
 @export_multiline var MotionDescription:String
-##motion ability [AbilityEffectResource]
-@export var MotionEffect:AbilityEffectResource
+##motion ability [AbilityActionResource]
+@export var MotionEffect:Script
 ##delay between using the motion ability
 @export var motionAbilityDelay:float=0.
 ##energy used for the motion ability
 @export var motionAbilityEnergy:int=0.
 
 var _motionTimeLeft:float=0.
+var _last_motion_press:int=0
 
 @export_subgroup("Passive")
 ##passive ability exists
@@ -65,26 +66,32 @@ var _motionTimeLeft:float=0.
 @export var PassiveName:String
 ##passive ability description
 @export_multiline var PassiveDescription:String
-##passive ability [AbilityPassiveResource]
-@export var PassiveEffect:AbilityPassiveResource
-
-@export_group("")
-##Primary [Script] for the Ability[br]
-##Should extend [AbilityState]
-@export var AbilityScript:Script
+##passive ability [AbilityActionResource]
+@export var PassiveEffect:Script
 
 #this is set to the character containing the ability list
 #it is used for getting things like statistics from the character
 #using the ability
 var _inheritedRoot:Node
 
+##state for the ability, which is used by the ability manager
+var state:AbilityState=AbilityState.new()
 
 var _lastTime:int=0
+
+
+##loads the ability state into [member state] for calling in the game
+func _init():
+	state.abilityResource=self
+	
+
+
 #updates the time left
 func _process():
 	var newTime=Time.get_ticks_msec()
 	var _delta=(_lastTime-newTime)*0.001
 	_lastTime=newTime
+	
 	
 	if _mainTimeLeft>0.:
 		_mainTimeLeft+=_delta
@@ -101,8 +108,6 @@ func _process():
 
 #returns the ability node for the resource
 func getAbilityNode()->AbilityState:
-	var state=AbilityState.new()
-	state.set_script(AbilityScript)
 	return state
 
 

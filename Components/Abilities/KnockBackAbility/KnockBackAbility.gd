@@ -13,7 +13,7 @@ func _ready():
 	super._ready()
 	updateShape()
 	if root.get_node_or_null("Model/AbilityOrigin"):
-		abilityResource.PassiveEffect.loadPassive.call_deferred(root.get_node("Model/AbilityOrigin"),root)
+		abilityResource.PassiveEffect.loadAbility.call_deferred(root.get_node("Model/AbilityOrigin"),root)
 func updateShape():
 	var s=SphereShape3D.new()
 	s.radius=rangeOf
@@ -21,7 +21,7 @@ func updateShape():
 
 
 func AbilityTrigger():
-	var _ability=abilityResource.MainEffect.getNode(root)
+	var _ability=abilityResource.MainEffect.trigger()
 	
 	setShapeTransform(root.global_transform)
 	var targets=getEntitiesInRange()
@@ -31,7 +31,7 @@ func AbilityTrigger():
 			
 			target.apply_central_impulse(-(dir.normalized()*(dir.length()-rangeOf)/rangeOf)*power)
 func AbilitySecondaryTrigger():
-	var _ability=abilityResource.SecondaryEffect.getNode(root)
+	var _ability=abilityResource.SecondaryEffect.trigger()
 	setShapeTransform(root.global_transform)
 	var targets=getEntitiesInRange()
 	for target in targets:
@@ -57,17 +57,17 @@ func AbilityMotionTrigger():
 		
 	
 	var data={'travelDistance':moveTo-r.from,'origin':r.from}
-	var ability=abilityResource.MotionEffect.getNode(root.get_parent())
-	
-	ability.global_position=data.origin+data.travelDistance/2.+Vector3(0,1,0)
-	
-	#can't run a look_at if the direction matches the up vector, so i check if it is close
-	#and just rotate it up if it is instead
-	if(abs((r.to-ability.global_position).normalized()).y>=0.99):ability.rotation.x=PI/2
-	else:ability.look_at(r.to)
-	
+#	var ability=abilityResource.MotionEffect.trigger(data)
+#
+#	ability.global_position=data.origin+data.travelDistance/2.+Vector3(0,1,0)
+#
+#	#can't run a look_at if the direction matches the up vector, so i check if it is close
+#	#and just rotate it up if it is instead
+#	if(abs((r.to-ability.global_position).normalized()).y>=0.99):ability.rotation.x=PI/2
+#	else:ability.look_at(r.to)
+#
 	root.moveTo(moveTo)
-	ability.process_material.set_shader_parameter("emission_box_extents",Vector3(0.25,1,data.travelDistance.length()/2.))
+#	ability.process_material.set_shader_parameter("emission_box_extents",Vector3(0.25,1,data.travelDistance.length()/2.))
 
 
 

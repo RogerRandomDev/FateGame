@@ -91,8 +91,7 @@ func castProjectile()->void:
 	var col:=get_world_3d().direct_space_state.intersect_ray(projectileCast)
 	if col:
 		if ProjectSettings.get_setting("graphics/DrawBulletImpacts"):createImpactEffect(col)
-		applyBulletImpactGeneric(col)
-		if col.collider.get_collision_layer_value(10):
+		if col.collider.is_in_group("Attackable"):
 			applyBulletImpactEntity(col)
 
 
@@ -108,7 +107,13 @@ func applyBulletImpactGeneric(col)->void:
 ##applies the action of the bullet impact onto the entity.
 ##done per-bullet and can be changed per-script as neccessary
 func applyBulletImpactEntity(col)->void:
-	col.collider.get_node("Statistics").getStatistic("Health").changeBy(-_root.weaponStats.Damage)
+	col.collider.emit_signal("Attacked",
+	{
+		"Damage":_root.weaponStats.Damage,
+		"local":col.position-col.collider.position,
+		"hitType":"hitScan",
+		})
+	#col.collider.get_node("Statistics").getStatistic("Health").changeBy(-_root.weaponStats.Damage)
 
 
 
@@ -119,12 +124,13 @@ func createImpactEffect(col)->void:
 	var s=Sprite3D.new()
 	s.texture=load("res://addons/kenney_particle_pack/star_09.png")
 	s.pixel_size=0.0005
-	s.transparency=0.5
+	s.render_priority=127
 	
 	col.collider.add_child(s)
 	if abs(col.normal.normalized()).distance_squared_to(abs(Vector3.FORWARD))>0.001:
 		s.look_at_from_position(Vector3.ZERO,col.normal.normalized(),Vector3.FORWARD)
 	s.global_position=col.position+col.normal*0.01
+	
 	var t=create_tween()
 	t.tween_interval(10)
 	t.tween_property(s,'transparency',1,0.5)

@@ -8,8 +8,9 @@ class_name PlayerController
 
 
 var v3Speed:Vector3
+var inputBuild:Vector2=Vector2.ZERO
 
-
+var current_input_motions:Vector2
 
 func _ready():
 	root=get_parent().get_parent()
@@ -32,3 +33,9 @@ func applyFacingDirection(inputVector:Vector2)->Vector3:
 	var direction=(root.transform.basis * Vector3(inputVector.y,0,inputVector.x)).normalized()*inputVector.length()
 	return direction
 
+func buildInput(_delta):
+	var baseInput=Vector2(
+		Input.get_axis("forward","backward")*2,
+		Input.get_axis("left","right")
+	)
+	inputBuild=lerp(inputBuild,baseInput,_delta*15)
