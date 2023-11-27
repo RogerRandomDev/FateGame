@@ -162,7 +162,6 @@ func _process(_delta:float=0.0):
 	if _secondaryTimeLeft>0.:
 		_secondaryTimeLeft-=_delta
 		emit_signal("SecondaryDelayUpdated",secondaryAbilityDelay,_secondaryTimeLeft)
-	
 	if _motionTimeLeft>0.:
 		_motionTimeLeft-=_delta
 		emit_signal("MotionDelayUpdated",motionAbilityDelay,_motionTimeLeft)

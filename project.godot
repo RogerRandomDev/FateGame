@@ -12,7 +12,7 @@ config_version=5
 
 config/name="FateGame"
 config/tags=PackedStringArray("open_world")
-run/main_scene="res://Testing/Testing.tscn"
+run/main_scene="res://Testing/test2/Testing2.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
 [autoload]
@@ -28,7 +28,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/clyde/plugin.cfg", "res://addons/FateFramework/plugin.cfg")
+enabled=PackedStringArray("res://addons/FateFramework/plugin.cfg", "res://addons/clyde/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg")
 
 [file_customization]
 
@@ -54,7 +54,7 @@ import/fbx/enabled=false
 
 [global]
 
-gravity=Vector3(0, -32, 0)
+gravity=Vector3(0, -64, 0)
 
 [graphics]
 
@@ -129,6 +129,13 @@ slide={
 
 common/physics_ticks_per_second=120
 3d/physics_engine="GodotPhysics3D"
+
+[rendering]
+
+environment/glow/upscale_mode=0
+environment/screen_space_reflection/roughness_quality=2
+environment/volumetric_fog/use_filter=0
+occlusion_culling/use_occlusion_culling=true
 
 [shader_globals]
 

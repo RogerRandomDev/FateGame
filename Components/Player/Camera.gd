@@ -8,21 +8,27 @@ signal rotation_changed(rotationNew)
 @export_range(0,PI) var maxRotDown:float=0.0
 @export var invertX:bool=false
 @export var invertY:bool=false
+@onready var targetOrigin=$"../../CameraTargetOrigin"
 func _ready():
 	Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
+
+
 #handles rotation when moving the mouse
 func _input(event):
 	if event is InputEventMouseMotion:
 		
 		
-		get_parent().get_parent().rotateBy(-event.relative*mouseSensitivity)
+		get_parent().rotation.y-=event.relative.x*mouseSensitivity
 		get_parent().rotation.x=clamp(
 			get_parent().rotation.x-event.relative.y*mouseSensitivity,
 			-maxRotUp,
 			maxRotDown
 		)
-		emit_signal('rotation_changed',Vector3(get_parent().rotation.x,get_parent().get_parent().rotation.y,0))
+		emit_signal('rotation_changed',get_parent().rotation)
 func _process(_delta):
+	var parent=get_parent()
+	parent.global_position=parent.global_position.move_toward(targetOrigin.global_position,_delta*5)
+	
 	if not Input.get_connected_joypads().size():return
 	var relative=Vector2(Input.get_joy_axis(0,JOY_AXIS_RIGHT_Y)*(int(invertY)*2-1),-Input.get_joy_axis(0,JOY_AXIS_TRIGGER_LEFT)*(int(invertX)*2-1))
 	if(abs(relative.x)<0.25):relative.x=0.

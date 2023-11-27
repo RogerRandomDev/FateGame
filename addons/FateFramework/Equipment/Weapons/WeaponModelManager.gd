@@ -21,5 +21,6 @@ func loadWeapon(loadOnto:String,weapon:WeaponResource)->Node3D:
 
 ##updates current rotations based on input rotation
 func updateRotations(newRotations:Vector3):
-	for child in get_children():
-		child.rotation.x=newRotations.x
+	pass
+	#for child in get_children():
+		#child.rotation.x=newRotations.x
