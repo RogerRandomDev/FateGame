@@ -223,7 +223,8 @@ func _on_sliding_enabled_state_physics_process(delta):
 		
 		var speed_to_mod_by=sliding_velocity
 		# If not moving towards the slope, update the velocity
-		if get_real_velocity().y<0.0:
+		if get_real_velocity().y<0.0||get_real_velocity().length()<1.0:
+			
 			velocity = speed_to_mod_by * (motion_direction_sliding+binormal*Vector3(0,1,0))
 			if velocity.y>0:velocity*=-1
 			sliding_velocity+=GRAVITY.y*delta*(2.5-5*(PI-binormal.dot(Vector3.UP))/PI)
@@ -255,6 +256,9 @@ func _on_holster_weapon_state_entered():
 
 ##offsets the model downwards so sliding is in contact with the floor
 func _on_sliding_state_entered():
+	floor_block_on_wall=false
+	floor_stop_on_slope=false
+	
 	$Model/SlidingParticles.emitting=true
 	var normal=get_wall_normal()
 	
@@ -286,6 +290,9 @@ func _on_sliding_state_exited():
 	update_model_rotation(dir)
 	motion_direction_sliding=Vector3.ZERO
 	$Model/CameraOrigin.position.z = 0
+	floor_block_on_wall=true
+	floor_stop_on_slope=true
+
 
 var last_wall_normal:Vector3=Vector3.ZERO
 var motion_direction_sliding:Vector3=Vector3.ZERO

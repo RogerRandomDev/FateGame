@@ -4923,8 +4923,8 @@ draw_pass_1 = SubResource("QuadMesh_3p50d")
 target_position = Vector3(0, -1.1, 0)
 
 [connection signal="rotation_changed" from="CameraArm/PlayerCamera" to="." method="_on_player_camera_rotation_changed"]
-[connection signal="state_physics_processing" from="StateChart/Root/Movement/grounded" to="." method="_on_movement_enabled_state_physics_process"]
 [connection signal="state_physics_processing" from="StateChart/Root/Movement/grounded" to="." method="_on_jump_enabled_state_physics_process"]
+[connection signal="state_physics_processing" from="StateChart/Root/Movement/grounded" to="." method="_on_movement_enabled_state_physics_process"]
 [connection signal="state_physics_processing" from="StateChart/Root/Movement/Airborne" to="." method="_on_movement_enabled_state_physics_process"]
 [connection signal="state_physics_processing" from="StateChart/Root/Movement/Airborne/CannotJump" to="." method="_on_cannotjump_airborne_physics_process"]
 [connection signal="state_entered" from="StateChart/Root/Movement/Airborne/Jumped" to="." method="_on_jumped_state_entered"]

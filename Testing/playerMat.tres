@@ -4,7 +4,7 @@
 [ext_resource type="Shader" path="res://addons/FateFramework/Environment/shadowMat.gdshader" id="1_v73ek"]
 [ext_resource type="Shader" path="res://addons/FateFramework/Environment/fateMaterial.gdshader" id="2_v0xkb"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xgkug"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ap8lw"]
 render_priority = 0
 shader = ExtResource("1_v73ek")
 
@@ -18,7 +18,7 @@ width = 1
 
 [resource]
 render_priority = 0
-next_pass = SubResource("ShaderMaterial_xgkug")
+next_pass = SubResource("ShaderMaterial_ap8lw")
 shader = ExtResource("2_v0xkb")
 shader_parameter/TEXTURE = SubResource("GradientTexture1D_mniyy")
 script = ExtResource("1_nht7s")
