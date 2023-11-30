@@ -1,0 +1,151 @@
+[gd_scene load_steps=22 format=3 uid="uid://uor3svjyu2d8"]
+
+[ext_resource type="Script" path="res://Testing/test2/terrainTesting.gd" id="1_4f6xi"]
+[ext_resource type="Shader" path="res://Components/Sky/sky.gdshader" id="1_6sn0l"]
+[ext_resource type="PackedScene" uid="uid://cf6rg3w4tbk8o" path="res://Testing/player.tscn" id="5_cjjc6"]
+[ext_resource type="Terrain3DStorage" uid="uid://b0j46hqe44y1u" path="res://terrainData/storage.res" id="6_07366"]
+[ext_resource type="PackedScene" uid="uid://c006hss4ibvij" path="res://Components/GUI/PlayerHUD/HUD.tscn" id="6_ijcmt"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="7_8e2de"]
+[ext_resource type="Terrain3DMaterial" uid="uid://de873vq5an63v" path="res://terrainData/material.tres" id="7_vpht5"]
+[ext_resource type="Terrain3DTextureList" uid="uid://occbv47ccbjw" path="res://terrainData/texturelist.tres" id="8_88hdx"]
+
+[sub_resource type="Gradient" id="Gradient_kgoht"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.605042)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ea1tr"]
+noise_type = 2
+frequency = 0.2
+fractal_type = 0
+cellular_distance_function = 1
+cellular_jitter = 0.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_xauhc"]
+width = 864
+height = 486
+color_ramp = SubResource("Gradient_kgoht")
+noise = SubResource("FastNoiseLite_ea1tr")
+
+[sub_resource type="Gradient" id="Gradient_aspj8"]
+offsets = PackedFloat32Array(0.396226, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nkkvf"]
+seed = 7
+frequency = 0.046
+fractal_octaves = 10
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_puxo0"]
+seamless = true
+color_ramp = SubResource("Gradient_aspj8")
+noise = SubResource("FastNoiseLite_nkkvf")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ol64f"]
+seed = 3
+frequency = 0.052
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ecq1n"]
+noise = SubResource("FastNoiseLite_ol64f")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_o65xn"]
+frequency = 0.2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_h41ml"]
+noise = SubResource("FastNoiseLite_o65xn")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7lib6"]
+shader = ExtResource("1_6sn0l")
+shader_parameter/day_bottom_color = Color(0.156863, 0.662745, 0.8, 1)
+shader_parameter/day_top_color = Color(0, 1, 1, 1)
+shader_parameter/sunset_bottom_color = Color(0, 0, 0, 1)
+shader_parameter/sunset_top_color = Color(0.00784314, 0.00784314, 0.00784314, 1)
+shader_parameter/horizon_color_day = Color(0.215686, 0.282353, 0.498039, 1)
+shader_parameter/horizon_color_sunset = Color(0.188235, 0.188235, 0.188235, 1)
+shader_parameter/horizon_color_night = Color(0, 0, 0, 1)
+shader_parameter/horizon_falloff = 0.6
+shader_parameter/sun_col = Color(1, 1, 0, 1)
+shader_parameter/sun_size = 0.075
+shader_parameter/sun_blur = 0.161
+shader_parameter/moon_col = Color(0.419608, 0.376471, 1, 1)
+shader_parameter/moon_size = 0.074
+shader_parameter/moon_crescent_offset = 0.037
+shader_parameter/clouds_main_color = Color(1, 1, 1, 1)
+shader_parameter/clouds_edge_color = Color(1, 1, 1, 1)
+shader_parameter/clouds_speed = 0.1
+shader_parameter/clouds_scale = 0.1
+shader_parameter/clouds_cutoff = 0.16
+shader_parameter/clouds_fuzziness = 0.03
+shader_parameter/cloud_outline = 1.0
+shader_parameter/stars_cutoff = 0.629
+shader_parameter/stars_speed = 0.0
+shader_parameter/starMult = 0.0
+shader_parameter/clouds_texture = SubResource("NoiseTexture2D_ecq1n")
+shader_parameter/clouds_noise_texture = SubResource("NoiseTexture2D_puxo0")
+shader_parameter/stars_texture = SubResource("NoiseTexture2D_h41ml")
+
+[sub_resource type="Sky" id="Sky_rvnjh"]
+sky_material = SubResource("ShaderMaterial_7lib6")
+process_mode = 3
+radiance_size = 0
+
+[sub_resource type="Environment" id="Environment_hbd8x"]
+background_mode = 2
+background_color = Color(1, 1, 1, 1)
+sky = SubResource("Sky_rvnjh")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.13
+reflected_light_source = 1
+tonemap_mode = 2
+tonemap_exposure = 1.2
+tonemap_white = 8.0
+ssr_fade_in = 0.219613
+ssao_sharpness = 1.0
+ssao_light_affect = 0.22
+ssao_ao_channel_affect = 1.0
+ssil_radius = 7.82
+ssil_intensity = 12.32
+sdfgi_use_occlusion = true
+sdfgi_y_scale = 0
+glow_enabled = true
+glow_levels/2 = 0.18
+glow_levels/3 = 0.0
+glow_levels/5 = 0.19
+glow_intensity = 0.75
+glow_strength = 0.86
+glow_bloom = 0.01
+glow_hdr_threshold = 4.0
+glow_map_strength = 1.0
+glow_map = SubResource("NoiseTexture2D_xauhc")
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_4f6xi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.642788, 0.766044, 0, -0.766044, -0.642788, 0, 5, 0)
+shadow_enabled = true
+directional_shadow_blend_splits = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_hbd8x")
+
+[node name="Player" parent="." instance=ExtResource("5_cjjc6")]
+
+[node name="GUI" parent="." instance=ExtResource("6_ijcmt")]
+
+[node name="StateChartDebugger" parent="GUI" instance=ExtResource("7_8e2de")]
+layout_mode = 1
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 768.0
+offset_right = 1155.0
+offset_bottom = 416.0
+grow_horizontal = 1
+grow_vertical = 1
+initial_node_to_watch = NodePath("../../Player")
+
+[node name="Terrain3D" type="Terrain3D" parent="."]
+storage = ExtResource("6_07366")
+material = ExtResource("7_vpht5")
+texture_list = ExtResource("8_88hdx")
+collision_enabled = false

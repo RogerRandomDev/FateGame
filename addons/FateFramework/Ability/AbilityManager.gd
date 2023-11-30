@@ -25,7 +25,7 @@ func _ready():
 		AbilityTriggered.connect(ability.checkTrigger)
 		AbilityTimeUpdate.connect(ability._process)
 		ability._initialize_signals()
-		ability.load_structure_root(get_parent())
+		ability.load_structure_root(get_parent(),get_parent().abilityOrigin)
 	await get_tree().process_frame
 	ActiveAbilityChanged.emit(AbilityList[0])
 

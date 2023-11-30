@@ -2,7 +2,7 @@ extends Control
 
 
 func _ready():
-	var abilityList=get_parent().get_node("CharacterNode/Abilities")
+	var abilityList=get_parent().get_node("Player/Abilities")
 	abilityList.ActiveAbilityChanged.connect(updateAbilities)
 
 

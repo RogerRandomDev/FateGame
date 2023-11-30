@@ -7,8 +7,9 @@ class_name AbilityState
 @export var abilityResource:AbilityResource
 
 
-##the root node, should usually be a [RigidBody3D] acting as an [annotation entity] or [annotation player]
+##the root node, should usually be a [CharacterBody3D] acting as an [annotation entity] or [annotation player]
 var root:Node3D
+
 
 ##main ability just activated
 var justTriggered:bool=false

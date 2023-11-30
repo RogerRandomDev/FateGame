@@ -28,7 +28,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/FateFramework/plugin.cfg", "res://addons/clyde/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg")
+enabled=PackedStringArray("res://addons/FateFramework/plugin.cfg", "res://addons/clyde/plugin.cfg", "res://addons/godot_state_charts/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
 
 [file_customization]
 
@@ -45,7 +45,8 @@ folder_colors={
 "res://addons/FateFramework/Equipment/": "orange",
 "res://addons/FateFramework/GUI/": "purple",
 "res://addons/FateFramework/inspector/": "pink",
-"res://addons/clyde/": "blue"
+"res://addons/clyde/": "blue",
+"res://terrainData/": "gray"
 }
 
 [filesystem]
@@ -128,7 +129,7 @@ slide={
 [physics]
 
 common/physics_ticks_per_second=120
-3d/physics_engine="GodotPhysics3D"
+3d/physics_engine="JoltPhysics3D"
 
 [rendering]
 

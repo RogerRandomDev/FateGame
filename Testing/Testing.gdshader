@@ -16,6 +16,8 @@ void vertex() {
 void fragment() {
 	ALBEDO = vec3(0.);
 	
+	float depth_at = texture(DEPTH_TEXTURE,SCREEN_UV).r;
+	
 	vec2 screen_size = vec2(textureSize(SCREEN_TEXTURE, 0));
 	
 	float px = 0.5/screen_size.x;
@@ -34,7 +36,18 @@ void fragment() {
 		texture(DEPTH_TEXTURE,SCREEN_UV-vec2(px,0)).r
 	)*4.0;
 	
-	ALPHA=float(d<-0.001);
+	//float c=length(
+		//texture(SCREEN_TEXTURE,SCREEN_UV+vec2(px,py))+
+		//texture(SCREEN_TEXTURE,SCREEN_UV-vec2(px,py))-
+		//texture(SCREEN_TEXTURE,SCREEN_UV+vec2(0,py))-
+		//texture(SCREEN_TEXTURE,SCREEN_UV-vec2(0,py))+
+		//texture(SCREEN_TEXTURE,SCREEN_UV+vec2(-px,py))+
+		//texture(SCREEN_TEXTURE,SCREEN_UV-vec2(-px,py))-
+		//texture(SCREEN_TEXTURE,SCREEN_UV+vec2(px,0))-
+		//texture(SCREEN_TEXTURE,SCREEN_UV-vec2(px,0))
+	//);
+	
+	ALPHA = float(depth_at<0.9?d<-0.1:d<-0.001);
 	
 }
 

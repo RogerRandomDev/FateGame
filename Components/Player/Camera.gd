@@ -15,6 +15,11 @@ func _ready():
 
 #handles rotation when moving the mouse
 func _input(event):
+	if Input.is_key_label_pressed(KEY_Z):
+		if Input.mouse_mode==Input.MOUSE_MODE_CAPTURED:
+			Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
+		else:
+			Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
 	if event is InputEventMouseMotion:
 		
 		
@@ -27,7 +32,10 @@ func _input(event):
 		emit_signal('rotation_changed',get_parent().rotation)
 func _process(_delta):
 	var parent=get_parent()
-	parent.global_position=parent.global_position.move_toward(targetOrigin.global_position,_delta*5)
+	var to_move_to=parent.global_position.move_toward(targetOrigin.global_position,_delta*5)
+	if to_move_to.is_finite():
+		parent.global_position=to_move_to
+	
 	
 	if not Input.get_connected_joypads().size():return
 	var relative=Vector2(Input.get_joy_axis(0,JOY_AXIS_RIGHT_Y)*(int(invertY)*2-1),-Input.get_joy_axis(0,JOY_AXIS_TRIGGER_LEFT)*(int(invertX)*2-1))

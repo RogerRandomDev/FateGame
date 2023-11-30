@@ -120,6 +120,8 @@ var PassiveNode:Node
 #it is used for getting things like statistics from the character
 #using the ability
 var _inheritedRoot:Node
+var _inheritedOrigin:Node
+
 
 var _lastTime:int=0
 
@@ -137,10 +139,16 @@ func _initialize_signals()->void:
 ##sets root node for all sub scripts
 ##mainly to keep them laid out correctly and
 ##for ease of use
-func load_structure_root(root_node:Node)->void:
+func load_structure_root(root_node:Node,origin_node:Node=null)->void:
 	MainNode.root=root_node
 	SecondaryNode.root=root_node
 	MotionNode.root=root_node
+	_inheritedOrigin=origin_node
+	if _inheritedOrigin==null:_inheritedOrigin=root_node
+	MainNode.origin_node=origin_node
+	SecondaryNode.origin_node=origin_node
+	MotionNode.origin_node=origin_node
+	
 	
 	MainNode._ready()
 	SecondaryNode._ready()

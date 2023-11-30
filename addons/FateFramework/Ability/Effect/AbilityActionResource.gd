@@ -18,6 +18,8 @@ func getEntitiesInRange()->Array:
 	var collisions:=space_state.intersect_shape(abilityArea)
 	return collisions.map(func(val):return val.collider)
 var root:Node=null
+var origin_node:Node=null
+
 
 func _ready():
 	space_state=root.get_viewport().find_world_3d().direct_space_state

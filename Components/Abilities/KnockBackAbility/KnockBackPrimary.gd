@@ -27,15 +27,24 @@ func loadAbilityVisuals()->void:
 	meshShape.radius=3.0
 	meshShape.height=6.0
 	mesh.mesh=meshShape
-	root.add_child(mesh)
+	origin_node.add_child(mesh)
+	
+	
 	var tween:Tween=mesh.create_tween()
 	mesh.scale=Vector3.ZERO
 	var meshEffect=ShaderMaterial.new()
 	meshEffect.shader=meshShader
 	mesh.mesh.surface_set_material(0,meshEffect)
 	meshEffect.set_shader_parameter('rippleStrength',10.0)
-	tween.set_trans(Tween.TRANS_QUAD)
-	tween.tween_property(mesh,'scale',Vector3(1.0,1.0,1.0),0.5)
-	tween.parallel().tween_method(func(val):meshEffect.set_shader_parameter('rippleProgress',val),0.0,1.0,0.75)
+
+	for i in range(0,6):
+		var scale_of=float(i+1)/6
+		#tween.tween_property(mesh,'scale',Vector3(scale_of,scale_of,scale_of),0.0)
+		tween.tween_callback(func():
+			mesh.scale=Vector3(scale_of,scale_of,scale_of)
+			meshEffect.set_shader_parameter('rippleProgress',float(i+1)/6)
+			)
+		
+		tween.tween_interval(0.0833333)
 	tween.tween_callback(mesh.queue_free)
 	
