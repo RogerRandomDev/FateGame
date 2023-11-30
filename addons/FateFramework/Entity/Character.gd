@@ -181,23 +181,39 @@ func _on_movement_enabled_state_physics_process(delta):
 	else:
 		velocity+=dir*delta*accelSpeed*(1+0.25*int(Input.is_action_pressed("TriggerAbilityMotion")))
 		update_model_rotation(dir)
-	if Input.is_action_pressed("slide")&&velocity.length()>4.0:
-			_state_chart.set_expression_property("current_speed",velocity.length()*2)
-			_state_chart.send_event("immediate_grounded_sliding")
+	if Input.is_action_just_pressed("slide")&&velocity.length()>4.0:
+			_state_chart.send_event("slide_grounded")
 
 var grounded_since_last_jump:bool=true
 
 func _on_sliding_enabled_state_physics_process(delta):
-	if !is_on_wall():return
-	var dir=Quaternion(Vector3.UP,get_wall_normal())
-	last_wall_normal=get_wall_normal()
-	$Model.look_at(get_wall_normal()+$Model.global_position)
+	if !(is_on_wall()||is_on_floor()):
+		_state_chart.send_event("airborne")
+		return
+	#set normal to either wall or floor, depending on which is available
+	var active_normal=get_floor_normal()
+	if active_normal==Vector3.ZERO:active_normal=get_wall_normal()
 	
-	var wall_normal=get_wall_normal()
-	if wall_normal==Vector3.ZERO:return
+	var dir=Quaternion(Vector3.UP,active_normal)
+	
+	var direction=(Vector3(1,0,1)*velocity).normalized()
+	#look towards the target normal
+	if active_normal.y!=1.0:
+		$Model.look_at(active_normal+$Model.global_position)
+	else:
+		if direction!=Vector3.ZERO:
+			$Model.look_at(direction+$Model.global_position)
+			$Model.rotation.x=PI/2
+	if is_on_floor()&&direction!=Vector3.ZERO:
+		$Model.look_at(direction+$Model.global_position)
+		$Model.rotation.x=-get_floor_angle()+1.5708
+		
+
+	
+	
 	var binormal=Vector3.UP
-	if get_wall_normal().y!=1:
-		var normal=get_wall_normal()
+	if active_normal.y!=1:
+		var normal=active_normal
 		# Calculate a vector perpendicular to both the normal and gravity direction
 		var tangent = Vector3.DOWN.cross(normal).normalized()
 
@@ -205,13 +221,23 @@ func _on_sliding_enabled_state_physics_process(delta):
 		binormal = normal.cross(tangent).normalized()
 		
 		
-		var speed_to_mod_by=(_state_chart._expression_properties.get("current_speed")+abs(GRAVITY.y)*delta)
-		motion_direction_sliding=motion_direction_sliding.move_toward(binormal,delta*15/sqrt(velocity.length()))
-		velocity= speed_to_mod_by * motion_direction_sliding
-	
+		var speed_to_mod_by=sliding_velocity
+		# If not moving towards the slope, update the velocity
+		if get_real_velocity().y<0.0:
+			velocity = speed_to_mod_by * (motion_direction_sliding+binormal*Vector3(0,1,0))
+			if velocity.y>0:velocity*=-1
+			sliding_velocity+=GRAVITY.y*delta*(2.5-5*(PI-binormal.dot(Vector3.UP))/PI)
+			motion_direction_sliding=motion_direction_sliding.move_toward(binormal,delta*30.0)
+		else:
+			velocity=abs(speed_to_mod_by)*motion_direction_sliding
+		sliding_velocity-=delta*sliding_velocity*5.0
+	else:
+		velocity=sliding_velocity*motion_direction_sliding
+		sliding_velocity-=delta*sliding_velocity*4.0
 	#sliding jump
 	if Input.is_action_just_pressed("jump"):
-		velocity = (dir*Vector3.UP)*max(min(velocity.length(),40),20)
+		velocity = (dir.normalized()*Vector3.UP+motion_direction_sliding*Vector3(1,0,1)).normalized()*max(min(sliding_velocity,40),20)
+		velocity.y=max(velocity.y,-GRAVITY.y*0.25)
 		
 		grounded_since_last_jump=false
 		
@@ -231,6 +257,8 @@ func _on_holster_weapon_state_entered():
 func _on_sliding_state_entered():
 	$Model/SlidingParticles.emitting=true
 	var normal=get_wall_normal()
+	
+		
 	# Calculate a vector perpendicular to both the normal and gravity direction
 	var tangent = Vector3.DOWN.cross(normal).normalized()
 
@@ -238,8 +266,17 @@ func _on_sliding_state_entered():
 	var binormal = normal.cross(tangent).normalized()
 	
 	if motion_direction_sliding==Vector3.ZERO:motion_direction_sliding=binormal
+
+	sliding_velocity=velocity.length()
+	if normal==Vector3.ZERO:
+		velocity.y=0.0
+		motion_direction_sliding=velocity.normalized()
+		
+	$Model.position.y=-0.875
 	
-	$Model.position.y=-1
+	$Model/CameraOrigin.position.z = -0.5
+	
+	
 
 #resets player model rotation and position
 func _on_sliding_state_exited():
@@ -248,92 +285,11 @@ func _on_sliding_state_exited():
 	$Model/SlidingParticles.emitting=false
 	update_model_rotation(dir)
 	motion_direction_sliding=Vector3.ZERO
-
+	$Model/CameraOrigin.position.z = 0
 
 var last_wall_normal:Vector3=Vector3.ZERO
 var motion_direction_sliding:Vector3=Vector3.ZERO
-
-
-func _on_grounded_slide_enabled_physics_process(delta):
-	var floor_normal=get_floor_normal()
-	if floor_normal==Vector3.ZERO:return
-	
-	var dir=Quaternion(Vector3.UP,floor_normal)
-	if floor_normal.y==1.0:
-		
-		var speed_to_mod_by=(_state_chart._expression_properties.get("current_speed")+abs(GRAVITY.y)*delta*(float(get_floor_angle()>0.523599)-0.5)*2.0)
-		velocity=speed_to_mod_by*motion_direction_sliding
-		velocity-=velocity*delta*decelSpeed*(Vector3.ONE-get_floor_normal())*(1.0-get_floor_angle()/PI)*0.125
-		velocity.y=0
-		$Model.look_at(velocity.normalized()+$Model.global_position)
-		$Model.rotation.x+=PI/2
-		
-		#if you jump while on a flat floor
-		#sliding jump
-		if Input.is_action_just_pressed("jump"):
-			velocity = ((velocity-GRAVITY*0.666).normalized())*max(min(_state_chart._expression_properties.get("current_speed"),40),20)
-			
-			grounded_since_last_jump=false
-			
-			_state_chart.send_event("jump")
-			
-		return
-	
-	$Model.look_at(floor_normal+$Model.global_position)
-	velocity-=velocity*delta*decelSpeed*(Vector3.ONE-get_floor_normal())*(1.0-get_floor_angle()/PI)*0.25
-	velocity.y-=GRAVITY.y
-	var binormal=Vector3.UP
-	#beware the jank and spaghetti that got this working
-	#i may have sold my soul for this code
-	
-	#keeps velocity properly attached
-	if get_floor_normal().y!=1:
-		var normal=get_floor_normal()
-		# Calculate a vector perpendicular to both the normal and gravity direction
-		var tangent = Vector3.DOWN.cross(normal).normalized()
-
-		# Calculate the downward direction by taking the cross product with the normal
-		binormal = normal.cross(tangent).normalized()
-		
-		
-		var speed_to_mod_by=(_state_chart._expression_properties.get("current_speed")+(abs(GRAVITY.y)*delta*(float(get_floor_angle()>0.523599)-0.5)*2.0)*(int(get_real_velocity().y<-0.1)*1.5-0.5))
-		
-		
-		# If not moving towards the slope, update the velocity
-		if get_real_velocity().y<0.0:
-			velocity = speed_to_mod_by * (motion_direction_sliding+binormal*Vector3(0,1,0)).normalized()
-		else:
-			velocity=speed_to_mod_by*motion_direction_sliding
-		
-		
-	#sliding jump
-	if Input.is_action_just_pressed("jump"):
-		velocity = (motion_direction_sliding+Vector3.UP).normalized()*max(min(_state_chart._expression_properties.get("current_speed"),40),20)
-		
-		grounded_since_last_jump=false
-		
-		_state_chart.send_event("jump")
-	
-	
-
-func _on_grounded_slide_state_entered():
-	$Model/SlidingParticles.emitting=true
-	ignore_floor_velocity_mod=true
-	motion_direction_sliding=(get_real_velocity()*Vector3(1,0,1)).normalized()
-	
-	_on_grounded_slide_enabled_physics_process(0.0166667)
-	
-	$Model/CameraOrigin.position.z = -0.5
-	$Model.position.y=-0.875
-	floor_stop_on_slope=false
-	floor_block_on_wall=false
-
-func _on_grounded_slide_state_exited():
-	ignore_floor_velocity_mod=false
-	$Model/CameraOrigin.position.z = 0
-	floor_stop_on_slope=true
-	floor_block_on_wall=true
-
+var sliding_velocity:float=0.0
 
 
 
