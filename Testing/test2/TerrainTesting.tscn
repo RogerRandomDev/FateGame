@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://uor3svjyu2d8"]
+[gd_scene load_steps=31 format=3 uid="uid://uor3svjyu2d8"]
 
 [ext_resource type="Script" path="res://Testing/test2/terrainTesting.gd" id="1_4f6xi"]
 [ext_resource type="Shader" path="res://Components/Sky/sky.gdshader" id="1_6sn0l"]
@@ -9,6 +9,7 @@
 [ext_resource type="Terrain3DMaterial" uid="uid://de873vq5an63v" path="res://terrainData/material.tres" id="7_vpht5"]
 [ext_resource type="Terrain3DTextureList" uid="uid://occbv47ccbjw" path="res://terrainData/texturelist.tres" id="8_88hdx"]
 [ext_resource type="Script" path="res://Testing/test2/BouncePad.gd" id="9_lttjh"]
+[ext_resource type="Texture2D" uid="uid://dpqrc2nw60kmi" path="res://addons/kenney_particle_pack/magic_05.png" id="10_fh1j5"]
 
 [sub_resource type="Gradient" id="Gradient_kgoht"]
 interpolation_mode = 1
@@ -92,21 +93,17 @@ radiance_size = 0
 background_mode = 2
 background_color = Color(1, 1, 1, 1)
 sky = SubResource("Sky_rvnjh")
-ambient_light_source = 2
+ambient_light_source = 1
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.13
+ambient_light_energy = 0.2
 reflected_light_source = 1
 tonemap_mode = 2
 tonemap_exposure = 1.2
-tonemap_white = 8.0
-ssr_fade_in = 0.219613
-ssao_sharpness = 1.0
-ssao_light_affect = 0.22
-ssao_ao_channel_affect = 1.0
-ssil_radius = 7.82
-ssil_intensity = 12.32
-sdfgi_use_occlusion = true
-sdfgi_y_scale = 0
+tonemap_white = 16.0
+ssil_intensity = 2.0
+sdfgi_enabled = true
+sdfgi_energy = 0.2
 glow_enabled = true
 glow_levels/2 = 0.18
 glow_levels/3 = 0.0
@@ -118,13 +115,64 @@ glow_hdr_threshold = 4.0
 glow_map_strength = 1.0
 glow_map = SubResource("NoiseTexture2D_xauhc")
 
+[sub_resource type="Curve" id="Curve_cojys"]
+_data = [Vector2(0, 1), 0.0, -2.28337, 0, 0, Vector2(1, 0), -1.25334, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_w85o8"]
+width = 32
+curve = SubResource("Curve_cojys")
+
+[sub_resource type="Curve" id="Curve_owgoo"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.165511, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ti8ci"]
+width = 32
+curve = SubResource("Curve_owgoo")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_myttb"]
+direction = Vector3(0, 0, 1)
+spread = 180.0
+flatness = 0.95
+initial_velocity_min = 6.0
+initial_velocity_max = 6.0
+gravity = Vector3(0, 2, 0)
+damping_min = 6.0
+damping_max = 6.0
+scale_min = 4.0
+scale_max = 4.0
+scale_curve = SubResource("CurveTexture_ti8ci")
+scale_over_velocity_min = 1.0
+scale_over_velocity_max = 1.0
+alpha_curve = SubResource("CurveTexture_w85o8")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a4kn4"]
+transparency = 3
+alpha_hash_scale = 1.0
+alpha_antialiasing_mode = 0
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("10_fh1j5")
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_ochl3"]
+material = SubResource("StandardMaterial3D_a4kn4")
+size = Vector2(0.2, 0.2)
+
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_4f6xi")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.642788, 0.766044, 0, -0.766044, -0.642788, 0, 5, 0)
+transform = Transform3D(1, 0, 0, 0, -0.939693, 0.34202, 0, -0.34202, -0.939693, 0, 12, 0)
 shadow_enabled = true
+directional_shadow_split_1 = 0.05
+directional_shadow_split_2 = 0.1
 directional_shadow_blend_splits = true
+directional_shadow_max_distance = 250.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_hbd8x")
@@ -144,6 +192,7 @@ offset_right = 1155.0
 offset_bottom = 416.0
 grow_horizontal = 1
 grow_vertical = 1
+enabled = false
 initial_node_to_watch = NodePath("../../Player")
 
 [node name="Terrain3D" type="Terrain3D" parent="."]
@@ -153,7 +202,19 @@ texture_list = ExtResource("8_88hdx")
 collision_enabled = false
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 11.2, -10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 10, -10)
 use_collision = true
+collision_mask = 2
 size = Vector3(4, 0.5, 4)
 script = ExtResource("9_lttjh")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+emitting = false
+amount = 48
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 12
+interpolate = false
+process_material = SubResource("ParticleProcessMaterial_myttb")
+draw_pass_1 = SubResource("QuadMesh_ochl3")

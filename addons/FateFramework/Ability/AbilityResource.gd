@@ -263,4 +263,3 @@ func attemptTriggerMotion()->bool:
 	if energy!=null:energy.changeBy(-motionAbilityEnergy)
 	
 	return true
-

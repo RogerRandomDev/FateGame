@@ -1,4 +1,6 @@
-[gd_resource type="Terrain3DMaterial" load_steps=3 format=3 uid="uid://de873vq5an63v"]
+[gd_resource type="Terrain3DMaterial" load_steps=4 format=3 uid="uid://de873vq5an63v"]
+
+[ext_resource type="Shader" uid="uid://bet3yma02mtj5" path="res://new_ground.tres" id="1_m0fi0"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_2dqut"]
 noise_type = 0
@@ -20,3 +22,5 @@ _shader_parameters = {
 "world_noise_scale": 2.0
 }
 world_noise_enabled = true
+shader_override_enabled = true
+shader_override = ExtResource("1_m0fi0")

@@ -18,7 +18,7 @@ var floor_checker:=PhysicsRayQueryParameters3D.new()
 @export var airDecelSpeed:float=100.0
 @export var amplifiedDecelInMotion:float=2.0
 @export_range(0,1) var rotationDamping:float=0.125;
-@export var abilityOrigin:Node
+@onready var abilityOrigin:Node=$Model/AbilityOrigin
 @onready var gun_attachment_point=$Model/testingCharacter/Armature/Skeleton3D/BoneAttachment3D
 
 var facing_direction:Vector3
@@ -181,18 +181,23 @@ func _on_movement_enabled_state_physics_process(delta):
 	else:
 		velocity+=dir*delta*accelSpeed*(1+0.25*int(Input.is_action_pressed("TriggerAbilityMotion")))
 		update_model_rotation(dir)
-	if Input.is_action_just_pressed("slide")&&velocity.length()>4.0:
+	if Input.is_action_pressed("slide")&&velocity.length()>4.0&&is_on_floor():
+			velocity*=1.5
 			_state_chart.send_event("slide_grounded")
+			
 
 var grounded_since_last_jump:bool=true
 
 func _on_sliding_enabled_state_physics_process(delta):
+	_state_chart.send_event("sliding")
 	if !(is_on_wall()||is_on_floor()):
-		_state_chart.send_event("airborne")
+		_state_chart.send_event("force_airborne")
 		return
 	#set normal to either wall or floor, depending on which is available
 	var active_normal=get_floor_normal()
 	if active_normal==Vector3.ZERO:active_normal=get_wall_normal()
+	
+	
 	
 	var dir=Quaternion(Vector3.UP,active_normal)
 	
@@ -204,10 +209,11 @@ func _on_sliding_enabled_state_physics_process(delta):
 		if direction!=Vector3.ZERO:
 			$Model.look_at(direction+$Model.global_position)
 			$Model.rotation.x=PI/2
-	if is_on_floor()&&direction!=Vector3.ZERO:
-		$Model.look_at(direction+$Model.global_position)
-		$Model.rotation.x=-get_floor_angle()+1.5708
-		
+	#still need the slide to face the motion direction
+	#if is_on_floor():
+		#var v=get_real_velocity()
+		#var q=Quaternion(v.normalized(),Vector3.DOWN)
+		#$Model.rotation=q.get_euler()
 
 	
 	
@@ -223,8 +229,7 @@ func _on_sliding_enabled_state_physics_process(delta):
 		
 		var speed_to_mod_by=sliding_velocity
 		# If not moving towards the slope, update the velocity
-		if get_real_velocity().y<0.0||get_real_velocity().length()<1.0:
-			
+		if (get_real_velocity().y<0.0||get_real_velocity().length()<1.0)&&abs(binormal.y)>0.1:
 			velocity = speed_to_mod_by * (motion_direction_sliding+binormal*Vector3(0,1,0))
 			if velocity.y>0:velocity*=-1
 			sliding_velocity+=GRAVITY.y*delta*(2.5-5*(PI-binormal.dot(Vector3.UP))/PI)
@@ -237,13 +242,28 @@ func _on_sliding_enabled_state_physics_process(delta):
 		sliding_velocity-=delta*sliding_velocity*4.0
 	#sliding jump
 	if Input.is_action_just_pressed("jump"):
+		#used for getting direction you are moving relative to the jump direction
+		var baseInput=Vector2(
+			Input.get_axis("forward","backward"),
+			Input.get_axis("left","right")
+		).normalized()
+		if baseInput!=Vector2.ZERO:
+			var dir_input=(applyFacingDirection(baseInput)*Vector3(1,0,1)).normalized()
+			var dot_val=dir_input.dot(get_real_velocity()*Vector3(1,0,1))
+
+			#if you are moving in the opposite direction of the sliding, remove most of the forward jump momentum
+			if dot_val<0.0:
+				
+				dir=Quaternion(Vector3.UP,Vector3.UP).normalized()
+				motion_direction_sliding*=0.2
+				
+
 		velocity = (dir.normalized()*Vector3.UP+motion_direction_sliding*Vector3(1,0,1)).normalized()*max(min(sliding_velocity,40),20)
 		velocity.y=max(velocity.y,-GRAVITY.y*0.25)
 		
 		grounded_since_last_jump=false
 		
 		_state_chart.send_event("jump")
-	
 
 
 
