@@ -4388,9 +4388,9 @@ size = Vector2(0.125, 0.125)
 script = ExtResource("28_xv34i")
 state = NodePath("../../../AnimationControl/Airborne")
 
-[sub_resource type="Resource" id="Resource_vrn7g"]
+[sub_resource type="Resource" id="Resource_a05er"]
 script = ExtResource("29_ektbj")
-expression = "current_speed<1.0"
+expression = "current_speed<1.2"
 
 [sub_resource type="Resource" id="Resource_fun2c"]
 script = ExtResource("28_xv34i")
@@ -4489,7 +4489,7 @@ mesh = SubResource("QuadMesh_70gyy")
 shape = SubResource("CapsuleShape3D_r4jla")
 
 [node name="CameraTargetOrigin" type="Marker3D" parent="."]
-transform = Transform3D(0.999982, 0, 0, 0, 1, 0, 0, 0, 0.999982, 0.4, 0.5, 0)
+transform = Transform3D(0.999981, 0, 0, 0, 1, 0, 0, 0, 0.999981, 0.4, 0.5, 0)
 
 [node name="Model" type="Node3D" parent="."]
 
@@ -4715,7 +4715,7 @@ process_material = SubResource("ParticleProcessMaterial_ewyvc")
 draw_pass_1 = SubResource("QuadMesh_3p50d")
 
 [node name="WeaponModelManager" type="Node3D" parent="."]
-transform = Transform3D(-0.0800635, -0.366966, 0.923207, 0.109674, -0.920043, -0.359168, 0.98605, 0.0725363, 0.11491, 0.0158844, 0.361881, 0.0479565)
+transform = Transform3D(-0.0800635, -0.366966, 0.923206, 0.109674, -0.920043, -0.359168, 0.98605, 0.0725363, 0.11491, 0.0158844, 0.361881, 0.0479565)
 visible = false
 script = ExtResource("21_tqc2c")
 
@@ -4748,8 +4748,8 @@ event = &"airborne"
 
 [node name="onForceSlide" type="Node" parent="StateChart/Root/Movement/grounded"]
 script = ExtResource("27_arju0")
-to = NodePath("../../GroundedSlide")
-event = &"immediate_grounded_sliding"
+to = NodePath("../../Sliding")
+event = &"slide_grounded"
 
 [node name="Airborne" type="Node" parent="StateChart/Root/Movement"]
 script = ExtResource("25_fp14d")
@@ -4800,27 +4800,14 @@ guard = SubResource("Resource_8apfk")
 
 [node name="onGrounded" type="Node" parent="StateChart/Root/Movement/Sliding"]
 script = ExtResource("27_arju0")
-to = NodePath("../../GroundedSlide")
+to = NodePath("../../grounded")
 event = &"grounded"
+guard = SubResource("Resource_a05er")
 
 [node name="onJump" type="Node" parent="StateChart/Root/Movement/Sliding"]
 script = ExtResource("27_arju0")
 to = NodePath("../../Airborne/Jumped")
 event = &"jump"
-
-[node name="GroundedSlide" type="Node" parent="StateChart/Root/Movement"]
-script = ExtResource("26_yt16f")
-
-[node name="onJump" type="Node" parent="StateChart/Root/Movement/GroundedSlide"]
-script = ExtResource("27_arju0")
-to = NodePath("../../Airborne/Jumped")
-event = &"jump"
-
-[node name="onNotMoving" type="Node" parent="StateChart/Root/Movement/GroundedSlide"]
-script = ExtResource("27_arju0")
-to = NodePath("../../grounded")
-event = &"grounded"
-guard = SubResource("Resource_vrn7g")
 
 [node name="AnimationControl" type="Node" parent="StateChart/Root"]
 script = ExtResource("25_fp14d")
@@ -4871,7 +4858,7 @@ event = &"airborne"
 [node name="onForceSlide" type="Node" parent="StateChart/Root/AnimationControl/Walking"]
 script = ExtResource("27_arju0")
 to = NodePath("../../Sliding")
-event = &"immediate_grounded_sliding"
+event = &"slide_grounded"
 
 [node name="Sliding" type="Node" parent="StateChart/Root/AnimationControl"]
 script = ExtResource("30_agyha")
@@ -4943,9 +4930,6 @@ target_position = Vector3(0, -1.1, 0)
 [connection signal="state_entered" from="StateChart/Root/Movement/Airborne/Jumped" to="." method="_on_jumped_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Movement/Airborne/CoyoteTime" to="." method="_on_jump_enabled_state_physics_process"]
 [connection signal="state_physics_processing" from="StateChart/Root/Movement/Sliding" to="." method="_on_sliding_enabled_state_physics_process"]
-[connection signal="state_entered" from="StateChart/Root/Movement/GroundedSlide" to="." method="_on_grounded_slide_state_entered"]
-[connection signal="state_exited" from="StateChart/Root/Movement/GroundedSlide" to="." method="_on_grounded_slide_state_exited"]
-[connection signal="state_physics_processing" from="StateChart/Root/Movement/GroundedSlide" to="." method="_on_grounded_slide_enabled_physics_process"]
 [connection signal="state_entered" from="StateChart/Root/AnimationControl/Sliding" to="." method="_on_sliding_state_entered"]
 [connection signal="state_exited" from="StateChart/Root/AnimationControl/Sliding" to="." method="_on_sliding_state_exited"]
 

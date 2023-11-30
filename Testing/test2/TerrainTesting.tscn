@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://uor3svjyu2d8"]
+[gd_scene load_steps=23 format=3 uid="uid://uor3svjyu2d8"]
 
 [ext_resource type="Script" path="res://Testing/test2/terrainTesting.gd" id="1_4f6xi"]
 [ext_resource type="Shader" path="res://Components/Sky/sky.gdshader" id="1_6sn0l"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="7_8e2de"]
 [ext_resource type="Terrain3DMaterial" uid="uid://de873vq5an63v" path="res://terrainData/material.tres" id="7_vpht5"]
 [ext_resource type="Terrain3DTextureList" uid="uid://occbv47ccbjw" path="res://terrainData/texturelist.tres" id="8_88hdx"]
+[ext_resource type="Script" path="res://Testing/test2/BouncePad.gd" id="9_lttjh"]
 
 [sub_resource type="Gradient" id="Gradient_kgoht"]
 interpolation_mode = 1
@@ -129,6 +130,7 @@ directional_shadow_blend_splits = true
 environment = SubResource("Environment_hbd8x")
 
 [node name="Player" parent="." instance=ExtResource("5_cjjc6")]
+transform = Transform3D(0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 28.5, 17.501, -28.5)
 
 [node name="GUI" parent="." instance=ExtResource("6_ijcmt")]
 
@@ -149,3 +151,9 @@ storage = ExtResource("6_07366")
 material = ExtResource("7_vpht5")
 texture_list = ExtResource("8_88hdx")
 collision_enabled = false
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, 11.2, -10)
+use_collision = true
+size = Vector3(4, 0.5, 4)
+script = ExtResource("9_lttjh")

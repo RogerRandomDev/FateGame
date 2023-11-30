@@ -11,7 +11,7 @@ noise = SubResource("FastNoiseLite_2dqut")
 [resource]
 _shader_parameters = {
 "blend_sharpness": 0.87,
-"height_blending": false,
+"height_blending": true,
 "noise_scale": 0.1,
 "noise_texture": SubResource("NoiseTexture2D_kspax"),
 "world_noise_blend_far": 1.0,

@@ -8,10 +8,11 @@ func _ready():
 	var shape=BoxShape3D.new()
 	shape.size=(size+Vector3(-0.1,0.4,-0.1))
 	query.shape=shape
-	query.transform=transform
+	query.transform=global_transform
 
 func _process(delta):
 	var col:=get_world_3d().direct_space_state.intersect_shape(query)
 	for s in col:
+		print(s.collider.name)
 		if s.collider is CharacterBody3D:
 			s.collider.velocity.y+=bounce_force
