@@ -15,11 +15,13 @@ func _ready():
 
 #handles rotation when moving the mouse
 func _input(event):
+	
 	if Input.is_key_label_pressed(KEY_Z):
 		if Input.mouse_mode==Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode=Input.MOUSE_MODE_VISIBLE
 		else:
 			Input.mouse_mode=Input.MOUSE_MODE_CAPTURED
+	if Input.mouse_mode!=Input.MOUSE_MODE_CAPTURED:return
 	if event is InputEventMouseMotion:
 		
 		

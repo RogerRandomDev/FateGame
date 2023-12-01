@@ -20,11 +20,11 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 Dialogue="*res://dialogue/GUI/dialogue.gd"
 Fate="*res://addons/FateFramework/tools.gd"
 SpecialRender="*res://addons/FateFramework/specialRendering.gd"
+Settings="*res://Components/GUI/Settings/SettingsData.gd"
 
 [display]
 
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
 
 [editor_plugins]
 

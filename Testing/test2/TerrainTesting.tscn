@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://uor3svjyu2d8"]
+[gd_scene load_steps=32 format=3 uid="uid://uor3svjyu2d8"]
 
 [ext_resource type="Script" path="res://Testing/test2/terrainTesting.gd" id="1_4f6xi"]
 [ext_resource type="Shader" path="res://Components/Sky/sky.gdshader" id="1_6sn0l"]
@@ -10,6 +10,7 @@
 [ext_resource type="Terrain3DTextureList" uid="uid://occbv47ccbjw" path="res://terrainData/texturelist.tres" id="8_88hdx"]
 [ext_resource type="Script" path="res://Testing/test2/BouncePad.gd" id="9_lttjh"]
 [ext_resource type="Texture2D" uid="uid://dpqrc2nw60kmi" path="res://addons/kenney_particle_pack/magic_05.png" id="10_fh1j5"]
+[ext_resource type="PackedScene" uid="uid://dv1flht0vgb8m" path="res://Components/GUI/Settings/Settings.tscn" id="11_08pep"]
 
 [sub_resource type="Gradient" id="Gradient_kgoht"]
 interpolation_mode = 1
@@ -171,7 +172,6 @@ transform = Transform3D(1, 0, 0, 0, -0.939693, 0.34202, 0, -0.34202, -0.939693, 
 shadow_enabled = true
 directional_shadow_split_1 = 0.05
 directional_shadow_split_2 = 0.1
-directional_shadow_blend_splits = true
 directional_shadow_max_distance = 250.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -218,3 +218,6 @@ fixed_fps = 12
 interpolate = false
 process_material = SubResource("ParticleProcessMaterial_myttb")
 draw_pass_1 = SubResource("QuadMesh_ochl3")
+
+[node name="Settings" parent="." instance=ExtResource("11_08pep")]
+visible = false

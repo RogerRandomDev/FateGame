@@ -9027,7 +9027,7 @@ _subresources={
 "slices/amount": null
 },
 "Walking": {
-"save_to_file/enabled": true,
+"save_to_file/enabled": false,
 "save_to_file/keep_custom_tracks": true,
 "save_to_file/path": "res://walkingAnim.tres",
 "settings/loop_mode": 1,
@@ -10824,6 +10824,28 @@ _subresources={
 "slice_99/save_to_file/path": "",
 "slice_99/start_frame": 0,
 "slices/amount": null
+}
+},
+"meshes": {
+"testingCharacter_Beta_Joints": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 1,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
+},
+"testingCharacter_Beta_Surface": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 1,
+"lods/normal_merge_angle": 60.0,
+"lods/normal_split_angle": 25.0,
+"save_to_file/enabled": false,
+"save_to_file/make_streamable": "",
+"save_to_file/path": ""
 }
 }
 }
