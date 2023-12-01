@@ -1,8 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://dv1flht0vgb8m"]
+[gd_scene load_steps=13 format=3 uid="uid://dv1flht0vgb8m"]
 
 [ext_resource type="Theme" uid="uid://br81pr4h7m5j" path="res://Components/GUI/Settings/SettingsTheme.tres" id="1_uvteg"]
 [ext_resource type="Script" path="res://Components/GUI/Settings/Settings.gd" id="2_vlsl0"]
 [ext_resource type="Shader" path="res://Components/GUI/Settings/Settings.gdshader" id="3_1ad0a"]
+[ext_resource type="Script" path="res://Components/GUI/Settings/CustomSelectorTesting.gd" id="4_602qv"]
 [ext_resource type="Texture2D" uid="uid://bj0e6n0m8il5f" path="res://addons/kenney_particle_pack/magic_02.png" id="4_ycmop"]
 [ext_resource type="Texture2D" uid="uid://dru0vd3dsnr4b" path="res://addons/kenney_particle_pack/magic_01.png" id="5_68ctc"]
 
@@ -17,6 +18,33 @@ gradient = SubResource("Gradient_ffrx6")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6khpc"]
 shader = ExtResource("3_1ad0a")
 shader_parameter/Gradient = SubResource("GradientTexture1D_v6xdi")
+
+[sub_resource type="Animation" id="Animation_nejca"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D/Sprite2D2:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-12.5664]
+}
 
 [sub_resource type="Animation" id="Animation_au2n5"]
 resource_name = "settings_animation"
@@ -47,33 +75,6 @@ tracks/1/keys = {
 "values": [0.0, -18.8496]
 }
 
-[sub_resource type="Animation" id="Animation_nejca"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite2D/Sprite2D2:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-12.5664]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xyqo2"]
 _data = {
 "RESET": SubResource("Animation_nejca"),
@@ -89,7 +90,6 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-focus_mode = 1
 theme = ExtResource("1_uvteg")
 script = ExtResource("2_vlsl0")
 
@@ -102,7 +102,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-focus_mode = 1
 color = Color(0, 0, 0, 1)
 
 [node name="Inputs" type="VBoxContainer" parent="."]
@@ -142,6 +141,7 @@ alignment = 1
 [node name="Label" type="Label" parent="Inputs/ScrollContainer/Vcontainer" groups=["dont_label"]]
 layout_mode = 2
 text = "testing"
+horizontal_alignment = 1
 
 [node name="WindowMode" type="OptionButton" parent="Inputs/ScrollContainer/Vcontainer"]
 layout_mode = 2
@@ -194,6 +194,15 @@ popup/item_3/text = "High"
 popup/item_3/id = 3
 popup/item_4/text = "Very High"
 popup/item_4/id = 4
+
+[node name="CustomSelectorTesting" type="PanelContainer" parent="Inputs/ScrollContainer/Vcontainer"]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+focus_mode = 2
+theme_type_variation = &"SelectorContainer"
+script = ExtResource("4_602qv")
+valueNames = PackedStringArray("test", "test2", "test3")
+valueIndices = PackedInt32Array(0, 0, 0)
 
 [node name="RestartNeeded" type="Label" parent="."]
 visible = false

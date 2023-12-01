@@ -5288,7 +5288,7 @@ bones/62/rotation = Quaternion(0.500957, -0.0282447, -0.057216, 0.863117)
 bones/63/rotation = Quaternion(0.354274, 0.016495, -0.0237667, 0.934694)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Model/testingCharacter/Armature/Skeleton3D" index="2"]
-transform = Transform3D(0.867852, -0.01206, -0.496676, 0.495689, 0.0885122, 0.863978, 0.0335423, -0.996002, 0.0827935, 0.412566, 1.18026, -116.998)
+transform = Transform3D(0.867852, -0.0120612, -0.496676, 0.495689, 0.0885128, 0.863978, 0.0335416, -0.996002, 0.0827946, 0.412552, 1.18026, -116.998)
 bone_name = "mixamorig_Spine1"
 bone_idx = 2
 
@@ -5320,7 +5320,7 @@ process_material = SubResource("ParticleProcessMaterial_ewyvc")
 draw_pass_1 = SubResource("QuadMesh_3p50d")
 
 [node name="WeaponModelManager" type="Node3D" parent="."]
-transform = Transform3D(-0.0441961, -0.443589, 0.891159, 0.17888, -0.877448, -0.431451, 0.978153, 0.14042, 0.119167, -0.00412566, 0.169983, -0.0118026)
+transform = Transform3D(-0.0441961, -0.44359, 0.891159, 0.17888, -0.877447, -0.431451, 0.978153, 0.140421, 0.119167, -0.00412552, 0.169983, -0.0118026)
 visible = false
 script = ExtResource("21_tqc2c")
 

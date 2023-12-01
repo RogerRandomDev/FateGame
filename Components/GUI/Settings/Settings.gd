@@ -14,7 +14,7 @@ func _ready():
 		if method.name.contains("initialize_"):
 			call(method.name)
 	#endregion
-	
+	$Inputs/ScrollContainer/Vcontainer/WindowMode.grab_focus()
 	$AnimationPlayer.play("settings_animation")
 	
 
@@ -26,19 +26,26 @@ func add_labels_to_settings()->void:
 	for setting in SettingNodes.get_children():
 		if setting.is_in_group("dont_label"):continue
 		var setting_label=Label.new()
+		var hold=Control.new()
+		
 		setting_label.theme_type_variation="SettingLabel"
 		setting_label.text=setting.name.capitalize()
-		
-		
-		setting.add_child(setting_label)
+		hold.add_child(setting_label)
+		setting.add_child(hold)
+		setting.move_child(hold,0)
 		setting_label.force_update_transform()
+		setting.focus_entered.connect(func():setting_label.theme_type_variation="SettingLabelFocus")
+		setting.focus_exited.connect(func():setting_label.theme_type_variation="SettingLabel")
+		
 		max_x=max(max_x,setting_label.size.x)
 		max_setting_x=max(max_setting_x,setting.size.x)
+		
+			
 	
 	
 	for setting in SettingNodes.get_children():
 		if setting.is_in_group("dont_label"):continue
-		setting.get_child(0).position.x-=max_x+16
+		setting.get_child(0).get_child(0).position.x-=max_x+16
 	$Inputs/ScrollContainer.custom_minimum_size.x=max_x+max_setting_x-16
 
 

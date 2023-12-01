@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=12 format=3 uid="uid://br81pr4h7m5j"]
+[gd_resource type="Theme" load_steps=17 format=3 uid="uid://br81pr4h7m5j"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2qdmb"]
 bg_color = Color(0, 0.14902, 0.14902, 1)
@@ -80,6 +80,27 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color(0, 0.35, 0.35, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tuxv5"]
+bg_color = Color(0, 0.25098, 0.25098, 1)
+border_width_left = 4
+border_width_right = 4
+border_color = Color(0, 0.180392, 0.180392, 1)
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+corner_detail = 1
+expand_margin_left = 7.0
+expand_margin_right = 7.0
+shadow_size = 1
+shadow_offset = Vector2(1, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_etkl7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b1t4l"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_flawv"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5cd2s"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wl37j"]
 
@@ -177,9 +198,19 @@ PopupMenu/styles/labeled_separator_left = null
 PopupMenu/styles/labeled_separator_right = null
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_5ewj5")
 PopupMenu/styles/separator = SubResource("StyleBoxFlat_yow85")
+SelectorContainer/base_type = &"PanelContainer"
+SelectorContainer/styles/panel = SubResource("StyleBoxFlat_tuxv5")
+SelectorLeft/base_type = &"Button"
+SelectorLeft/styles/focus = SubResource("StyleBoxEmpty_etkl7")
+SelectorLeft/styles/hover = SubResource("StyleBoxEmpty_b1t4l")
+SelectorLeft/styles/normal = SubResource("StyleBoxEmpty_flawv")
+SelectorLeft/styles/pressed = SubResource("StyleBoxEmpty_5cd2s")
+SelectorRight/base_type = &"SelectorLeft"
 SettingLabel/base_type = &"Button"
 SettingLabel/colors/font_color = Color(0, 1, 1, 1)
 SettingLabel/styles/normal = SubResource("StyleBoxEmpty_wl37j")
+SettingLabelFocus/base_type = &"SettingLabel"
+SettingLabelFocus/colors/font_color = Color(0.705882, 1, 1, 1)
 VScrollBar/icons/decrement = null
 VScrollBar/icons/decrement_highlight = null
 VScrollBar/icons/decrement_pressed = null
